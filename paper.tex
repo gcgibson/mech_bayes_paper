@@ -231,7 +231,7 @@
  \end{itemize}
 
 
-\section{Results}
+\section{COVID-Hub Results}
 
 
 \begin{figure}
@@ -274,12 +274,90 @@
      \caption{Deaths by state. }
      \label{fig:my_label}
  \end{figure}
+ 
+ 
+
+\begin{figure}
+  \centering
+     \begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{mae_results_by_time_zero.png}
+    \caption{MAE by timezero}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{mae_results_by_region.png}
+    \caption{MAE by region}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{wis_results_by_time_zero.png}
+    \caption{WIS by timezero}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{wis_results_by_region.png}
+    \caption{WIS by region}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{mae_results_by_target.png}
+    \caption{WIS by timezero}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{wis_results_by_target.png}
+    \caption{WIS by region}
+\end{subfigure}%
+
+\caption{Scores from covid-hub.}
+\label{fig:covidhub}
+\end{figure}
+
+
 
 \begin{itemize}
-\item MechBayes is uniformly better than baseline model when broken down by region and timezero.
+\item MechBayes is almost always better than baseline model when broken down by region, target, and timezero after June 1st 2020.
+\item MechBayes has improved over time.
+\begin{itemize}
+\item First two submissions did not have detection probability random walk
+\item Observations were Normally distributed on cumulative deaths
+\item Switched to current model
+\end{itemize}
+\item Naive baseline is hard to beat
+\item MechBayes is biased high. This comes from uncertainty in the random walk leading to potentially huge growth rates. 
 \end{itemize}   
    
    
    
+   \section{Ablation Results}
+
+   \begin{itemize}
+   \item Model ranking is as follows
+   \begin{itemize}
+   \item MechBayes
+   \item MechBayes-Case Observations
+   \item MechBayes - no detection random walk
+   \end{itemize}
+   \item This ordering is inu
+   \end{itemize}
+
+
+\section{Discussion}
+\begin{itemize}
+\item Mech Bayes is a fast fully bayesian compartmental model capable of accounting for real-world modeling challenges during a pandemic.
+\item Demonstrated success across regions, targets, and timezeros
+\item Real-time model results show the practice of modeling during an epidemic. Results are improving.
+\item Ablation studies show the results are grounded in real model improvements using historical validation.
+\item Talk about how overall MAE obscures the huge geographic variability. 
+\end{itemize}
+
+\section{Conclusion}
+
+\begin{itemize}
+\item Summarize mech bayes as bayesian compartmental model
+\item Further work: most of the model is about $\beta(t)$. Better methods for modeling it? Spline Etc.
+\end{itemize}
+
 
 \end{document}  

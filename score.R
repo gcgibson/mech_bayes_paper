@@ -13,43 +13,13 @@ tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %
 tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
 tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
 #tmp_mech_bayes <- tmp_mech_baye
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,state,model) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
+tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
 
 
 #tmp_subset$timezero <- as.factor(tmp_subset$timezero)
-tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-19",]
+tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-04-20",]
 tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
 library(ggplot2)
-ggplot(tmp_subset,aes(x=timezero,y=wis,col=model)) + geom_point() + facet_wrap(~state) + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-  
+mae_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+ggsave("/Users/ mech_bayes_paper/mae_results_by_time_zero.png",mae_results_by_time_zero,device="png",width=8,height=4)
 
-
-#by timezero
-
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,model) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
-tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-19",]
-tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
-library(ggplot2)
-ggplot(tmp_subset,aes(x=timezero,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggplot(tmp_subset,aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-
-# by region
-#by timezero
-
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(unit,model) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
-#tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-19",]
-#tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
-library(ggplot2)
-ggplot(tmp_subset,aes(x=unit,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggplot(tmp_subset,aes(x=unit,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + coord_flip()
-
-
-
-#by timezero
-
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(target,model) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
-#tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-19",]
-#tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
-library(ggplot2)
-ggplot(tmp_subset,aes(x=unit,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggplot(tmp_subset,aes(x=target,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + coord_flip()
