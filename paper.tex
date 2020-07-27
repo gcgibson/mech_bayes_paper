@@ -9,6 +9,7 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{subcaption}
+\usepackage{bm}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 \usetikzlibrary{arrows,positioning}
@@ -62,50 +63,58 @@
 
 \section{Introduction}
 
-\begin{itemize}
-\item Emergence and spread of covid
-\item Forecasts useful for public health
-\begin{itemize}
-\item Resource allocation
-\item Intervention Planning
-\item Disease burden
-\end{itemize}
-\item Cite Flu Forecasting
-\item Describe COVID-HUB
-\begin{itemize}
-\item Number of participating teams as evidence of importance
-\item Soliciting forecasts for incident and cumulative deaths
-\end{itemize}
-\item Mechanistic models have been around since K\&K
-\item Demonstrated success in modeling infectious disease 
-\item Since they were developed around the last pandemic their usefulness as applied forecasting models has gone untested
-\item Extensions to basic model needed 
-\begin{itemize}
-\item Observations on cases and deaths
-\item Time-varying detection probability for varied testing
-\item Non-parametric model of interventions
-\item Full Bayesian fitting due to unidentifiability of parameters given only a time series of cases and deaths.
-\end{itemize}
-\item MechBayes outperforms in two settings
-\begin{itemize}
-\item COVID-HUB relative to baseline model 
-\item Ablation test relative to basic SEIR model
-\end{itemize}
-\item We show improvements in MAE and WIS relative to baseline model in both experimental setups
+The emergence of COVID-19 in early 2020 in the United States developed into the largest pandemic the country has seen in over a century. As of July 2020, there are over 4 million confirmed infections and over 150,000 deaths due to COVID-19 \cite{dong2020interactive}.  Understanding the future trajectory of the pandemic is crucial for minimizing the impact across the nation in terms of healthcare burden, economic recession, and political stability. Forecasts of incident and cumulative deaths due to COVID may help in resource allocation, vaccine clinical trial planning, and re-opening strategies. Along with non-pharamacutical interventions, forecasts are one of the few public health tools available to help fight the pandemic. Infectious disease forecasting has been demonstrated to benefit public health decision makers during annual influenza outbreaks \cite{lutz2019applying}.  However, many forecasts of seasonal disease, such as influenza, often rely on ample historical data to look for patterns that can be projected forward into the future. In an emerging pandemic situation, models must be able to fit to limited data. The COVID-19 pandemic has seen a resurgence in the use of differential equation models to explain the underlying transmission of a disease through a population. First introduced by  Kermack and McKendrick, the model assumes the each individual is in one of a mutually exclusive set of compartments, typically the susceptible, exposed, infected, and recovered compartment. The model is specified by setting the rates of flow between compartments. While these models have been used since their inception in 1918, the COVID pandemic represents a unique opportunity to explore their properties in real-time. Emerging pandemics create a unique set of challenges for accurately predicting future deaths. These include, but are not limited to, severe under reporting of cases due to asymptomatic transmission, time-varying testing rates, and both the addition and removal of control measures such as social distancing, lockdown, and mask use. In this work, we introduce a set of extensions to the classic compartmental model that are able to account for the real-world and real-time complexities of infectious disease forecasting during a pandemic. We demonstrate the success of the model in both real-time forecast submissions  as well as an ablation test to demonstrate the additional forecast accuracy of our extensions. In what follows we first describe the available data and forecast submission infrastructure, outline the basic susceptible-exposed-infected-recovered (SEIR) compartment model, describe our extensions for real-world pandemic forecasting, and finally evaluate the model using both real-time evaluation from submissions and a retrospective model component analysis. 
 
-\end{itemize}
+
+
+%\begin{itemize}
+%
+%\item Resource allocation
+%\item Intervention Planning
+%\item Disease burden
+%\end{itemize}
+%\item Cite Flu Forecasting
+%\item Describe COVID-HUB
+%\begin{itemize}
+%\item Number of participating teams as evidence of importance
+%\item Soliciting forecasts for incident and cumulative deaths
+%\end{itemize}
+%\item Mechanistic models have been around since K\&K
+%\item Demonstrated success in modeling infectious disease 
+%\item Since they were developed around the last pandemic their usefulness as applied forecasting models has gone untested
+%\item Extensions to basic model needed 
+%\begin{itemize}
+%\item Observations on cases and deaths
+%\item Time-varying detection probability for varied testing
+%\item Non-parametric model of interventions
+%\item Full Bayesian fitting due to unidentifiability of parameters given only a time series of cases and deaths.
+%\end{itemize}
+%\item MechBayes outperforms in two settings
+%\begin{itemize}
+%\item COVID-HUB relative to baseline model 
+%\item Ablation test relative to basic SEIR model
+%\end{itemize}
+%\item We show improvements in MAE and WIS relative to baseline model in both experimental setups
+%
+%\end{itemize}
 
 \section{Data}
+	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to April 27th 2020 and captures all 50 states, as well as Guam, Puerto Rico, and American Samoa. As noted in \cite{krantz2020level}, COVID-19 cases are often dramatically under-reported, with reporting rates for the U.S. estimated at 20-30\% \cite{russel2020using}. In addition, there has also been severe temporal variation in the percent of symptomatic cases  \cite{russel2020using}. We can also see relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. Example incident death data is show in \ref{fig:data}.
+	
+In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the COVID-HUB forecast repository and visualization tool \cite{covid-hub}. The COVID-HUB team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths as represented by a set of quantiles defined as 
 
-\begin{itemize}
-\item We use cases/deaths from JHU
-\item Under-reporting issues
-\item Batch reporting issues
-\item Revision Issues
-\item Weekly cycle issues
-\item High variability in incident data
-\item Ref Figure 1
-\end{itemize}
+\begin{equation}
+\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}
+\end{equation}
+%\begin{itemize}
+%\item We use cases/deaths from JHU
+%\item Under-reporting issues
+%\item Batch reporting issues
+%\item Revision Issues
+%\item Weekly cycle issues
+%\item High variability in incident data
+%\item Ref Figure 1
+%\end{itemize}
 
 
 
@@ -115,26 +124,84 @@
      \centering
      \includegraphics[scale=.1]{data_plot.png}
      \caption{Deaths by state. }
-     \label{fig:my_label}
+     \label{fig:data}
  \end{figure}
  
  \section{Compartmental Model}
- \begin{itemize}
- \item Basic SEIR model description
- \item Definition of compartmental model (description of diff eq as flow between compartments)
- \item Ref Figure 2
- \item Interpretation of parameters in basic SEIR model 
- \begin{itemize}
- \item Sigma
- \item Gamma
- \item beta
- \end{itemize}
- 
- \end{itemize}
- 
- \begin{figure}
-     
+% \begin{itemize}
+% \item Basic SEIR model description
+% \item Definition of compartmental model (description of diff eq as flow between compartments)
+% \item Ref Figure 2
+% \item Interpretation of parameters in basic SEIR model 
+% \begin{itemize}
+% \item Sigma
+% \item Gamma
+% \item beta
+% \end{itemize}
+% 
+% \end{itemize}
+% 
+% \begin{figure}
+In a given time-step (e.g. one day), each member of the population of  interest belongs is assumed to be in one of the mutually-and-exhaustive compartments:
+ Susceptible $S$, Exposed but not yet infectious $E$, Infectious $I$, Recovered $R$, hospitalized before death $D_1$ , and finally deceased $D_2$. Here we assume everyone who is hospitalized will eventually become deceased in order to separate the rate into both a case fatality ratio (CFR) parameter as well as a time from symptoms to death parameter.    For simplicity, we assume a closed population of size $N$. 
+The following parameters govern how members of the population move between compartments:  
+\begin{packed_item}
+\item $\beta(t)$: transmission rate, which we allow to vary by time $t$
+\item $\sigma$: rate of transition from the exposed state $E$ to infectious state $I$; i.e., $1/\sigma$ is the expected duration of the latent period
+\item $\gamma$: rate of transition from  the infectious state $I$ to no longer being infectious; i.e., $1/\gamma$ is the expected duration of the infectious period
+\item $\rho$: fatality rate %(i.e., probability of transitioning from I to $D_1$ instead of I to R)
+\item $\lambda$: rate of transition from $D_1$ to $D_2$ 
+(i.e., the inverse of expected number of days in $D_1$ compartment before death) 
+\end{packed_item}
+For a given time-step $t$, the following differential equations describe the changes in each compartment:
+$$\begin{aligned} 
+\frac{dS}{dt} &= - \beta(t) \frac{SI}{N} \\
+\frac{dE}{dt} &= \beta(t) \cdot \frac{SI}{N} - \sigma E \\
+\frac{dI}{dt} &= \sigma E - \gamma I\\ 
+\frac{dR}{dt} &= (1-\rho)\gamma I \\
+\frac{dD_1}{dt} &= \rho \gamma I - \lambda D_1\\
+\frac{dD_2}{dt} &= \lambda D_2\\
+\frac{dC}{d} &= \sigma E
+\end{aligned} $$
 
+
+We can write this in a state space representation as follows: \[
+X(t) = (S(t), E(t), I(t), R(t), D_1(t), D_2(t))
+\]
+The update from time $t$ to time $t+1$ can be solved numerically as
+$$\bm{X}(t+1)= \text{RK4}\left(\bm{X}(t),\frac{dX}{dt},\beta(t)\right)$$,
+where RK4 is the Runge-Katta 4th order approximation (see numpyro ode docs) \cite{numpyro}.
+
+
+\begin{align*}
+ E_0 &\sim \Unif(0, 0.02 N) \\
+I_0 &\sim \Unif(0, 0.02 N) \\
+  D_{1_0} &\sim \Unif(0, 0.02 N) \\
+   D_{2_0} &\sim \Unif(0, 0.02 N) \\   
+   R_{0} &\sim \Unif(0, 0.02 N) \\   
+\end{align*}
+
+This allows us to initialize the process model:
+ $$ X(0) = (S(0), E(0), I(0), R(0), D_1(0), D_2(0), C(0)) = (N-E_0-I_0-D_{1_0}-D_{2_0},E_0,I_0, R_0, D_{1_0}, D_{2_0}, I_0) $$ 
+
+We also place the following priors on the transition parameters: 
+\begin{align*}
+\sigma &\sim \Gamma(5, 5 \hat{d}_E)\\
+\gamma & \sim \Gamma(7, 7 \hat{d}_I) \\
+\beta(0) &\sim \Gamma(1, \hat{d}_I/\hat{R}) \\
+    \rho &\sim \Beta(10, 90)\\ 
+\lambda &\sim \Gamma(10, 100)
+\end{align*}
+ Our prior on rate for leaving the exposed compartment $\sigma$ satisfies $\E[\sigma] = 1/\hat{d}_E$, where $\hat{d}_E$ is an initial guess of the duration of the latent period. Currently, we assume $\hat{d}_E = 4.0$ based on published estimates (shortened slightly to account for possible infectiousness prior to developing symptoms) [cite].
+ %
+ Our prior on the rate for leaving the infectious compartment $\gamma$ satisfies $\E[\gamma] = 1/\hat{d}_I$, where $\hat{d}_I$ is an initial guess for the duration of infectiousness. The current setting is $\hat{d}_I = 2.0$ to model the likely isolation of individuals after symptom onset (cite). 
+Our prior on the initial transmission rate is derived from the relationship between the basic reproductive number $R(0)$ and the length of the infectious period: $R(0) = \beta(0)/\gamma = \beta(0)\times \hat{d}_I$. Therefore, we set our prior on the initial transmission rate to satisfy $\E[\beta(0)] = \hat{R}/\hat{d}_I$ where $\hat{R} = 3.0$ is an initial guess for $R(0)$ and $\hat{d}_I = 2.0$, as described above. 
+%%
+Our prior on the fatality rate $\rho$ satisfies $\E[\rho] = 0.1$ with concentration of $100$.
+Finally, our prior on the rate at which dying patients succumb  satisfies $\lambda$ $\E[\lambda] = 0.1$ with shape 10 corresponding to roughly 10 days in the $D_{1}$ compartment.
+
+Informative priors are useful on at least some of the internal parameters, since observed cases alone essentially place only one constraint on $(\sigma, \gamma, \beta)$--- we put more informative priors on $(\sigma, \gamma)$ and allow the model more freedom to estimate $\beta$. We have made some but not extensive efforts to keep priors on other parameters less informative. Relaxing priors can lead to numerical issues during model estimation for locations with fewer cases or noisier data.
+\begin{figure}
  \begin{center}
 \begin{tikzpicture}[node distance=1cm,auto,>=latex',every node/.append style={align=center},int/.style={draw, minimum size=1cm}]
     \node [int] (S)             {$S$};
@@ -155,6 +222,10 @@
       \caption{Comparmental model parameters }
      \label{fig:seird}
  \end{figure}
+ 
+ 
+ 
+ 
  \subsection{Observations on cases and deaths}
  \begin{itemize}
  \item Bayesian model has observations on both cases and deaths
@@ -286,31 +357,31 @@
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{mae_results_by_region.png}
-    \caption{MAE by region}
+    \includegraphics[scale=.1]{wis_results_by_time_zero.png}
+    \caption{WIS by timezero}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{wis_results_by_time_zero.png}
-    \caption{WIS by timezero}
+    \includegraphics[scale=.1]{mae_results_by_region.png}
+    \caption{MAE by region}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
     \includegraphics[scale=.1]{wis_results_by_region.png}
     \caption{WIS by region}
-\end{subfigure}%
+\end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
     \includegraphics[scale=.1]{mae_results_by_target.png}
-    \caption{WIS by timezero}
+    \caption{WIS by target}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
     \includegraphics[scale=.1]{wis_results_by_target.png}
-    \caption{WIS by region}
+    \caption{WIS by target}
 \end{subfigure}%
 
-\caption{Scores from covid-hub.}
+\caption{Scores from covid-hub broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
 \label{fig:covidhub}
 \end{figure}
 
@@ -359,5 +430,9 @@
 \item Further work: most of the model is about $\beta(t)$. Better methods for modeling it? Spline Etc.
 \end{itemize}
 
+
+
+\bibliographystyle{unsrt}
+\bibliography{sir}
 
 \end{document}  
