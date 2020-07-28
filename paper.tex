@@ -10,7 +10,8 @@
 \usepackage{tikz}
 \usepackage{subcaption}
 \usepackage{bm}
-
+\usepackage{setspace} 
+\doublespacing
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 \usetikzlibrary{arrows,positioning}
 % LB things
@@ -33,27 +34,29 @@
 
 
 \title{Mechanistic Bayesian Forecasts of COVID19}
-\author{Graham Gibson}
+\author{Graham Gibson, Nicholas Reich, Laura Balzer, Dan Sheldon}
 %\date{}                                           % Activate to display a given date or no date
 
 
 \begin{document}
 \section*{Abstract}
-\begin{itemize}
-\item Covid has affected XX people
-\item Forecasts useful for public health resource planning, intervention planning (vaccine trials), and disease burden
-\item Basic Mechanistic Models unable to capture complexities of real world disease epidemics due to 
-\begin{itemize}
-\item Complexities of interventions 
-\item Issues with testing and reporting
-\end{itemize}
-\item We propose a novel forecasting algorithm to overcome 
-\begin{itemize}
-\item Under-reporting of cases
-\item Time-varying interventions
-\end{itemize}
-\item Bayesian end to end estimation using both cases and deaths in numpyro
-\end{itemize}
+
+As of August 1st 2020 the Covid-19 pandemic has caused over 4 million infections and over 150,000 deaths in the United States alone. Effective modeling of the course of the pandemic can help assist with public health resource planning, intervention efforts, and vaccine clinical trials. However, data quality during a pandemic suffers from under-reporting, backlog reporting, and limited testing. Classical infectious disease differential equation models, such as the susceptible-exposed-infected-recovered model, do not take these data issues into account. We propose a novel Bayesian compartmental model that allows for non-parametric modeling of non-pharamacuetical interventions, time-varying testing, and joint observations on case counts and deaths. The model has been used to submit forecasts to the Covid-hub repository organized by the Reich Lab. We examine the performance relative to the baseline model in addition to performing a nested model comparison of our extensions to the classic models. We demonstrate a significant gain in both MAE and probabilistic scoring measures when taking into account data quality issues during a real-time pandemic.
+%\begin{itemize}
+%\item Covid has affected XX people
+%\item Forecasts useful for public health resource planning, intervention planning (vaccine trials), and disease burden
+%\item Basic Mechanistic Models unable to capture complexities of real world disease epidemics due to 
+%\begin{itemize}
+%\item Complexities of interventions 
+%\item Issues with testing and reporting
+%\end{itemize}
+%\item We propose a novel forecasting algorithm to overcome 
+%\begin{itemize}
+%\item Under-reporting of cases
+%\item Time-varying interventions
+%\end{itemize}
+%\item Bayesian end to end estimation using both cases and deaths in numpyro
+%\end{itemize}
 
 
 \maketitle
@@ -342,11 +345,11 @@ We use the numpyro probabilistic framework to fit the model.
  
  \item \textbf{Version 1: April 20th 2020 through May 10th 2020}. Model had normal observation noise (instead of negative binomial) and a non-time varying case detection probability. Model was fit to cumulative deaths. 
   \item \textbf{Version 2: May 10th 2020 through May 24th 2020}. Model had normal observation noise (instead of negative binomial) and time varying case detection probability. Model was fit to cumulative deaths. 
-    \item \textbf{Version 2: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case detection probability. Model was fit to incident deaths. 
+    \item \textbf{Version 3: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case detection probability. Model was fit to incident deaths. 
  \end{itemize} 
  
  
- These three versions highlight the complexities of forecasting during a real-time pandemic. 
+ These three versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for the weeks of XXXX.
 % \begin{itemize}
 % \item Real-time forecasting evaluation for 14 weeks starting April 20th 2020. 
 % \item Forecasts submitted every Monday using incident data up until Sunday
@@ -355,17 +358,18 @@ We use the numpyro probabilistic framework to fit the model.
 % \end{itemize}
  
  \subsection{Ablation Test}
- \begin{itemize}
- \item Evaluate a set of nested models
- \begin{itemize}
- \item Basic SEIR model with observations only on deaths
- \item SEIR with joint observations
- \item SEIR with joint observations and random walk detection probability
- \end{itemize}
- \item We omit the test that involves no random walk on beta since a model must take into account interventions.
-
  
+ While real-time model evaluation is valuable for understanding evolving model performance, we also perform a retrospective evaluation using three model variants. We define the following variations on MechBayes,
+ 
+ \begin{itemize}
+ \item \textbf{MechBayes Full} Mech Bayes as of model version 3. That is, a model using negative binomial observation noise as well as a time-varying random walk, using a joint likelihood over cases and deaths.
+ 
+ \item \textbf{MechBayes Fixed Case Detection Probability} MechBayes Full with $p_{c,t}$ fixed to $p_c$, that is, removing the time-varying detection probability.
+ 
+ \item \textbf{MechBayes Death Only} MechBayes Full with observations on cases removed.
  \end{itemize}
+ 
+ Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed Case Detection Probability contained in MechBayes Full. This allows to perform a nested model comparison using MAE as the scoring metric. \textbf{Include something with beta}
 
 
 \section{COVID-Hub Results}
@@ -399,20 +403,22 @@ We use the numpyro probabilistic framework to fit the model.
 \end{figure}
 
 	
- \begin{figure}
-     \centering
-     \includegraphics[scale=.1]{beta_t_plot.png}
-     \caption{Time varying transmissibilty par }
-     \label{fig:my_label}
- \end{figure}
-  \begin{figure}
-     \centering
-     \includegraphics[scale=.1]{detection_plot.png}
-     \caption{Time-varying detection probability. }
-     \label{fig:my_label}
- \end{figure}
  
- 
+\begin{figure}
+  \centering
+     \begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{beta_t_plot.png}
+    \caption{Time varying-beta.}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.1]{detection_plot.png}
+    \caption{Time-varying detection probability}
+\end{subfigure} 
+ \caption{  A) Time varying beta parameter for four example states. We can clearly see that the random walk is able to non-parametrically account for the non-pharamceutical interventions. B) Time varying detection probability for four example states. The time varying detection random walk is able account for the increase in testing. }
+\label{fig:model_details}
+\end{figure}
 
 \begin{figure}
   \centering
@@ -452,19 +458,32 @@ We use the numpyro probabilistic framework to fit the model.
 \end{figure}
 
 
+We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version 3 is able to accurately model the observed data in the three example states (NY,CA,FL) as well as the US. The model is able to adapt to highly variable incident death reporting, variable transmission rates, and overall heterogeneity of incidence curves. The model is also able capture the uncertainty of the differential equation parameters well enough to produce well calibrated prediction intervals. Figure \ref{fig:fit_and_forecast_results}  shows intervals at the 50\%,80\% and 95\% levels. However, we can also see that in some states, such as California and Florida, the model is biased high, with all observations outside of the 95\% prediction interval falling below. Figure \ref{fig:fit_and_forecast_results}  also shows 4 weeks of daily forecasts, along with the daily observed incidence for 1 week out. We can see that the predictions are tracking the data even under the weekly reporting cycles. 
 
-\begin{itemize}
-\item MechBayes is almost always better than baseline model when broken down by region, target, and timezero after June 1st 2020.
-\item MechBayes has improved over time.
-\begin{itemize}
-\item First two submissions did not have detection probability random walk
-\item Observations were Normally distributed on cumulative deaths
-\item Switched to current model
-\end{itemize}
-\item Naive baseline is hard to beat
-\item MechBayes is biased high. This comes from uncertainty in the random walk leading to potentially huge growth rates. 
-\end{itemize}   
-   
+We can see from Figure \ref{fig:model_details} that MechBayes is able to learn to adapt to the evolving pandemic situation. Panel A shows the time-varying transmission $\beta(t)$ for three example states, CA, FL, and NY as well as the U.S. We can see that $\beta(0)$ is centered on our prior but as data comes in, the estimate increases. This is especially true in NY, where the epidemic took off quickly in March. However, the model is then able to adjust to the varying levels of non-pharamceutical interventions present in each of the three states as well as across the U.S. This radically reduces the transmissibility parameter by the first week of April 2020. This is consistent with a peak in overall deaths two weeks later in mid-April 2020. There seems to be some estimation issues at the boundary of $\beta(t)$ where the number of cases does not match the number of deaths, since the cases have not yet converted to deaths. This results in the model underestimating transmissibility to reduce the flow through the compartments. \textbf{Need to think on this a bit}
+
+We can also see from Figure \ref{fig:model_details}  that MechBayes is able to account for the drastic increase in testing that has occurred across the U.S. since March 2020. Panel B also shows that our prior estimate of 30\% of cases being detected, may have been too high, as all regions show a dip in detection probability before climbing again. Note that interpreting this strictly as time-varying detection is obscuring the fact that this parameter $p_{t,d}$ can soak-up any excess variation beyond the ability of cases and the case-fatility ratio to explain the number of deaths. That is, the time-varying detection probability is able to "de-couple" cases and deaths beyond the case-fataility ratio regardless of the underlying reason (whether that be an increase in testing or shifting age distribution of cases). Thus, interpretation of this parameter as a strict mapping to testing is incorrect. As a forecasting model, we only need the ability to non-parametrically model deviations and reporting issues in cases.
+
+We next turn to the comparison of MechBayes against the COVID-HUB baseline model. This baseline model uses the previous daily incident as the mean forecast for the current daily incidence, along with  bootstrapped prediction intervals from historical changes in daily incidence. See covid-hub for more details. \cite{covid-hub}. 
+
+We begin by breaking down the results by week the forecast was made (timezero) and averaging over both region and target. As we can see from Figure \ref{fig:covidhub} (A,B), MechBayes V1 did not outperform the COVID-HUB baseline on MAE or WIS when broken down by timezero. However, MechBayes V2 (the introduction of the time-varying detection probability), outperformed the COVID-HUB baseline model on both MAE and WIS when broken down by timezero. The same is true for MechBayes V3 with the exception of June 26th, where the COVID-HUB baseline model slightly outperformed MechBayes V3. However, as seen in Figure \ref{fig:data}, overall incident deaths were at their lowest across the U.S. in late June and remarkably stable, meaning this week was the hardest of the weeks to beat the baseline model. 
+
+We also break down the results by geographical region, as seen in Figure \ref{fig:covidhub} (C,D). Note that this break-down is averaged over target, but also timezero, meaning that we average over each of the model versions. We feel this is important, as it reflects the real-time accuracy of our evolving model efforts, instead of \textbf{cherry-picking} the best model. However, we still consistent improvements in MAE under MechBayes when broken down by region, with the exception of New York. This is mainly due to MechBayes V1 large MAE for New York in March, where most of the cases (and therefore contribution to MAE) occurred. The WIS results are similar. 
+
+Finally, we break down the results by target by averaging over region and timezero  \ref{fig:covidhub} (E,F) Here we can see uniform improvement over the baseline model by MechBayes in terms of MAE and WIS. We can also see that the MAE increase as horizon increase, which is to be expected. We can also see that incident MAE is lower than cumulative MAE, which is again to be expected due to the lower absolute numbers of incident deaths. Finally, we see the model is slightly better calibrated on incident deaths than cumulative.
+%
+%\begin{itemize}
+%\item MechBayes is almost always better than baseline model when broken down by region, target, and timezero after June 1st 2020.
+%\item MechBayes has improved over time.
+%\begin{itemize}
+%\item First two submissions did not have detection probability random walk
+%\item Observations were Normally distributed on cumulative deaths
+%\item Switched to current model
+%\end{itemize}
+%\item Naive baseline is hard to beat
+%\item MechBayes is biased high. This comes from uncertainty in the random walk leading to potentially huge growth rates. 
+%\end{itemize}   
+%   
    
    
    \section{Ablation Results}
