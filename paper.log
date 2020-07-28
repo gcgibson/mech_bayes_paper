@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  28 JUL 2020 13:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  28 JUL 2020 14:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -838,36 +838,75 @@ LaTeX Warning: Citation `covid-hub' on page 15 undefined on input line 467.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
-<ablation_1.png, id=94, 3011.25pt x 3011.25pt>
+
+LaTeX Warning: Reference `fig:ablation' on page 16 undefined on input line 491.
+
+
+<ablation_1.png, id=94, 1806.75pt x 1806.75pt>
 File: ablation_1.png Graphic file (type png)
  <use ablation_1.png>
-Package pdftex.def Info: ablation_1.png used on input line 492.
-(pdftex.def)             Requested size: 150.57132pt x 150.57132pt.
+Package pdftex.def Info: ablation_1.png used on input line 499.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
 
-<ablation_2.png, id=95, 3011.25pt x 3011.25pt>
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 499--500
+ [][] 
+ []
+
+<ablation_2.png, id=95, 1806.75pt x 1806.75pt>
 File: ablation_2.png Graphic file (type png)
  <use ablation_2.png>
-Package pdftex.def Info: ablation_2.png used on input line 497.
-(pdftex.def)             Requested size: 150.57132pt x 150.57132pt.
+Package pdftex.def Info: ablation_2.png used on input line 504.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
 
-<ablation_3.png, id=96, 3011.25pt x 3011.25pt>
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 504--505
+ [][] 
+ []
+
+<ablation_3.png, id=96, 1806.75pt x 1806.75pt>
 File: ablation_3.png Graphic file (type png)
  <use ablation_3.png>
-Package pdftex.def Info: ablation_3.png used on input line 502.
-(pdftex.def)             Requested size: 150.57132pt x 150.57132pt.
+Package pdftex.def Info: ablation_3.png used on input line 509.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
 
-<ablation_4.png, id=97, 3011.25pt x 3011.25pt>
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 509--510
+ [][] 
+ []
+
+<ablation_4.png, id=97, 1806.75pt x 1806.75pt>
 File: ablation_4.png Graphic file (type png)
  <use ablation_4.png>
-Package pdftex.def Info: ablation_4.png used on input line 507.
-(pdftex.def)             Requested size: 150.57132pt x 150.57132pt.
+Package pdftex.def Info: ablation_4.png used on input line 514.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
+
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 514--515
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 86.52505pt on input line 520.
+
+
+Underfull \vbox (badness 4739) has occurred while \output is active []
+
+ [16]
+[17 <./ablation_1.png> <./ablation_2.png> <./ablation_3.png> <./ablation_4.png>
+]
+
+LaTeX Warning: Reference `fig:ablation' on page 18 undefined on input line 530.
+
+
+
+Overfull \hbox (19.34431pt too wide) in paragraph at lines 532--533
+[]\OT1/cmr/bx/n/10.95 Allowing for time-varying trans-mis-si-bil-ity is nec-es-
+sary to non-parametrically
+ []
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16 <./ablation_1.png> <./ablation_2.png> <./ablation_3.png> <./ablation_4.png
->]
+ [18]
 No file paper.bbl.
-[17] (./paper.aux)
+[19] (./paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -876,10 +915,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15160 strings out of 492995
- 295554 string characters out of 6132704
- 333543 words of memory out of 5000000
- 18246 multiletter control sequences out of 15000+600000
+ 15161 strings out of 492995
+ 295568 string characters out of 6132704
+ 333629 words of memory out of 5000000
+ 18247 multiletter control sequences out of 15000+600000
  15687 words of font info for 58 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  55i,10n,60p,2848b,995s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -897,10 +936,10 @@ exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on paper.pdf (17 pages, 2586417 bytes).
+Output written on paper.pdf (19 pages, 2408456 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
- 85 compressed objects within 1 object stream
+ 160 PDF objects out of 1000 (max. 8388607)
+ 90 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  98 words of extra memory for PDF output out of 10000 (max. 10000000)
 

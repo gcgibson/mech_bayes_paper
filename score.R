@@ -9,7 +9,7 @@ zoltar_authenticate(zoltar_connection, "gcgibson", "casey!ili")
 tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %>%
 
   mutate(wis = (abs_error+.01*interval_2+.025*interval_5+.05*interval_10+.1*interval_20+.15*interval_30+.2*interval_40+.25*interval_50+.3*interval_60+.35*interval_70+.40*interval_80+.45*interval_90)/12,
-         mae=abs_error)
+         mae=abs_error,error=error)
 tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
 tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
 #tmp_mech_bayes <- tmp_mech_baye

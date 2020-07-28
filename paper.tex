@@ -488,61 +488,60 @@ Finally, we break down the results by target by averaging over region and timeze
    
    \section{Ablation Results}
 
+We can see from \ref{fig:ablation} that MechBayes Full is consistently better than MechBayes Death Only or MechBayes Fixed Case Detection Probability. The only exception seems to be June 22nd 2020 for the two week ahead target. Late June 2020 is when many states in the U.S. began to see an uptick in cases again, with Texas, Florida, and California seeing their largest total case counts since the beginning of the pandemic. Since MechBayes is conditional on the current level of interventions, forecasts made from June 22nd assumed the same level of intervention present on June 22nd. During this time, each state was re-opening various establishments, while cases were rising. MechBayes Full forecasted an exponential growth in cases, which was reflected in a large over prediction two weeks later on July 4th. 
+
+We can also see that the MechBayes Death Only is consistently better than MechBayes Fixed Case Detection Probability.  This may be evidence that naively including case data, without adjusting for time-varying testing rates, may be worse than not including it at all. 
+
 \begin{figure}
   \centering
      \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.05]{ablation_1.png}
+    \includegraphics[scale=.15]{ablation_1.png}
     \caption{Ablation results for 1 week ahead.}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.05]{ablation_2.png}
+    \includegraphics[scale=.15]{ablation_2.png}
     \caption{Ablation results for 2 week ahead.}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.05]{ablation_3.png}
+    \includegraphics[scale=.15]{ablation_3.png}
     \caption{Ablation results 3 week ahead.}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.05]{ablation_4.png}
+    \includegraphics[scale=.15]{ablation_4.png}
     \caption{Ablation results 4 week ahead. }
 \end{subfigure}
 
 \caption{Scores from covid-hub broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
-\label{fig:covidhub}
+\label{fig:ablation}
 \end{figure}
 
 
-   \begin{itemize}
-   \item Model ranking is as follows
-   \begin{itemize}
-   \item MechBayes
-   \item MechBayes-Case Observations
-   \item MechBayes - no detection random walk
-   \end{itemize}
-   \item This ordering is inu
-   \end{itemize}
 
 
 \section{Discussion}
+
+MechBayes is a fast, fully Bayesian compartmental model capable of accounting for real-world modeling challenges during a pandemic. Our experiments led us to the following conclusions.
+
 \begin{itemize}
-\item Mech Bayes is a fast fully bayesian compartmental model capable of accounting for real-world modeling challenges during a pandemic.
-\item Demonstrated success across regions, targets, and timezeros
-\item Real-time model results show the practice of modeling during an epidemic. Results are improving.
-\item Ablation studies show the results are grounded in real model improvements using historical validation.
-\item Talk about how overall MAE obscures the huge geographic variability. 
+\item \textbf{Adding case data when predicting deaths is helpful but only when accounting for data quality issues}. Our ablation test (Figure \ref{fig:ablation}) clearly shows that time-varying detection probability is a key feature in the model for reducing MAE of forecasts. As we can see in Figure \ref{fig:model_details}, the model relies on this parameter heavily, setting the detection probability at around 15\% at the start of the pandemic in March, to nearly 80\% by August 1st 2020. There is remarkable similarity between the increase across geographical locations as well, suggesting (as testing data reflects) an overall increase in the number of detected cases across the U.S. 
+
+\item \textbf{Allowing for time-varying transmissibility is necessary to non-parametrically capture the effect of non-pharamceutical interventions}. Our ablation test explicitly did not include a model that fixed $\beta$ across time. This is because the model would not converge without the flexibility to capture interventions. While non-parametrically modeling interventions is appealing from a forecasting perspective, it does modify the philosophy behind compartmental modeling. By including such a flexible parameter, we may view MechBayes as simply a random-walk model, with a set of epidemiological parameters transforming that random-walk in an almost deterministic way to match both cases and deaths. For instance, if the variance of the random walk $\sigma_{\beta}^2$ was allowed to be arbitrarily large, then $\beta(t)$ could vary enough to match the data exactly. This would clearly attribute reporting issues as true changes in transmissibility. Bypassing the epidemiological interpretation that compartmental models provide. 
+
+\item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. 
+
+
+
 \end{itemize}
 
 \section{Conclusion}
 
-\begin{itemize}
-\item Summarize mech bayes as bayesian compartmental model
-\item Further work: most of the model is about $\beta(t)$. Better methods for modeling it? Spline Etc.
-\end{itemize}
+We have seen that MechBayes is a powerful Bayesian compartmental model that can capture the real-world complexities of forecasting during a pandemic. Through internal and external evaluation, we have demonstrated the success of MechBayes in forecasting. The model is able to improve over a naive baseline model as well as a naive compartmental model. Allowing for time-varying interventions and detection probability is a necessary model component during a real-time pandemic forecasting effort. 
 
+While we chose an exponential random walk on $\beta(t)$ there are many other choices for flexible non-parametric modeling of transmissibility. Further work might consider a spline model, or a Gaussian process, or semi-parametric models capable of taking intervention dates as covariates. 
 
 
 \bibliographystyle{unsrt}
