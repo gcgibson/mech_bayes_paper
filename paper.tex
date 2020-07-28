@@ -122,8 +122,8 @@ In order to organize collaborative efforts across the modeling community, the Re
 
  \begin{figure}
      \centering
-     \includegraphics[scale=.1]{data_plot.png}
-     \caption{Deaths by state. }
+     \includegraphics[scale=.175]{data_plot.png}
+     \caption{Deaths by state for all 50 states and territories. Notice the large variability in incident reporting. There appears to be a weekly cycle where deaths are under-reported on the weekend. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. }
      \label{fig:data}
  \end{figure}
  
@@ -173,34 +173,6 @@ $$\bm{X}(t+1)= \text{RK4}\left(\bm{X}(t),\frac{dX}{dt},\beta(t)\right)$$,
 where RK4 is the Runge-Katta 4th order approximation (see numpyro ode docs) \cite{numpyro}.
 
 
-\begin{align*}
- E_0 &\sim \Unif(0, 0.02 N) \\
-I_0 &\sim \Unif(0, 0.02 N) \\
-  D_{1_0} &\sim \Unif(0, 0.02 N) \\
-   D_{2_0} &\sim \Unif(0, 0.02 N) \\   
-   R_{0} &\sim \Unif(0, 0.02 N) \\   
-\end{align*}
-
-This allows us to initialize the process model:
- $$ X(0) = (S(0), E(0), I(0), R(0), D_1(0), D_2(0), C(0)) = (N-E_0-I_0-D_{1_0}-D_{2_0},E_0,I_0, R_0, D_{1_0}, D_{2_0}, I_0) $$ 
-
-We also place the following priors on the transition parameters: 
-\begin{align*}
-\sigma &\sim \Gamma(5, 5 \hat{d}_E)\\
-\gamma & \sim \Gamma(7, 7 \hat{d}_I) \\
-\beta(0) &\sim \Gamma(1, \hat{d}_I/\hat{R}) \\
-    \rho &\sim \Beta(10, 90)\\ 
-\lambda &\sim \Gamma(10, 100)
-\end{align*}
- Our prior on rate for leaving the exposed compartment $\sigma$ satisfies $\E[\sigma] = 1/\hat{d}_E$, where $\hat{d}_E$ is an initial guess of the duration of the latent period. Currently, we assume $\hat{d}_E = 4.0$ based on published estimates (shortened slightly to account for possible infectiousness prior to developing symptoms) [cite].
- %
- Our prior on the rate for leaving the infectious compartment $\gamma$ satisfies $\E[\gamma] = 1/\hat{d}_I$, where $\hat{d}_I$ is an initial guess for the duration of infectiousness. The current setting is $\hat{d}_I = 2.0$ to model the likely isolation of individuals after symptom onset (cite). 
-Our prior on the initial transmission rate is derived from the relationship between the basic reproductive number $R(0)$ and the length of the infectious period: $R(0) = \beta(0)/\gamma = \beta(0)\times \hat{d}_I$. Therefore, we set our prior on the initial transmission rate to satisfy $\E[\beta(0)] = \hat{R}/\hat{d}_I$ where $\hat{R} = 3.0$ is an initial guess for $R(0)$ and $\hat{d}_I = 2.0$, as described above. 
-%%
-Our prior on the fatality rate $\rho$ satisfies $\E[\rho] = 0.1$ with concentration of $100$.
-Finally, our prior on the rate at which dying patients succumb  satisfies $\lambda$ $\E[\lambda] = 0.1$ with shape 10 corresponding to roughly 10 days in the $D_{1}$ compartment.
-
-Informative priors are useful on at least some of the internal parameters, since observed cases alone essentially place only one constraint on $(\sigma, \gamma, \beta)$--- we put more informative priors on $(\sigma, \gamma)$ and allow the model more freedom to estimate $\beta$. We have made some but not extensive efforts to keep priors on other parameters less informative. Relaxing priors can lead to numerical issues during model estimation for locations with fewer cases or noisier data.
 \begin{figure}
  \begin{center}
 \begin{tikzpicture}[node distance=1cm,auto,>=latex',every node/.append style={align=center},int/.style={draw, minimum size=1cm}]
@@ -226,57 +198,137 @@ Informative priors are useful on at least some of the internal parameters, since
  
  
  
- \subsection{Observations on cases and deaths}
- \begin{itemize}
- \item Bayesian model has observations on both cases and deaths
- \item We can weight likelihood of one over the other
- \item Explain how cases inform deaths on average 10 days later
- \end{itemize}
- 
- \subsection{Time-varying beta parameter}
- \begin{itemize}
- \item Non-parametrically models time-varying transmissibility through a random walk
- \item Makes forecasts conditional on current level of interventions
- \item Requires no external intervention data to make forecasts 
- \item 
- \end{itemize}
- 
- \subsection{Time-varying detection probability}
-  \begin{itemize}
- \item Non-parametrically models time varying testing and overall detection of case issues
- \item Allows for "data dumps"
- \item Logistic random walk 
- \item Fixed detection probability on deaths
 
-  \end{itemize}
+ 
+ \subsection{Time-varying transmission parameter}
+ 
+We have seen significant efforts to control the spread of COVID through non-pharmaceutical interventions. These include social distancing, lock-downs, and mask wearing. To add to the complexity, these interventions have been implemented and repealed at different time points. They also face compliance issues. In order to capture the aggregate effect of the interventions non-parametrically we choose a flexible model for the time-varying transmission parameter.
+We allow $\beta(t)$ to vary as follows, 
+
+$$log(\beta(t)) \sim N(log(\beta(t-1), \sigma_{\beta}^2)$$
+
+This model assumes that forecasts are made on the current level of interventions. 
+
+
+% \begin{itemize}
+% \item Non-parametrically models time-varying transmissibility through a random walk
+% \item Makes forecasts conditional on current level of interventions
+% \item Requires no external intervention data to make forecasts 
+% \end{itemize}
+% 
+ \subsection{Observation Model}
+ 
+ The observed data used to fit the model is based on time-series data of confirmed cases $Cases_{t}$ and recorded deaths $Deaths_{t}$. 
+For a given state and day, the change in the  confirmed cases and reported deaths are subset of the  number of infections $I(t)$ and underlying number of deaths $D2(t)$, respectively. Therefore, we introduce two additional parameters for the detection probability of cases $p_c$ and the detection probability of deaths $p_d$. For both, we set fairly flat priors to reflect these parameters are poorly determined from observed data.
+
+In more detail, $p_c$ is the probability that an infectious person receives a positive test result and is confirmed as case. We assume its prior distribution is given by  $p \sim \Beta(15, 35)$, such that  $\E[p_c] = 0.3$ with concentration 50. This means that we expect 30\% of cases to be detected initially. However, we also allow this to vary by time.
+
+\begin{equation}
+logit(p_{c,t}) \sim N(logit(p_{c,t-1}), \sigma^2)
+\end{equation}
+
+We also assume the probability that a COVID-19 death is reported $p_d$ has a prior distribution given by  $p_d \sim \Beta(90, 10)$. This prior satisfies $\E[p_d] = 0.9$ with concentration 100.
+
+ 
+
+
+Using the above SEIR model and these detection probabilities, we can then express the observed numbers of confirmed cases and deaths as follows.
+\begin{equation}
+\text{Cases}_{t} \sim NB(p_{c,t}*I_{t},\sigma_{c}^2)
+\end{equation}
+
+\begin{equation}
+\text{Deaths}_{t} \sim NB(p_d*D_{2_{t}}, \sigma_d^2)
+\end{equation}
+
+
+%  \begin{itemize}
+% \item Non-parametrically models time varying testing and overall detection of case issues
+% \item Allows for "data dumps"
+% \item Logistic random walk 
+% \item Fixed detection probability on deaths
+%
+%  \end{itemize}
 
 \subsection{Seeding Epidemic}
+Due to the under-reporting of cases, we cannot use the observed data to seed the epidemic. We instead allow the model to find the initial state values for all compartments except the number of susceptible people, which we take as the population size of the geographic region minus the sum of the initial values for the other compartments to enforce the constraint that the entire system size sums to the population size. We do this by assigning uniform probability to all initial states where the number of people in any given compartment at time zero does not exceed 2\% of the total population. This is a highly conservative estimate for the number of infected and exposed people at the start of the epidemic. 
 
- \begin{itemize}
- \item Because of detection probability we cannot seed using initial reported data, since this is an underestimate
- \item Put priors on initial seed
-  \end{itemize}
+
+\begin{align*}
+ E_0 &\sim \Unif(0, 0.02 N) \\
+I_0 &\sim \Unif(0, 0.02 N) \\
+  D_{1_0} &\sim \Unif(0, 0.02 N) \\
+   D_{2_0} &\sim \Unif(0, 0.02 N) \\   
+   R_{0} &\sim \Unif(0, 0.02 N) \\   
+\end{align*}
+
+This allows us to initialize the process model:
+ $$ X(0) = (S(0), E(0), I(0), R(0), D_1(0), D_2(0), C(0)) = (N-E_0-I_0-D_{1_0}-D_{2_0},E_0,I_0, R_0, D_{1_0}, D_{2_0}, I_0) $$ 
+%
+% \begin{itemize}
+% \item Because of detection probability we cannot seed using initial reported data, since this is an underestimate
+% \item Put priors on initial seed
+%  \end{itemize}
   
   \subsection{Priors}
+We also place the following priors on the transition parameters: 
+\begin{align*}
+\sigma &\sim \Gamma(5, 5 \hat{d}_E)\\
+\gamma & \sim \Gamma(7, 7 \hat{d}_I) \\
+\beta(0) &\sim \Gamma(1, \hat{d}_I/\hat{R}) \\
+    \rho &\sim \Beta(10, 90)\\ 
+\lambda &\sim \Gamma(10, 100)
+\end{align*}
+ Our prior on rate for leaving the exposed compartment $\sigma$ satisfies $\E[\sigma] = 1/\hat{d}_E$, where $\hat{d}_E$ is an initial guess of the duration of the latent period. Currently, we assume $\hat{d}_E = 4.0$ based on published estimates (shortened slightly to account for possible infectiousness prior to developing symptoms) [cite].
+ %
+ Our prior on the rate for leaving the infectious compartment $\gamma$ satisfies $\E[\gamma] = 1/\hat{d}_I$, where $\hat{d}_I$ is an initial guess for the duration of infectiousness. The current setting is $\hat{d}_I = 2.0$ to model the likely isolation of individuals after symptom onset (cite). 
+Our prior on the initial transmission rate is derived from the relationship between the basic reproductive number $R(0)$ and the length of the infectious period: $R(0) = \beta(0)/\gamma = \beta(0)\times \hat{d}_I$. Therefore, we set our prior on the initial transmission rate to satisfy $\E[\beta(0)] = \hat{R}/\hat{d}_I$ where $\hat{R} = 3.0$ is an initial guess for $R(0)$ and $\hat{d}_I = 2.0$, as described above. 
+%%
+Our prior on the fatality rate $\rho$ satisfies $\E[\rho] = 0.1$ with concentration of $100$.
+Finally, our prior on the rate at which dying patients succumb  satisfies $\lambda$ $\E[\lambda] = 0.1$ with shape 10 corresponding to roughly 10 days in the $D_{1}$ compartment.
 
- \begin{itemize}
- \item We choose tight priors based on literature
-  \item Fundamental unidentifiability due to renewal equation expression where $I(t)$ is a convolution between $R_t$ and Seiral interval
-  \item Cannot estimate both simultaneously 
-  \item Most flexibility comes in with beta and detection random walk
-  \item Ideal for forecasting, maybe not for inference
-  \end{itemize}
-  
+The identifiability of model parameters in compartmental models where the data consists of only a time series of incident cases and deaths presents a problem for uninformative priors. Using the renewal style equations, it can be shown that the number of newly infected at time $t$ is a function of the time-varying reproductive number, serial interval and previously reported new infections \cite{wallinga2007generation}. This means that a single time series does not contain enough information to separately estimate both the serial interval and the time-varying reproduction number. In an SEIR model, the serial interval is distributed exponential with rate parameter $\sigma + \gamma$ \cite{wallinga2007generation}. Additionally, the time varying reproduction number is $R_t = \frac{\beta(t)*S(t)}{\gamma}$. Therefore, the time series of incident cases is not enough to uniquely identify $\gamma,\sigma,\beta(t)$. In order to make the model identifiable, we impose tight priors on the parameters $\sigma$ and $\gamma$ as estimated by the literature, in essence fixing the serial interval and we let $\beta(t)$ vary freely. This reflects the underlying biology of the system, since the reciprocal of the sum of $\sigma$ and $\gamma$ may be interpreted as the average time from when an individual becomes infected to when they infect someone else, given that they infect someone else. This is a biological property of the disease, rather than $\beta(t)$ which contains both the biological transmissibility as well as the aggregate effects of human behavior through intervention. This highlights a fundamental philosophical difference between using compartmental models for forecasting rather than interpreting parameters for epidemiological purposes. \textbf{I want to say a little more} 
+
+% \begin{itemize}
+% \item We choose tight priors based on literature
+%  \item Fundamental unidentifiability due to renewal equation expression where $I(t)$ is a convolution between $R_t$ and Seiral interval
+%  \item Cannot estimate both simultaneously 
+%  \item Most flexibility comes in with beta and detection random walk
+%  \item Ideal for forecasting, maybe not for inference
+%  \end{itemize}
+%  
   \subsection{Fitting}
+We use the hamiltonian monte carlo algorithm implemented in numpyro (some citation here) to fit the model to data. That is, given a time series of confirmed cases ($\text{Cases}_{1:t,j}$) and confirmed deaths ($\text{Deaths}_{1:t,j}$) we use Bayesian inference (via HMC) to obtain 
 
- \begin{itemize}
- \item Fully Bayesian HMC on parameters
- \item Why we choose deterministic compartmental model with only uncertainty on parameters and observations
- \item Estimation in numpyro very fast
-   \end{itemize}
-   
-   
-   
+
+$$P(\bm{\theta} | \text{Cases}_{1:t,j}, \text{Deaths}_{1:t,j}) = \frac{P(\text{Cases}_{1:t,j},\text{Deaths}_{1:t,j}|\bm{\theta}) P(\bm{\theta})}{\int_{\bm{\theta}} P(\text{Cases}_{1:t,j}, \text{Deaths}_{1:t,j} |\bm{\theta})P(\bm{\theta})}}$$
+
+where $\bm{\theta}$ is a vector containing all model parameters. 
+
+$$\bm{\theta} = \begin{pmatrix} 
+\beta_{t,j} \\
+\sigma_j \\
+\gamma_j \\
+\rho_j \\
+\lambda_j \\
+p_j \\
+p_{d_j} \\ 
+\text{case detection probability}_{t,j} \\
+\text{death detection probability}_{j} \\
+\text{case over-dispersion}_{j} \\
+\text{death over-dispersion}_{j} 
+\end{pmatrix}
+
+
+%
+% \begin{itemize}
+% \item Fully Bayesian HMC on parameters
+% \item Why we choose deterministic compartmental model with only uncertainty on parameters and observations
+% \item Estimation in numpyro very fast
+%   \end{itemize}
+%   
+%   
+%   
  \section{Experimental Setup}
  
  
@@ -309,22 +361,22 @@ Informative priors are useful on at least some of the internal parameters, since
   \centering
      \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.5]{US.png}
+    \includegraphics[scale=.3]{US.png}
     \caption{US}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.5]{NY.png}
+    \includegraphics[scale=.3]{NY.png}
     \caption{New York}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.5]{FL.png}
+    \includegraphics[scale=.3]{FL.png}
     \caption{Florida}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.5]{CA.png}
+    \includegraphics[scale=.3]{CA.png}
     \caption{California}
 \end{subfigure}%
 
@@ -336,13 +388,13 @@ Informative priors are useful on at least some of the internal parameters, since
  \begin{figure}
      \centering
      \includegraphics[scale=.1]{beta_t_plot.png}
-     \caption{Deaths by state. }
+     \caption{Time varying transmissibilty par }
      \label{fig:my_label}
  \end{figure}
   \begin{figure}
      \centering
      \includegraphics[scale=.1]{detection_plot.png}
-     \caption{Deaths by state. }
+     \caption{Time-varying detection probability. }
      \label{fig:my_label}
  \end{figure}
  
@@ -402,6 +454,34 @@ Informative priors are useful on at least some of the internal parameters, since
    
    
    \section{Ablation Results}
+
+\begin{figure}
+  \centering
+     \begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.05]{ablation_1.png}
+    \caption{Ablation results for 1 week ahead.}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.05]{ablation_2.png}
+    \caption{Ablation results for 2 week ahead.}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.05]{ablation_3.png}
+    \caption{Ablation results 3 week ahead.}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+    \includegraphics[scale=.05]{ablation_4.png}
+    \caption{Ablation results 4 week ahead. }
+\end{subfigure}
+
+\caption{Scores from covid-hub broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
+\label{fig:covidhub}
+\end{figure}
+
 
    \begin{itemize}
    \item Model ranking is as follows

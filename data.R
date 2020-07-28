@@ -9,5 +9,5 @@ state_deaths <- deaths %>%
 
 library(ggplot2)
 
-data_plot <- ggplot(state_deaths,aes(x=date,y=value)) + geom_point() + facet_wrap(~location_name,scales="free")
-ggsave("/Users/gcgibson/mech_bayes_paper/data_plot.png",data_plot,device="png",width=20,height=10)
+data_plot <- ggplot(state_deaths,aes(x=date,y=value)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free")
+ggsave("/Users/gcgibson/mech_bayes_paper/data_plot.png",data_plot,device="png",width=10,height=10)
