@@ -1,0 +1,156 @@
+\begin{thebibliography}{10}
+
+\bibitem{dong2020interactive}
+Ensheng Dong, Hongru Du, and Lauren Gardner.
+\newblock An interactive web-based dashboard to track covid-19 in real time.
+\newblock {\em The Lancet infectious diseases}, 2020.
+
+\bibitem{lutz2019applying}
+Chelsea~S Lutz, Mimi~P Huynh, Monica Schroeder, Sophia Anyatonwu, F~Scott
+  Dahlgren, Gregory Danyluk, Danielle Fernandez, Sharon~K Greene, Nodar
+  Kipshidze, Leann Liu, et~al.
+\newblock Applying infectious disease forecasting to public health: a path
+  forward using influenza forecasting examples.
+\newblock {\em BMC Public Health}, 19(1):1659, 2019.
+
+\bibitem{kermack1927contribution}
+William~Ogilvy Kermack and Anderson~G McKendrick.
+\newblock A contribution to the mathematical theory of epidemics.
+\newblock {\em Proceedings of the royal society of london. Series A, Containing
+  papers of a mathematical and physical character}, 115(772):700--721, 1927.
+
+\bibitem{shaman2012forecasting}
+Jeffrey Shaman and Alicia Karspeck.
+\newblock Forecasting seasonal outbreaks of influenza.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  109(50):20425--20430, 2012.
+
+\bibitem{osthus2017forecasting}
+Dave Osthus, Kyle~S Hickmann, Petru{\c{t}}a~C Caragea, Dave Higdon, and Sara~Y
+  Del~Valle.
+\newblock Forecasting seasonal influenza with a state-space sir model.
+\newblock {\em The annals of applied statistics}, 11(1):202, 2017.
+
+\bibitem{ong2010real}
+Jimmy Boon~Som Ong, I~Mark, Cheng Chen, Alex~R Cook, Huey~Chyi Lee, Vernon~J
+  Lee, Raymond Tzer~Pin Lin, Paul~Ananth Tambyah, and Lee~Gan Goh.
+\newblock Real-time epidemic monitoring and forecasting of h1n1-2009 using
+  influenza-like illness from general practice and family doctor clinics in
+  singapore.
+\newblock {\em PloS one}, 5(4):e10036, 2010.
+
+\bibitem{hall2007real}
+IM~Hall, R~Gani, HE~Hughes, and S~Leach.
+\newblock Real-time epidemic forecasting for pandemic influenza.
+\newblock {\em Epidemiology \& Infection}, 135(3):372--385, 2007.
+
+\bibitem{lekone2006statistical}
+Phenyo~E Lekone and B{\"a}rbel~F Finkenst{\"a}dt.
+\newblock Statistical inference in a stochastic epidemic seir model with
+  control intervention: Ebola as a case study.
+\newblock {\em Biometrics}, 62(4):1170--1177, 2006.
+
+\bibitem{bokler1993chaos}
+Benjamin Bokler.
+\newblock Chaos and complexity in measles models: a comparative numerical
+  study.
+\newblock {\em Mathematical Medicine and Biology: A Journal of the IMA},
+  10(2):83--95, 1993.
+
+\bibitem{syafruddin2012seir}
+Side Syafruddin and MSM Noorani.
+\newblock Seir model for transmission of dengue fever in selangor malaysia.
+\newblock {\em IJMPS}, 9:380--389, 2012.
+
+\bibitem{hotta2010bayesian}
+Luiz~K Hotta.
+\newblock Bayesian melding estimation of a stochastic seir model.
+\newblock {\em Mathematical Population Studies}, 17(2):101--111, 2010.
+
+\bibitem{dukic2012tracking}
+Vanja Dukic, Hedibert~F Lopes, and Nicholas~G Polson.
+\newblock Tracking epidemics with google flu trends data and a state-space seir
+  model.
+\newblock {\em Journal of the American Statistical Association},
+  107(500):1410--1426, 2012.
+
+\bibitem{frasso2016bayesian}
+Gianluca Frasso and Philippe Lambert.
+\newblock Bayesian inference in an extended seir model with nonparametric
+  disease transmission rate: an application to the ebola epidemic in sierra
+  leone.
+\newblock {\em Biostatistics}, 17(4):779--792, 2016.
+
+\bibitem{smirnova2019forecasting}
+Alexandra Smirnova, Linda deCamp, and Gerardo Chowell.
+\newblock Forecasting epidemics through nonparametric estimation of
+  time-dependent transmission rates using the seir model.
+\newblock {\em Bulletin of mathematical biology}, 81(11):4343--4365, 2019.
+
+\bibitem{lopez2020modified}
+Leonardo L{\'o}pez and Xavier Rodo.
+\newblock A modified seir model to predict the covid-19 outbreak in spain and
+  italy: simulating control scenarios and multi-scale epidemics.
+\newblock {\em Available at SSRN 3576802}, 2020.
+
+\bibitem{giordano2020modelling}
+Giulia Giordano, Franco Blanchini, Raffaele Bruno, Patrizio Colaneri,
+  Alessandro Di~Filippo, Angela Di~Matteo, and Marta Colaneri.
+\newblock Modelling the covid-19 epidemic and implementation of population-wide
+  interventions in italy.
+\newblock {\em Nature Medicine}, pages 1--6, 2020.
+
+\bibitem{yang2020modified}
+Zifeng Yang, Zhiqi Zeng, Ke~Wang, Sook-San Wong, Wenhua Liang, Mark Zanin, Peng
+  Liu, Xudong Cao, Zhongqiang Gao, Zhitong Mai, et~al.
+\newblock Modified seir and ai prediction of the epidemics trend of covid-19 in
+  china under public health interventions.
+\newblock {\em Journal of Thoracic Disease}, 12(3):165, 2020.
+
+\bibitem{bertozzi2020challenges}
+Andrea~L Bertozzi, Elisa Franco, George Mohler, Martin~B Short, and Daniel
+  Sledge.
+\newblock The challenges of modeling and forecasting the spread of covid-19.
+\newblock {\em arXiv preprint arXiv:2004.04741}, 2020.
+
+\bibitem{prem2020effect}
+Kiesha Prem, Yang Liu, Timothy~W Russell, Adam~J Kucharski, Rosalind~M Eggo,
+  Nicholas Davies, Stefan Flasche, Samuel Clifford, Carl~AB Pearson, James~D
+  Munday, et~al.
+\newblock The effect of control strategies to reduce social mixing on outcomes
+  of the covid-19 epidemic in wuhan, china: a modelling study.
+\newblock {\em The Lancet Public Health}, 2020.
+
+\bibitem{krantz2020level}
+Steven~G Krantz and Arni SR~Srinivasa Rao.
+\newblock Level of under-reporting including under-diagnosis before the first
+  peak of covid-19 in various countries: Preliminary retrospective results
+  based on wavelets and deterministic modeling.
+\newblock {\em Infection Control \& Hospital Epidemiology}, pages 1--8, 2020.
+
+\bibitem{russel2020using}
+T~Russel, Joel Hellewell, S~Abbot, et~al.
+\newblock Using a delay-adjusted case fatality ratio to estimate
+  under-reporting.
+\newblock {\em Available at the Centre for Mathematical Modelling of Infectious
+  Diseases Repository, here}, 2020.
+
+\bibitem{reich2020zoltar}
+Nicholas~G Reich, Matthew Cornell, Evan~L Ray, Katie House, and Khoa Le.
+\newblock The zoltar forecast archive: a tool to facilitate standardization and
+  storage of interdisciplinary prediction research.
+\newblock {\em arXiv preprint arXiv:2006.03922}, 2020.
+
+\bibitem{bracher2020evaluating}
+Johannes Bracher, Evan~L Ray, Tilmann Gneiting, and Nicholas~G Reich.
+\newblock Evaluating epidemic forecasts in an interval format.
+\newblock {\em arXiv preprint arXiv:2005.12881}, 2020.
+
+\bibitem{wallinga2007generation}
+Jacco Wallinga and Marc Lipsitch.
+\newblock How generation intervals shape the relationship between growth rates
+  and reproductive numbers.
+\newblock {\em Proceedings of the Royal Society B: Biological Sciences},
+  274(1609):599--604, 2007.
+
+\end{thebibliography}

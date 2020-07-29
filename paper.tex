@@ -66,8 +66,12 @@ As of August 1st 2020 the Covid-19 pandemic has caused over 4 million infections
 
 \section{Introduction}
 
-The emergence of COVID-19 in early 2020 in the United States developed into the largest pandemic the country has seen in over a century. As of July 2020, there are over 4 million confirmed infections and over 150,000 deaths due to COVID-19 \cite{dong2020interactive}.  Understanding the future trajectory of the pandemic is crucial for minimizing the impact across the nation in terms of healthcare burden, economic recession, and political stability. Forecasts of incident and cumulative deaths due to COVID may help in resource allocation, vaccine clinical trial planning, and re-opening strategies. Along with non-pharamacutical interventions, forecasts are one of the few public health tools available to help fight the pandemic. Infectious disease forecasting has been demonstrated to benefit public health decision makers during annual influenza outbreaks \cite{lutz2019applying}.  However, many forecasts of seasonal disease, such as influenza, often rely on ample historical data to look for patterns that can be projected forward into the future. In an emerging pandemic situation, models must be able to fit to limited data. The COVID-19 pandemic has seen a resurgence in the use of differential equation models to explain the underlying transmission of a disease through a population. First introduced by  Kermack and McKendrick, the model assumes the each individual is in one of a mutually exclusive set of compartments, typically the susceptible, exposed, infected, and recovered compartment. The model is specified by setting the rates of flow between compartments. While these models have been used since their inception in 1918, the COVID pandemic represents a unique opportunity to explore their properties in real-time. Emerging pandemics create a unique set of challenges for accurately predicting future deaths. These include, but are not limited to, severe under reporting of cases due to asymptomatic transmission, time-varying testing rates, and both the addition and removal of control measures such as social distancing, lockdown, and mask use. In this work, we introduce a set of extensions to the classic compartmental model that are able to account for the real-world and real-time complexities of infectious disease forecasting during a pandemic. We demonstrate the success of the model in both real-time forecast submissions  as well as an ablation test to demonstrate the additional forecast accuracy of our extensions. In what follows we first describe the available data and forecast submission infrastructure, outline the basic susceptible-exposed-infected-recovered (SEIR) compartment model, describe our extensions for real-world pandemic forecasting, and finally evaluate the model using both real-time evaluation from submissions and a retrospective model component analysis. 
+The emergence of COVID-19 in early 2020 in the United States developed into the largest pandemic the country has seen in over a century. As of July 2020, there are over 4 million confirmed infections and over 150,000 deaths due to COVID-19 \cite{dong2020interactive}.  Understanding the future trajectory of the pandemic is crucial for minimizing the impact across the nation in terms of healthcare burden, economic recession, and political stability. Forecasts of incident and cumulative deaths due to COVID may help in resource allocation, vaccine clinical trial planning, and re-opening strategies. Along with non-pharamacutical interventions, forecasts are one of the few public health tools available to help fight the pandemic. Infectious disease forecasting has been demonstrated to benefit public health decision makers during annual influenza outbreaks \cite{lutz2019applying}.  However, many forecasts of seasonal disease, such as influenza, often rely on ample historical data to look for patterns that can be projected forward into the future. In an emerging pandemic situation, models must be able to fit to limited data. The COVID-19 pandemic has seen a resurgence in the use of differential equation models to explain the underlying transmission of a disease through a population. First introduced by  Kermack and McKendrick, the model assumes the each individual is in one of a mutually exclusive set of compartments, typically the susceptible, exposed, infected, and recovered compartment \cite{kermack1927contribution}. The model is specified by setting the rates of flow between compartments. While these models have been used since their inception in the early 20th century, the COVID pandemic represents a unique opportunity to explore their properties in real-time. 
+Compartmental models have been used to effectively model and forecast disease in non-pandemic situations. These include complex compartmental models for Influenza forecasting \cite{shaman2012forecasting}\cite{osthus2017forecasting}\cite{ong2010real}, including a retrospective model evaluation of the 1918 Influenza pandemic \cite{hall2007real}. Compartmental models have been used not just in respiratory disease but in Ebola \cite{lekone2006statistical}, Measles \cite{bokler1993chaos}, Dengue \cite{syafruddin2012seir} and a wide variety of other disease.
 
+Compartmental models have also been adopted into a Bayesian framework before, including both stochastic disease dynamics and deterministic dynamics \cite{hotta2010bayesian}\cite{dukic2012tracking}. In fact, non-parametric transmissibility was included in a Bayesian SEIR model to study Ebola by Frasso and Lambert \cite{frasso2016bayesian}. Time-varying transmissibility has also been studied in the frequentist setting \cite{smirnova2019forecasting}. With the outbreak of COVID-19, accounting for testing has become a critical element in using an SEIR model. Lopez et al. used a fixed detection probability to model undiagnosed individuals in Spain and Italy \cite{lopez2020modified}. Many efforts have been made to use SEIR models in forecasting COVID-19 \cite{giordano2020modelling}\cite{yang2020modified} \cite{bertozzi2020challenges}\cite{prem2020effect}.
+
+Emerging pandemics create a unique set of challenges for accurately predicting future deaths. These include, but are not limited to, severe under reporting of cases due to asymptomatic transmission, time-varying testing rates, and both the addition and removal of control measures such as social distancing, lockdown, and mask use. In this work, we introduce a set of extensions to the classic compartmental model that are able to account for the real-world and real-time complexities of infectious disease forecasting during a pandemic. We demonstrate the success of the model in both real-time forecast submissions  as well as an ablation test to demonstrate the additional forecast accuracy of our extensions. In what follows we first describe the available data and forecast submission infrastructure, outline the basic susceptible-exposed-infected-recovered (SEIR) compartment model, describe our extensions for real-world pandemic forecasting, and finally evaluate the model using both real-time evaluation from submissions and a retrospective model component analysis. 
 
 
 %\begin{itemize}
@@ -104,7 +108,7 @@ The emergence of COVID-19 in early 2020 in the United States developed into the 
 \section{Data}
 	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to April 27th 2020 and captures all 50 states, as well as Guam, Puerto Rico, and American Samoa. As noted in \cite{krantz2020level}, COVID-19 cases are often dramatically under-reported, with reporting rates for the U.S. estimated at 20-30\% \cite{russel2020using}. In addition, there has also been severe temporal variation in the percent of symptomatic cases  \cite{russel2020using}. We can also see relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. Example incident death data is show in \ref{fig:data}.
 	
-In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the COVID-HUB forecast repository and visualization tool \cite{covid-hub}. The COVID-HUB team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths as represented by a set of quantiles defined as 
+In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the COVID-HUB forecast repository and visualization tool \cite{COVID-HUB}. The COVID-HUB team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths since the beginning of the April 2020. A COVID-HUB forecast is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. 
 
 \begin{equation}
 \mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}
@@ -119,14 +123,14 @@ In order to organize collaborative efforts across the modeling community, the Re
 %\item Ref Figure 1
 %\end{itemize}
 
-
+Forecasts are due on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts are stored in the generic repository Zoltar, which allows teams to access both their model and a baseline model \cite{reich2020zoltar}. Zoltar also scores models according to mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. This allows forecasts to be evaluated both point-wise and probabilistically. 
 
 
 
  \begin{figure}
      \centering
      \includegraphics[scale=.175]{data_plot.png}
-     \caption{Deaths by state for all 50 states and territories. Notice the large variability in incident reporting. There appears to be a weekly cycle where deaths are under-reported on the weekend. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. }
+     \caption{Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There appears to be a weekly cycle where deaths are under-reported on the weekend. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. }
      \label{fig:data}
  \end{figure}
  
@@ -453,7 +457,7 @@ We use the numpyro probabilistic framework to fit the model.
     \caption{WIS by target}
 \end{subfigure}%
 
-\caption{Scores from covid-hub broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
+\caption{Scores from COVID-HUB broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
 \label{fig:covidhub}
 \end{figure}
 
@@ -464,7 +468,7 @@ We can see from Figure \ref{fig:model_details} that MechBayes is able to learn t
 
 We can also see from Figure \ref{fig:model_details}  that MechBayes is able to account for the drastic increase in testing that has occurred across the U.S. since March 2020. Panel B also shows that our prior estimate of 30\% of cases being detected, may have been too high, as all regions show a dip in detection probability before climbing again. Note that interpreting this strictly as time-varying detection is obscuring the fact that this parameter $p_{t,d}$ can soak-up any excess variation beyond the ability of cases and the case-fatility ratio to explain the number of deaths. That is, the time-varying detection probability is able to "de-couple" cases and deaths beyond the case-fataility ratio regardless of the underlying reason (whether that be an increase in testing or shifting age distribution of cases). Thus, interpretation of this parameter as a strict mapping to testing is incorrect. As a forecasting model, we only need the ability to non-parametrically model deviations and reporting issues in cases.
 
-We next turn to the comparison of MechBayes against the COVID-HUB baseline model. This baseline model uses the previous daily incident as the mean forecast for the current daily incidence, along with  bootstrapped prediction intervals from historical changes in daily incidence. See covid-hub for more details. \cite{covid-hub}. 
+We next turn to the comparison of MechBayes against the COVID-HUB baseline model. This baseline model uses the previous daily incident as the mean forecast for the current daily incidence, along with  bootstrapped prediction intervals from historical changes in daily incidence. See COVID-HUB for more details. \cite{COVID-HUB}. 
 
 We begin by breaking down the results by week the forecast was made (timezero) and averaging over both region and target. As we can see from Figure \ref{fig:covidhub} (A,B), MechBayes V1 did not outperform the COVID-HUB baseline on MAE or WIS when broken down by timezero. However, MechBayes V2 (the introduction of the time-varying detection probability), outperformed the COVID-HUB baseline model on both MAE and WIS when broken down by timezero. The same is true for MechBayes V3 with the exception of June 26th, where the COVID-HUB baseline model slightly outperformed MechBayes V3. However, as seen in Figure \ref{fig:data}, overall incident deaths were at their lowest across the U.S. in late June and remarkably stable, meaning this week was the hardest of the weeks to beat the baseline model. 
 
@@ -515,7 +519,7 @@ We can also see that the MechBayes Death Only is consistently better than MechBa
     \caption{Ablation results 4 week ahead. }
 \end{subfigure}
 
-\caption{Scores from covid-hub broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
+\caption{Scores from COVID-HUB broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
 \label{fig:ablation}
 \end{figure}
 
@@ -543,8 +547,9 @@ We have seen that MechBayes is a powerful Bayesian compartmental model that can 
 
 While we chose an exponential random walk on $\beta(t)$ there are many other choices for flexible non-parametric modeling of transmissibility. Further work might consider a spline model, or a Gaussian process, or semi-parametric models capable of taking intervention dates as covariates. 
 
+\newpage
 
 \bibliographystyle{unsrt}
-\bibliography{sir}
+\bibliography{bib}
 
 \end{document}  

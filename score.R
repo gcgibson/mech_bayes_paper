@@ -13,7 +13,7 @@ tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %
 tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
 tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
 #tmp_mech_bayes <- tmp_mech_baye
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis))
+tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis),error=mean(error))
 
 
 #tmp_subset$timezero <- as.factor(tmp_subset$timezero)
@@ -43,3 +43,7 @@ wis_results_by_target <- ggplot(tmp_subset %>% group_by(target,model) %>% summar
 ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_target.png",wis_results_by_target,device="png",width=8,height=4)
 
 
+
+error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(unit,model) %>% summarize(error=mean(error)),aes(x=unit,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+
+error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero) %>% summarize(error=mean(error)),aes(x=timezero,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
