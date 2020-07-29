@@ -519,7 +519,14 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. 
 
-\item \textbf{MechBayes is biased high}
+\item \textbf{MechBayes is biased high}. We can see from Figure \ref{fig:bias} that MechBayes was biased high with respect to the median forecast. We suspect this is due to the inherent exponential growth of an SEIR model when the number of susceptibles is small. Since overall prevalence in any state is well below the number needed to reach herd immunity, when the model sees an increase in cases it treats this as exponential growth, which translates into exponential growth in deaths. However, in the recent forecasts the bias is consistently lower than the COVID-HUB baseline model. Note the extreme low bias in the first submission is due to the omission of the U.S. in the submission. \textbf{is this true} \textbf{something is telling me this is also related to the exponential random walk}
+
+\item \textbf{MechBayes is probabilistically well-calibrated compared with the baseline model}. Small WIS values are better in terms of calibration \cite{bracher2020evaluating}. The two sources of uncertainty in MechBayes come from the distribution over the differential equation parameters and the observation noise, unlike a fully stochastic model that has inherent variability within the differential equation transitions. This suggest that even a deterministic model core can produce well calibrated prediction intervals by capturing the uncertainty in parameter estimation and observation noise.
+
+
+
+
+ 
 
 \end{itemize}
 
@@ -527,7 +534,7 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 \begin{figure}
 \includegraphics[scale=.2]{bias_by_timezero.png}
 
-\caption{Bias of MechBayes and COVID-Baseline as a function of time..  }
+\caption{Bias of MechBayes and COVID-Baseline as a function of time. }
 \label{fig:bias}
 \end{figure}
 
@@ -537,6 +544,8 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 We have seen that MechBayes is a powerful Bayesian compartmental model that can capture the real-world complexities of forecasting during a pandemic. Through internal and external evaluation, we have demonstrated the success of MechBayes in forecasting. The model is able to improve over a naive baseline model as well as a naive compartmental model. Allowing for time-varying interventions and detection probability is a necessary model component during a real-time pandemic forecasting effort. 
 
 While we chose an exponential random walk on $\beta(t)$ there are many other choices for flexible non-parametric modeling of transmissibility. Further work might consider a spline model, or a Gaussian process, or semi-parametric models capable of taking intervention dates as covariates. 
+
+However, using relatively simple non-parametric methods we were able to beat the COVID-HUB baseline model in both point and probabilistic forecast evaluations. Our nested model comparisons show that extending the basic SEIR compartmental to real-world pandemic challenges improves forecasting accuracy. 
 
 \newpage
 
