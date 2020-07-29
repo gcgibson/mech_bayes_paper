@@ -381,28 +381,10 @@ We use the numpyro probabilistic framework to fit the model.
 
 \begin{figure}
   \centering
-     \begin{subfigure}{.5\textwidth}
-  \centering
-    \includegraphics[scale=.3]{US.png}
-    \caption{US}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-    \includegraphics[scale=.3]{NY.png}
-    \caption{New York}
-\end{subfigure}
-\begin{subfigure}{.5\textwidth}
-  \centering
-    \includegraphics[scale=.3]{FL.png}
-    \caption{Florida}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-    \includegraphics[scale=.3]{CA.png}
-    \caption{California}
-\end{subfigure}%
 
-\caption{Example fit and forecast for four states.}
+    \includegraphics[scale=.2]{fit_and_forecast_results.png}
+
+\caption{Example fit and forecast for states with over 50 incident deaths.}
 \label{fig:fit_and_forecast_results}
 \end{figure}
 
@@ -537,9 +519,18 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. 
 
-
+\item \textbf{MechBayes is biased high}
 
 \end{itemize}
+
+
+\begin{figure}
+\includegraphics[scale=.2]{bias_by_timezero.png}
+
+\caption{Bias of MechBayes and COVID-Baseline as a function of time..  }
+\label{fig:bias}
+\end{figure}
+
 
 \section{Conclusion}
 

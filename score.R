@@ -46,4 +46,4 @@ ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_target.png",wis_results_
 
 error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(unit,model) %>% summarize(error=mean(error)),aes(x=unit,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
 
-error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero) %>% summarize(error=mean(error)),aes(x=timezero,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(error=mean(error)),aes(x=timezero,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
