@@ -1,6 +1,8 @@
 ablation_res <- read.csv("/Users/gcgibson/mech_bayes_paper/summary-states.csv")
 ablation_res$mae <- ablation_res$MAE
 library(ggplot2)
+
+### 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(6),]
 
 ablation_1 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
@@ -34,4 +36,6 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_4.png",ablation_4,device="png"
 
 
 
-
+ablation_calibration <- ggplot(ablation_res %>% group_by(forecast_date,model) %>% 
+        summarize(ls=mean(LS)),aes(x=forecast_date,y=ls,col=model)) + geom_point(size=1.5) + theme_bw()
+ggsave("/Users/gcgibson/mech_bayes_paper/ablation_calibration.png",ablation_calibration,device="png",width=8,height=4)

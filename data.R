@@ -50,12 +50,12 @@ plot_df <- data.frame(time=rep(seq(as.Date("2020-03-05"),as.Date("2020-07-26"),b
                       median=c(t(fit_plot_df[,1,])),upper=c(t(fit_plot_df[,2,])),
                       lower=c(t(fit_plot_df[,3,])))
 plot_df$location <- rep(states,each=144)
-plot_df_subset <- plot_df[plot_df$location %in% state.abb[match(state_deaths_subset_idx,state.name)], ]
+plot_df_subset <- plot_df[plot_df$location %in% c("US",state.abb[match(state_deaths_subset_idx,state.name)]), ]
 state_deaths_subset_for_addition <- state_deaths_subset#[state_deaths_subset$location_name != "New Jersey",]
 state_deaths_subset_for_addition <- state_deaths_subset_for_addition[state_deaths_subset_for_addition$date %in% plot_df_subset$time,]
 state_deaths_subset_for_addition$location <- state.abb[match(state_deaths_subset_for_addition$location_name,state.name)]
-
+state_deaths_subset_for_addition[is.na(state_deaths_subset_for_addition$location),]$location <- "US"
 fit_and_forecast_results <- ggplot(plot_df_subset,aes(x=time,y=median)) + geom_line(col="cornflowerblue") +
-  geom_ribbon(aes(ymin=lower, ymax=upper),alpha=0.2,size=0,colour="cornflowerblue")+geom_point(data=state_deaths_subset_for_addition,aes(x=date,y=value),size=.5)  +facet_wrap(~location,scales='free') 
+  geom_ribbon(aes(ymin=lower, ymax=upper),alpha=0.2,size=0,colour="cornflowerblue")+geom_point(data=state_deaths_subset_for_addition,aes(x=date,y=value),size=.5)  +facet_wrap(~location,scales='free') + theme_bw() 
 ggsave("/Users/gcgibson/mech_bayes_paper/fit_and_forecast_results.png",fit_and_forecast_results,device="png",width=8,height=8)
 

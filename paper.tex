@@ -39,6 +39,9 @@
 
 
 \begin{document}
+
+\maketitle
+
 \section*{Abstract}
 
 As of August 1st 2020 the Covid-19 pandemic has caused over 4 million infections and over 150,000 deaths in the United States alone. Effective modeling of the course of the pandemic can help assist with public health resource planning, intervention efforts, and vaccine clinical trials. However, data quality during a pandemic suffers from under-reporting, backlog reporting, and limited testing. Classical infectious disease differential equation models, such as the susceptible-exposed-infected-recovered model, do not take these data issues into account. We propose a novel Bayesian compartmental model that allows for non-parametric modeling of non-pharamacuetical interventions, time-varying testing, and joint observations on case counts and deaths. The model has been used to submit forecasts to the Covid-hub repository organized by the Reich Lab. We examine the performance relative to the baseline model in addition to performing a nested model comparison of our extensions to the classic models. We demonstrate a significant gain in both MAE and probabilistic scoring measures when taking into account data quality issues during a real-time pandemic.
@@ -59,7 +62,6 @@ As of August 1st 2020 the Covid-19 pandemic has caused over 4 million infections
 %\end{itemize}
 
 
-\maketitle
 
 %\section{}
 %\subsection{}
@@ -69,7 +71,7 @@ As of August 1st 2020 the Covid-19 pandemic has caused over 4 million infections
 The emergence of COVID-19 in early 2020 in the United States developed into the largest pandemic the country has seen in over a century. As of July 2020, there are over 4 million confirmed infections and over 150,000 deaths due to COVID-19 \cite{dong2020interactive}.  Understanding the future trajectory of the pandemic is crucial for minimizing the impact across the nation in terms of healthcare burden, economic recession, and political stability. Forecasts of incident and cumulative deaths due to COVID may help in resource allocation, vaccine clinical trial planning, and re-opening strategies. Along with non-pharamacutical interventions, forecasts are one of the few public health tools available to help fight the pandemic. Infectious disease forecasting has been demonstrated to benefit public health decision makers during annual influenza outbreaks \cite{lutz2019applying}.  However, many forecasts of seasonal disease, such as influenza, often rely on ample historical data to look for patterns that can be projected forward into the future. In an emerging pandemic situation, models must be able to fit to limited data. The COVID-19 pandemic has seen a resurgence in the use of differential equation models to explain the underlying transmission of a disease through a population. First introduced by  Kermack and McKendrick, the model assumes the each individual is in one of a mutually exclusive set of compartments, typically the susceptible, exposed, infected, and recovered compartment \cite{kermack1927contribution}. The model is specified by setting the rates of flow between compartments. While these models have been used since their inception in the early 20th century, the COVID pandemic represents a unique opportunity to explore their properties in real-time. 
 Compartmental models have been used to effectively model and forecast disease in non-pandemic situations. These include complex compartmental models for Influenza forecasting \cite{shaman2012forecasting}\cite{osthus2017forecasting}\cite{ong2010real}, including a retrospective model evaluation of the 1918 Influenza pandemic \cite{hall2007real}. Compartmental models have been used not just in respiratory disease but in Ebola \cite{lekone2006statistical}, Measles \cite{bokler1993chaos}, Dengue \cite{syafruddin2012seir} and a wide variety of other disease.
 
-Compartmental models have also been adopted into a Bayesian framework before, including both stochastic disease dynamics and deterministic dynamics \cite{hotta2010bayesian}\cite{dukic2012tracking}. In fact, non-parametric transmissibility was included in a Bayesian SEIR model to study Ebola by Frasso and Lambert \cite{frasso2016bayesian}. Time-varying transmissibility has also been studied in the frequentist setting \cite{smirnova2019forecasting}. With the outbreak of COVID-19, accounting for testing has become a critical element in using an SEIR model. Lopez et al. used a fixed detection probability to model undiagnosed individuals in Spain and Italy \cite{lopez2020modified}. Many efforts have been made to use SEIR models in forecasting COVID-19 \cite{giordano2020modelling}\cite{yang2020modified} \cite{bertozzi2020challenges}\cite{prem2020effect}.
+Compartmental models have also been adopted into a Bayesian framework before, including both stochastic disease dynamics and deterministic dynamics \cite{hotta2010bayesian}\cite{dukic2012tracking}. In fact, non-parametric transmissibility was included in a Bayesian SEIR model to study Ebola by Frasso and Lambert \cite{frasso2016bayesian}. Time-varying transmissibility has also been studied in the frequentist setting \cite{smirnova2019forecasting}. With the outbreak of COVID-19, accounting for testing has become a critical element in using an SEIR model. Lopez et al. used a fixed detection probability to model undiagnosed individuals in Spain and Italy \cite{lopez2020modified}. Many efforts have been made to use SEIR models in forecasting COVID-19 \cite{giordano2020modelling}\cite{yang2020modified} \cite{bertozzi2020challenges}\cite{prem2020effect}\cite{flaxman2020estimating}. Perhaps the most similar model was put forth by Pei et al. \cite{pei2020differential}. This model was an extension to the SEIR model with time varying transmission and detection probability. However, their model fixed detection probability across time and was fit using Kalman Filter techniques instead of Bayesian HMC. They also used the model mostly for counterfactual scenario projections instead of forecasting. Another relatively similar model was put forth by Abbot et al. \cite{abbott2020estimating}. This model does use a time-varying transmission rate and detection rate, but does not use a differential equation model as the core component, but rather parameterizes new cases as a function of the time varying reproduction number. 
 
 Emerging pandemics create a unique set of challenges for accurately predicting future deaths. These include, but are not limited to, severe under reporting of cases due to asymptomatic transmission, time-varying testing rates, and both the addition and removal of control measures such as social distancing, lockdown, and mask use. In this work, we introduce a set of extensions to the classic compartmental model that are able to account for the real-world and real-time complexities of infectious disease forecasting during a pandemic. We demonstrate the success of the model in both real-time forecast submissions  as well as an ablation test to demonstrate the additional forecast accuracy of our extensions. In what follows we first describe the available data and forecast submission infrastructure, outline the basic susceptible-exposed-infected-recovered (SEIR) compartment model, describe our extensions for real-world pandemic forecasting, and finally evaluate the model using both real-time evaluation from submissions and a retrospective model component analysis. 
 
@@ -380,11 +382,10 @@ We use the numpyro probabilistic framework to fit the model.
 
 
 \begin{figure}
-  \centering
 
     \includegraphics[scale=.2]{fit_and_forecast_results.png}
 
-\caption{Example fit and forecast for states with over 50 incident deaths.}
+\caption{Example fit and forecast for states with over 50 incident deaths. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data, even under extreme reporting variation such as in North Carolina. It is also able to handle extreme outliers, such as in Illinois or New Jersey. \textbf{Is this totally true or should we mention manual adjustments.}}
 \label{fig:fit_and_forecast_results}
 \end{figure}
 
@@ -392,17 +393,18 @@ We use the numpyro probabilistic framework to fit the model.
  
 \begin{figure}
   \centering
-     \begin{subfigure}{.5\textwidth}
+     \begin{subfigure}{1\textwidth}
   \centering
-    \includegraphics[scale=.1]{beta_t_plot.png}
+    \includegraphics[scale=.2]{beta_t_plot.png}
     \caption{Time varying-beta.}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
+\end{subfigure}
+
+\begin{subfigure}{1\textwidth}
   \centering
-    \includegraphics[scale=.1]{detection_plot.png}
+    \includegraphics[scale=.2]{detection_plot.png}
     \caption{Time-varying detection probability}
 \end{subfigure} 
- \caption{  A) Time varying beta parameter for four example states. We can clearly see that the random walk is able to non-parametrically account for the non-pharamceutical interventions. B) Time varying detection probability for four example states. The time varying detection random walk is able account for the increase in testing. }
+ \caption{  A) Time varying beta parameter for four all geographies with a day exceeding 50 incident deaths. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions. B) Time varying detection probability for four example states. The time varying detection random walk is able account for the increase in testing. }
 \label{fig:model_details}
 \end{figure}
 
@@ -444,7 +446,7 @@ We use the numpyro probabilistic framework to fit the model.
 \end{figure}
 
 
-We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version 3 is able to accurately model the observed data in the three example states (NY,CA,FL) as well as the US. The model is able to adapt to highly variable incident death reporting, variable transmission rates, and overall heterogeneity of incidence curves. The model is also able capture the uncertainty of the differential equation parameters well enough to produce well calibrated prediction intervals. Figure \ref{fig:fit_and_forecast_results}  shows intervals at the 50\%,80\% and 95\% levels. However, we can also see that in some states, such as California and Florida, the model is biased high, with all observations outside of the 95\% prediction interval falling below. Figure \ref{fig:fit_and_forecast_results}  also shows 4 weeks of daily forecasts, along with the daily observed incidence for 1 week out. We can see that the predictions are tracking the data even under the weekly reporting cycles. 
+We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version 3 is able to accurately model the observed data. The model is able to adapt to highly variable incident death reporting, variable transmission rates, and overall heterogeneity of incidence curves. The model is also able capture the uncertainty of the differential equation parameters well enough to produce well calibrated prediction intervals. Figure \ref{fig:fit_and_forecast_results}  shows prediction intervals at the 95\% level. However, we can also see that in some states, such as California and Florida, the model is biased high, with all observations outside of the 95\% prediction interval falling below. Figure \ref{fig:fit_and_forecast_results}  also shows 4 weeks of daily forecasts, along with the daily observed incidence for 1 week out. We can see that the predictions are tracking the data even under the weekly reporting cycles. 
 
 We can see from Figure \ref{fig:model_details} that MechBayes is able to learn to adapt to the evolving pandemic situation. Panel A shows the time-varying transmission $\beta(t)$ for three example states, CA, FL, and NY as well as the U.S. We can see that $\beta(0)$ is centered on our prior but as data comes in, the estimate increases. This is especially true in NY, where the epidemic took off quickly in March. However, the model is then able to adjust to the varying levels of non-pharamceutical interventions present in each of the three states as well as across the U.S. This radically reduces the transmissibility parameter by the first week of April 2020. This is consistent with a peak in overall deaths two weeks later in mid-April 2020. There seems to be some estimation issues at the boundary of $\beta(t)$ where the number of cases does not match the number of deaths, since the cases have not yet converted to deaths. This results in the model underestimating transmissibility to reduce the flow through the compartments. \textbf{Need to think on this a bit}
 
@@ -519,12 +521,12 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. 
 
-\item \textbf{MechBayes is biased high}. We can see from Figure \ref{fig:bias} that MechBayes was biased high with respect to the median forecast. We suspect this is due to the inherent exponential growth of an SEIR model when the number of susceptibles is small. Since overall prevalence in any state is well below the number needed to reach herd immunity, when the model sees an increase in cases it treats this as exponential growth, which translates into exponential growth in deaths. However, in the recent forecasts the bias is consistently lower than the COVID-HUB baseline model. Note the extreme low bias in the first submission is due to the omission of the U.S. in the submission. \textbf{is this true} \textbf{something is telling me this is also related to the exponential random walk}
+\item \textbf{MechBayes is biased high}. We can see from Figure \ref{fig:results_discussion} that MechBayes was biased high with respect to the median forecast. We suspect this is due to the inherent exponential growth of an SEIR model when the number of susceptibles is small. Since overall prevalence in any state is well below the number needed to reach herd immunity, when the model sees an increase in cases it treats this as exponential growth, which translates into exponential growth in deaths. However, in the recent forecasts the bias is consistently lower than the COVID-HUB baseline model. Note the extreme low bias in the first submission is due to the omission of the U.S. in the submission. \textbf{is this true} \textbf{something is telling me this is also related to the exponential random walk}
 
 \item \textbf{MechBayes is probabilistically well-calibrated compared with the baseline model}. Small WIS values are better in terms of calibration \cite{bracher2020evaluating}. The two sources of uncertainty in MechBayes come from the distribution over the differential equation parameters and the observation noise, unlike a fully stochastic model that has inherent variability within the differential equation transitions. This suggest that even a deterministic model core can produce well calibrated prediction intervals by capturing the uncertainty in parameter estimation and observation noise.
 
 
-
+\item \textbf{MechBayes Full outperforms the other versions on probabilistic scoring measures}. As can be seen by Figure \ref{fig:results_discussion}, MechBayes Full achieves the best log-score \textbf{sub for WIS } out the three nested models. This suggested that our extensions to the basic SEIR model not only improve point-forecasts, but also calibration. 
 
  
 
@@ -532,11 +534,18 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 
 \begin{figure}
-\includegraphics[scale=.2]{bias_by_timezero.png}
-
-\caption{Bias of MechBayes and COVID-Baseline as a function of time. }
-\label{fig:bias}
+\begin{subfigure}{.5\textwidth}
+\includegraphics[scale=.15]{bias_by_timezero.png}
+\subcaption{Bias of MechBayes and COVID-Baseline as a function of time. }
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+\includegraphics[scale=.15]{ablation_calibration.png}
+\subcaption{Comparison of nested models using the probabilistic scoring mechanism}
+\end{subfigure}
+\caption{A) Bias of MechBayes over time. B) Probabilistic Calibration}
+\label{fig:results_discussion}
 \end{figure}
+
 
 
 \section{Conclusion}
