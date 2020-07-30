@@ -355,7 +355,7 @@ We use the numpyro probabilistic framework to fit the model.
  \end{itemize} 
  
  
- These three versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for the weeks of XXXX.
+ These three versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for the weeks of 2020-05-05, 2020-05-10, 2020-05-17, 2020-05-24 2020-05-31, 2020-06-07, 2020-06-14, 2020-06-2, 2020-06-28, 2020-07-05, 2020-07-12, 2020-07-19, and 2020-07-26. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-12 and beyond not being observable by 2020-08-01.
 % \begin{itemize}
 % \item Real-time forecasting evaluation for 14 weeks starting April 20th 2020. 
 % \item Forecasts submitted every Monday using incident data up until Sunday
@@ -528,18 +528,18 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \item \textbf{MechBayes Full outperforms the other versions on probabilistic scoring measures}. As can be seen by Figure \ref{fig:results_discussion}, MechBayes Full achieves the best log-score \textbf{sub for WIS } out the three nested models. This suggested that our extensions to the basic SEIR model not only improve point-forecasts, but also calibration. 
 
- 
+\item \textbf{MechBayes is remarkably accurate}. As we can see from Figure \ref{fig:covidhub} the MAE values, when averaged over geographical unit, are as low as 20 deaths. On average the MAE values are near 50 deaths. Although there is an open question as to what is accurate enough to be actionable by public health officials, MechBayes seems to be able to provide an indicator within a reasonable range of error to make decisions about resource allocation. However, as expected, there is wide variance by geography due to differing population size. \textbf{would it make sense to normalize MAE by population size?}
 
 \end{itemize}
 
 
 \begin{figure}
 \begin{subfigure}{.5\textwidth}
-\includegraphics[scale=.15]{bias_by_timezero.png}
+\includegraphics[scale=.125]{bias_by_timezero.png}
 \subcaption{Bias of MechBayes and COVID-Baseline as a function of time. }
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
-\includegraphics[scale=.15]{ablation_calibration.png}
+\includegraphics[scale=.125]{ablation_calibration.png}
 \subcaption{Comparison of nested models using the probabilistic scoring mechanism}
 \end{subfigure}
 \caption{A) Bias of MechBayes over time. B) Probabilistic Calibration}

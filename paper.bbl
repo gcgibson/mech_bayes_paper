@@ -121,6 +121,28 @@ Kiesha Prem, Yang Liu, Timothy~W Russell, Adam~J Kucharski, Rosalind~M Eggo,
   of the covid-19 epidemic in wuhan, china: a modelling study.
 \newblock {\em The Lancet Public Health}, 2020.
 
+\bibitem{flaxman2020estimating}
+Seth Flaxman, Swapnil Mishra, Axel Gandy, H~Juliette~T Unwin, Thomas~A Mellan,
+  Helen Coupland, Charles Whittaker, Harrison Zhu, Tresnia Berah, Jeffrey~W
+  Eaton, et~al.
+\newblock Estimating the effects of non-pharmaceutical interventions on
+  covid-19 in europe.
+\newblock {\em Nature}, pages 1--5, 2020.
+
+\bibitem{pei2020differential}
+Sen Pei, Sasikiran Kandula, and Jeffrey Shaman.
+\newblock Differential effects of intervention timing on covid-19 spread in the
+  united states.
+\newblock {\em medRxiv}, 2020.
+
+\bibitem{abbott2020estimating}
+Sam Abbott, Joel Hellewell, Robin~N Thompson, Katharine Sherratt, Hamish~P
+  Gibbs, Nikos~I Bosse, James~D Munday, Sophie Meakin, Emma~L Doughty,
+  June~Young Chun, et~al.
+\newblock Estimating the time-varying reproduction number of sars-cov-2 using
+  national and subnational case counts.
+\newblock {\em Wellcome Open Research}, 5(112):112, 2020.
+
 \bibitem{krantz2020level}
 Steven~G Krantz and Arni SR~Srinivasa Rao.
 \newblock Level of under-reporting including under-diagnosis before the first
