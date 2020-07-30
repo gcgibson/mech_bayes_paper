@@ -34,7 +34,7 @@
 
 
 \title{Mechanistic Bayesian Forecasts of COVID19}
-\author{Graham Gibson, Nicholas Reich, Laura Balzer, Dan Sheldon}
+\author{Graham Gibson, Nicholas Reich, Dan Sheldon}
 %\date{}                                           % Activate to display a given date or no date
 
 
@@ -108,13 +108,9 @@ Emerging pandemics create a unique set of challenges for accurately predicting f
 %\end{itemize}
 
 \section{Data}
-	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to April 27th 2020 and captures all 50 states, as well as Guam, Puerto Rico, and American Samoa. As noted in \cite{krantz2020level}, COVID-19 cases are often dramatically under-reported, with reporting rates for the U.S. estimated at 20-30\% \cite{russel2020using}. In addition, there has also been severe temporal variation in the percent of symptomatic cases  \cite{russel2020using}. We can also see relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. Example incident death data is show in \ref{fig:data}.
-	
-In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the COVID-HUB forecast repository and visualization tool \cite{COVID-HUB}. The COVID-HUB team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths since the beginning of the April 2020. A COVID-HUB forecast is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. 
-
-\begin{equation}
-\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}
-\end{equation}
+	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to April 27th 2020 and captures all 50 states, as well as Guam, Puerto Rico, and American Samoa. As noted in \cite{krantz2020level}, COVID-19 cases are often dramatically under-reported, with reporting rates for the U.S. estimated at 20-30\% \cite{russel2020using}. In addition, there has also been severe temporal variation in the percent of symptomatic cases  \cite{russel2020using}. There are large discrepancies in reporting practices across the states (Figure \ref{fig:data}). Most notably, New Jersey reported an additional 1600 incident deaths when changing reporting practices to include "probable" deaths as well as confirmed deaths due to COVID-19. However, many other states have at least one outlying value, usually due to backlog reporting, where a large quantity of previous deaths is reported on a single day. We can also see from Figure \ref{fig:data} that some states do not report on particular days (usually weekends) leading to 0 incident deaths for the day.  We can also see relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. Finally, we can see that while some states have reached their first peak and dropped off, others are starting to see a rapid increase in confirmed deaths, such as the Carolinas, Texas, and Florida. 
+		
+In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the COVID-HUB forecast repository and visualization tool \cite{covidhub}. The COVID-HUB team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths since the beginning of the April 2020. A COVID-HUB forecast is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. The quantiles used are $\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}$
 %\begin{itemize}
 %\item We use cases/deaths from JHU
 %\item Under-reporting issues
@@ -125,14 +121,14 @@ In order to organize collaborative efforts across the modeling community, the Re
 %\item Ref Figure 1
 %\end{itemize}
 
-Forecasts are due on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts are stored in the generic repository Zoltar, which allows teams to access both their model and a baseline model \cite{reich2020zoltar}. Zoltar also scores models according to mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. This allows forecasts to be evaluated both point-wise and probabilistically. 
+Forecasts are due on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts are stored in the generic repository Zoltar, which allows teams to access both their model and a baseline model \cite{reich2020zoltar}. Zoltar also scores models according to mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. This allows forecasts to be evaluated both point-wise and probabilistically. We can think of WIS as an approximation the the log-score, a commonly used metric in probabilistic forecasting \cite{bracher2019multibin}\cite{reich2019reply}.
 
 
 
  \begin{figure}
      \centering
-     \includegraphics[scale=.175]{data_plot.png}
-     \caption{Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There appears to be a weekly cycle where deaths are under-reported on the weekend. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. }
+     \includegraphics[scale=.14]{data_plot.png}
+     \caption{Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There are significant data-dumps, with New Jersey reporting over 1500 backlogged deaths when switching to include "probable" deaths. In some states, there appears to be a weekly cycle where deaths are under-reported on the weekend. This is especially pronounced for the U.S. as a whole. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. }
      \label{fig:data}
  \end{figure}
  
@@ -216,7 +212,9 @@ We allow $\beta(t)$ to vary as follows,
 
 $$log(\beta(t)) \sim N(log(\beta(t-1), \sigma_{\beta}^2)$$
 
-This model assumes that forecasts are made on the current level of interventions. 
+This model assumes that forecasts are made on the current level of interventions because $\mathbb{E}[log(\beta_{t+1})] = log(\beta_t)$. That is, the expected value of a random walk in the forecasting stage is simply $\beta_t$ at the last observed value of $t$. 
+
+However, this non-parametric model is particularly susceptible to noise in reporting of cases, since $\beta(t)$ is the parameter that takes individuals from $S$ into $I$. To avoid instability issues, especially when forecasting, we set the random walk value for forecasting to the average of the last 10 days. This is a large enough window to smooth over most reporting issues (excepting data dumps). 
 
 
 % \begin{itemize}
@@ -356,6 +354,17 @@ We use the numpyro probabilistic framework to fit the model.
  
  
  These three versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for the weeks of 2020-05-05, 2020-05-10, 2020-05-17, 2020-05-24 2020-05-31, 2020-06-07, 2020-06-14, 2020-06-2, 2020-06-28, 2020-07-05, 2020-07-12, 2020-07-19, and 2020-07-26. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-12 and beyond not being observable by 2020-08-01.
+ 
+ In the real-time evaluation we also made manual adjustments to account for data dumps through a quality-assurance process. This involved,
+ 
+ \begin{itemize}
+ \item Identifying outliers in recently reported incident cases.
+ \item Search for documented evidence of a data dump. These are usually recorded on state department of health websites and sometimes local news outlets.
+ \item Manually redistribute the incident deaths evenly over the time-frame mentioned by the department of health or news outlet for the backlog window.
+ \end{itemize}
+ 
+ 
+ This process ensured that the observed data does not contain any identifiable outliers (meaning documented by outside sources). In real-time this is necessary to avoid drastic over-predictions caused by data dumps. For example, New Jersey reported nearly 1600 daily deaths as it switched from reporting only confirmed deaths from COVID-19, to confirmed and probable. This would have caused a drastic increase in predictions if not properly identified as data dump. 
 % \begin{itemize}
 % \item Real-time forecasting evaluation for 14 weeks starting April 20th 2020. 
 % \item Forecasts submitted every Monday using incident data up until Sunday
@@ -375,17 +384,18 @@ We use the numpyro probabilistic framework to fit the model.
  \item \textbf{MechBayes Death Only} MechBayes Full with observations on cases removed.
  \end{itemize}
  
- Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed Case Detection Probability contained in MechBayes Full. This allows to perform a nested model comparison using MAE as the scoring metric. \textbf{Include something with beta}
+ Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed Case Detection Probability contained in MechBayes Full. This allows to perform a nested model comparison using MAE as the scoring metric. 
+ 
+ We also fix all non-model component variation. That is, we average over the last 10 days of $\beta(t)$ when forecasting, as well as manually redistributing data dumps. This ensures that the comparison is only on model components.
 
 
 \section{COVID-Hub Results}
-
 
 \begin{figure}
 
     \includegraphics[scale=.2]{fit_and_forecast_results.png}
 
-\caption{Example fit and forecast for states with over 50 incident deaths. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data, even under extreme reporting variation such as in North Carolina. It is also able to handle extreme outliers, such as in Illinois or New Jersey. \textbf{Is this totally true or should we mention manual adjustments.}}
+\caption{Example fit and forecast for states with over 50 incident deaths. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data.}
 \label{fig:fit_and_forecast_results}
 \end{figure}
 
@@ -396,15 +406,15 @@ We use the numpyro probabilistic framework to fit the model.
      \begin{subfigure}{1\textwidth}
   \centering
     \includegraphics[scale=.2]{beta_t_plot.png}
-    \caption{Time varying-beta.}
+    \caption{Time-varying beta ($\beta(t)$).}
 \end{subfigure}
 
 \begin{subfigure}{1\textwidth}
   \centering
     \includegraphics[scale=.2]{detection_plot.png}
-    \caption{Time-varying detection probability}
+    \caption{Time-varying detection probability ($p_{c,t}$)}
 \end{subfigure} 
- \caption{  A) Time varying beta parameter for four all geographies with a day exceeding 50 incident deaths. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions. B) Time varying detection probability for four example states. The time varying detection random walk is able account for the increase in testing. }
+ \caption{  A) Time varying beta parameter for all geographies with a day exceeding 50 incident deaths. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta(t)$ upward for $t$ close to 0 in states that did not experience community transmission in March.  B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing. There is remarkable similarity among the estimated detection probability trajectories between states.}
 \label{fig:model_details}
 \end{figure}
 
@@ -441,7 +451,7 @@ We use the numpyro probabilistic framework to fit the model.
     \caption{WIS by target}
 \end{subfigure}%
 
-\caption{Scores from COVID-HUB broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
+\caption{Scores from COVID-HUB broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. Note that targets averaging over timezero include an average over all model versions. }
 \label{fig:covidhub}
 \end{figure}
 
@@ -474,7 +484,7 @@ Finally, we break down the results by target by averaging over region and timeze
 %   
    
    
-   \section{Ablation Results}
+   \section{Nested Model Comaprison}
 
 We can see from \ref{fig:ablation} that MechBayes Full is consistently better than MechBayes Death Only or MechBayes Fixed Case Detection Probability. The only exception seems to be June 22nd 2020 for the two week ahead target. Late June 2020 is when many states in the U.S. began to see an uptick in cases again, with Texas, Florida, and California seeing their largest total case counts since the beginning of the pandemic. Since MechBayes is conditional on the current level of interventions, forecasts made from June 22nd assumed the same level of intervention present on June 22nd. During this time, each state was re-opening various establishments, while cases were rising. MechBayes Full forecasted an exponential growth in cases, which was reflected in a large over prediction two weeks later on July 4th. 
 
@@ -503,7 +513,7 @@ We can also see that the MechBayes Death Only is consistently better than MechBa
     \caption{Ablation results 4 week ahead. }
 \end{subfigure}
 
-\caption{Scores from COVID-HUB broken down by region, target and timezero. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020.  }
+\caption{Nested model comparison MAE broken down by timezero and target. We can see that MechBayes Full performs better than MechBayes No Detection Random Walk and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model.  }
 \label{fig:ablation}
 \end{figure}
 
@@ -521,25 +531,23 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. 
 
-\item \textbf{MechBayes is biased high}. We can see from Figure \ref{fig:results_discussion} that MechBayes was biased high with respect to the median forecast. We suspect this is due to the inherent exponential growth of an SEIR model when the number of susceptibles is small. Since overall prevalence in any state is well below the number needed to reach herd immunity, when the model sees an increase in cases it treats this as exponential growth, which translates into exponential growth in deaths. However, in the recent forecasts the bias is consistently lower than the COVID-HUB baseline model. Note the extreme low bias in the first submission is due to the omission of the U.S. in the submission. \textbf{is this true} \textbf{something is telling me this is also related to the exponential random walk}
-
-\item \textbf{MechBayes is probabilistically well-calibrated compared with the baseline model}. Small WIS values are better in terms of calibration \cite{bracher2020evaluating}. The two sources of uncertainty in MechBayes come from the distribution over the differential equation parameters and the observation noise, unlike a fully stochastic model that has inherent variability within the differential equation transitions. This suggest that even a deterministic model core can produce well calibrated prediction intervals by capturing the uncertainty in parameter estimation and observation noise.
+\item \textbf{MechBayes is biased high}. We can see from Figure \ref{fig:results_discussion} that MechBayes was biased high with respect to the median forecast. We suspect this is due to the inherent exponential growth of an SEIR model when the number of susceptibles is small. Since overall prevalence in any state is well below the number needed to reach herd immunity, when the model sees an increase in cases it treats this as exponential growth, which translates into exponential growth in deaths. However, in the recent forecasts the bias is consistently lower than the COVID-HUB baseline model. Note the extreme low bias in the first submission is due to the omission of the U.S. in the submission. \textbf{is this true} 
+\item \textbf{MechBayes is probabilistically well-calibrated compared with the baseline model}. Small WIS values are better in terms of calibration \cite{bracher2020evaluating}. The two sources of uncertainty in MechBayes come from the distribution over the differential equation parameters and the observation noise, unlike a fully stochastic model that has inherent variability within the differential equation transitions. This suggest that even a deterministic model core can produce well calibrated prediction intervals by capturing the uncertainty in parameter estimation and observation noise. 
 
 
 \item \textbf{MechBayes Full outperforms the other versions on probabilistic scoring measures}. As can be seen by Figure \ref{fig:results_discussion}, MechBayes Full achieves the best log-score \textbf{sub for WIS } out the three nested models. This suggested that our extensions to the basic SEIR model not only improve point-forecasts, but also calibration. 
 
-\item \textbf{MechBayes is remarkably accurate}. As we can see from Figure \ref{fig:covidhub} the MAE values, when averaged over geographical unit, are as low as 20 deaths. On average the MAE values are near 50 deaths. Although there is an open question as to what is accurate enough to be actionable by public health officials, MechBayes seems to be able to provide an indicator within a reasonable range of error to make decisions about resource allocation. However, as expected, there is wide variance by geography due to differing population size. \textbf{would it make sense to normalize MAE by population size?}
-
+\item \textbf{MechBayes is remarkably accurate}. As we can see from Figure \ref{fig:covidhub} the MAE values, when averaged over geographical unit, are as low as 20 deaths. On average the MAE values are near 50 deaths. Although there is an open question as to what is accurate enough to be actionable by public health officials, MechBayes seems to be able to provide an indicator within a reasonable range of error to make decisions about resource allocation. However, as expected, there is wide variance by geography due to differing population size. If we normalize by population size, then the highest MAE by geographical unit is no more than 55 deaths per 100,000 people, with an average of 20 deaths per 1000,000 people.
 \end{itemize}
 
 
 \begin{figure}
 \begin{subfigure}{.5\textwidth}
-\includegraphics[scale=.125]{bias_by_timezero.png}
+\includegraphics[scale=.1]{bias_by_timezero.png}
 \subcaption{Bias of MechBayes and COVID-Baseline as a function of time. }
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
-\includegraphics[scale=.125]{ablation_calibration.png}
+\includegraphics[scale=.1]{ablation_calibration.png}
 \subcaption{Comparison of nested models using the probabilistic scoring mechanism}
 \end{subfigure}
 \caption{A) Bias of MechBayes over time. B) Probabilistic Calibration}

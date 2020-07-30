@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  30 JUL 2020 11:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  30 JUL 2020 17:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -633,45 +633,296 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
 
-LaTeX Warning: Citation `COVID-HUB' on page 4 undefined on input line 113.
-
-<data_plot.png, id=20, 3011.25pt x 3011.25pt>
-File: data_plot.png Graphic file (type png)
- <use data_plot.png>
-Package pdftex.def Info: data_plot.png used on input line 134.
-(pdftex.def)             Requested size: 526.97665pt x 526.97665pt.
-
-Overfull \hbox (96.97203pt too wide) in paragraph at lines 134--135
- [][] 
- []
+LaTeX Warning: Citation `covidhub' on page 4 undefined on input line 113.
 
 
-LaTeX Warning: Float too large for page by 47.50009pt on input line 137.
+LaTeX Warning: Citation `bracher2019multibin' on page 4 undefined on input line
+ 124.
+
+
+LaTeX Warning: Citation `reich2019reply' on page 4 undefined on input line 124.
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4]
-[5 <./data_plot.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+<data_plot.png, id=26, 3011.25pt x 3011.25pt>
+File: data_plot.png Graphic file (type png)
+ <use data_plot.png>
+Package pdftex.def Info: data_plot.png used on input line 130.
+(pdftex.def)             Requested size: 421.57213pt x 421.57213pt.
+ [5] [6 <./data_plot.png>]
 
- [6]
-
-LaTeX Warning: Citation `numpyro' on page 7 undefined on input line 182.
+LaTeX Warning: Citation `numpyro' on page 7 undefined on input line 178.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8]
+[8]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-Overfull \hbox (46.27472pt too wide) detected at line 275
+Overfull \hbox (46.27472pt too wide) detected at line 273
 \OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 (0) = (\OML/cmm/m/it/10.95 S\OT1/cmr/m/
 n/10.95 (0)\OML/cmm/m/it/10.95 ; E\OT1/cmr/m/n/10.95 (0)\OML/cmm/m/it/10.95 ; I
 \OT1/cmr/m/n/10.95 (0)\OML/cmm/m/it/10.95 ; R\OT1/cmr/m/n/10.95 (0)\OML/cmm/m/i
 t/10.95 ; D[]\OT1/cmr/m/n/10.95 (0)\OML/cmm/m/it/10.95 ; D[]\OT1/cmr/m/n/10.95 
-(0)\OML/cmm/m/it/10.95 ; C\OT
+(0)\OML/cmm/m/it/10.95 ; C\OT1/cmr/m/n/10.95 (0)) = (\OML/cmm/m/it/10.95 N \OMS
+/cmsy/m/n/10.95 ^^@ \OML/cmm/m/it/10.95 E[] \OMS/cmsy/m/n/10.95 ^^@ \OML/cmm/m/
+it/10.95 I[] \OMS/cmsy/m/n/10.95 ^^@ \OML/cmm/m/it/10.95 D[] \OMS/cmsy/m/n/10.9
+5 ^^@ \OML/cmm/m/it/10.95 D[]; E[]; I[]; R[]; D[]; D[]; I[]\OT1/cmr/m/n/10.95 )
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11]
+[12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13]
+<fit_and_forecast_results.png, id=64, 2409.0pt x 2409.0pt>
+File: fit_and_forecast_results.png Graphic file (type png)
+
+<use fit_and_forecast_results.png>
+Package pdftex.def Info: fit_and_forecast_results.png used on input line 396.
+(pdftex.def)             Requested size: 481.79147pt x 481.79147pt.
+
+Overfull \hbox (51.78685pt too wide) in paragraph at lines 396--397
+ [][] 
+ []
+
+<beta_t_plot.png, id=65, 2409.0pt x 1204.5pt>
+File: beta_t_plot.png Graphic file (type png)
+ <use beta_t_plot.png>
+Package pdftex.def Info: beta_t_plot.png used on input line 408.
+(pdftex.def)             Requested size: 481.79147pt x 240.89574pt.
+
+Overfull \hbox (51.78685pt too wide) in paragraph at lines 408--409
+ [][] 
+ []
+
+<detection_plot.png, id=66, 2409.0pt x 1204.5pt>
+File: detection_plot.png Graphic file (type png)
+ <use detection_plot.png>
+Package pdftex.def Info: detection_plot.png used on input line 414.
+(pdftex.def)             Requested size: 481.79147pt x 240.89574pt.
+
+Overfull \hbox (51.78685pt too wide) in paragraph at lines 414--415
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 104.31491pt on input line 419.
+
+<mae_results_by_time_zero.png, id=67, 2409.0pt x 1204.5pt>
+File: mae_results_by_time_zero.png Graphic file (type png)
+
+<use mae_results_by_time_zero.png>
+Package pdftex.def Info: mae_results_by_time_zero.png used on input line 425.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 425--426
+ [][] 
+ []
+
+<wis_results_by_time_zero.png, id=68, 2409.0pt x 1204.5pt>
+File: wis_results_by_time_zero.png Graphic file (type png)
+
+<use wis_results_by_time_zero.png>
+Package pdftex.def Info: wis_results_by_time_zero.png used on input line 430.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 430--431
+ [][] 
+ []
+
+<mae_results_by_region.png, id=69, 2409.0pt x 1204.5pt>
+File: mae_results_by_region.png Graphic file (type png)
+
+<use mae_results_by_region.png>
+Package pdftex.def Info: mae_results_by_region.png used on input line 435.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 435--436
+ [][] 
+ []
+
+<wis_results_by_region.png, id=70, 2409.0pt x 1204.5pt>
+File: wis_results_by_region.png Graphic file (type png)
+
+<use wis_results_by_region.png>
+Package pdftex.def Info: wis_results_by_region.png used on input line 440.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 440--441
+ [][] 
+ []
+
+<mae_results_by_target.png, id=71, 2409.0pt x 1204.5pt>
+File: mae_results_by_target.png Graphic file (type png)
+
+<use mae_results_by_target.png>
+Package pdftex.def Info: mae_results_by_target.png used on input line 445.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 445--446
+ [][] 
+ []
+
+<wis_results_by_target.png, id=72, 2409.0pt x 1204.5pt>
+File: wis_results_by_target.png Graphic file (type png)
+
+<use wis_results_by_target.png>
+Package pdftex.def Info: wis_results_by_target.png used on input line 450.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 450--451
+ [][] 
+ []
+
+[14] [15 <./fit_and_forecast_results.png>] [16 <./beta_t_plot.png> <./detection
+_plot.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17 <./mae_results_by_time_zero.png> <./wis_results_by_time_zero.png> <./mae_r
+esults_by_region.png> <./wis_results_by_region.png> <./mae_results_by_target.pn
+g> <./wis_results_by_target.png>]
+
+LaTeX Warning: Citation `COVID-HUB' on page 18 undefined on input line 465.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [18]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [19]
+<ablation_1.png, id=102, 1806.75pt x 1806.75pt>
+File: ablation_1.png Graphic file (type png)
+ <use ablation_1.png>
+Package pdftex.def Info: ablation_1.png used on input line 497.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
+
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 497--498
+ [][] 
+ []
+
+<ablation_2.png, id=103, 1806.75pt x 1806.75pt>
+File: ablation_2.png Graphic file (type png)
+ <use ablation_2.png>
+Package pdftex.def Info: ablation_2.png used on input line 502.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
+
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 502--503
+ [][] 
+ []
+
+<ablation_3.png, id=104, 1806.75pt x 1806.75pt>
+File: ablation_3.png Graphic file (type png)
+ <use ablation_3.png>
+Package pdftex.def Info: ablation_3.png used on input line 507.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
+
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 507--508
+ [][] 
+ []
+
+<ablation_4.png, id=105, 1806.75pt x 1806.75pt>
+File: ablation_4.png Graphic file (type png)
+ <use ablation_4.png>
+Package pdftex.def Info: ablation_4.png used on input line 512.
+(pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
+
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 512--513
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 112.52505pt on input line 518.
+
+[20] [21 <./ablation_1.png> <./ablation_2.png> <./ablation_3.png> <./ablation_4
+.png>]
+Overfull \hbox (19.34431pt too wide) in paragraph at lines 530--531
+[]\OT1/cmr/bx/n/10.95 Allowing for time-varying trans-mis-si-bil-ity is nec-es-
+sary to non-parametrically
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [22]
+<bias_by_timezero.png, id=119, 2409.0pt x 1204.5pt>
+File: bias_by_timezero.png Graphic file (type png)
+ <use bias_by_timezero.png>
+Package pdftex.def Info: bias_by_timezero.png used on input line 546.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 546--547
+[][] 
+ []
+
+<ablation_calibration.png, id=120, 2409.0pt x 1204.5pt>
+File: ablation_calibration.png Graphic file (type png)
+
+<use ablation_calibration.png>
+Package pdftex.def Info: ablation_calibration.png used on input line 550.
+(pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
+
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 550--551
+[][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23]
+[24 <./bias_by_timezero.png> <./ablation_calibration.png>] (./paper.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [25]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [26])
+[27] (./paper.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 15203 strings out of 492995
+ 296534 string characters out of 6132704
+ 333679 words of memory out of 5000000
+ 18284 multiletter control sequences out of 15000+600000
+ 18927 words of font info for 70 fonts, out of 8000000 for 9000
+ 1302 hyphenation exceptions out of 8191
+ 55i,10n,60p,1825b,995s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/
+texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texliv
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
+/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2
+017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on paper.pdf (27 pages, 2927892 bytes).
+PDF statistics:
+ 192 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+

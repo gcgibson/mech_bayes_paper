@@ -13,7 +13,7 @@ state_deaths_subset_idx  <- unique(state_deaths[state_deaths$value >= 50,]$locat
 state_deaths_subset <- state_deaths[state_deaths$location_name %in% state_deaths_subset_idx,]
 library(ggplot2)
 
-data_plot <- ggplot(state_deaths_subset,aes(x=date,y=value)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free") + theme_bw()
+data_plot <- ggplot(state_deaths_subset,aes(x=date,y=value)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free") + theme_bw() +ylab("Incident Deaths") + xlab("Date")
 ggsave("/Users/gcgibson/mech_bayes_paper/data_plot.png",data_plot,device="png",width=10,height=10)
 
 

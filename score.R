@@ -20,12 +20,24 @@ tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target) %>
 tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-04-20",]
 tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
 library(ggplot2)
-mae_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+mae_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + 
+  geom_vline(xintercept=as.numeric(as.Date("2020-05-10")),linetype=4) + geom_vline(xintercept=as.numeric(as.Date("2020-05-24")),linetype=4) +
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_time_zero.png",mae_results_by_time_zero,device="png",width=8,height=4)
 
 
 mae_results_by_region <- ggplot(tmp_subset %>% group_by(unit,model) %>% summarize(mae=mean(mae)),aes(x=unit,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_region.png",mae_results_by_region,device="png",width=8,height=4)
+
+
+#normalize by population
+pops <- read.csv("/Users/gcgibson/Downloads/nst-est2019-alldata.csv")
+pops$state <- pops$STATE
+library(dplyr)
+tmp_subset$state <- as.integer(tmp_subset$unit)
+tmp_subset_w_pop <- tmp_subset %>% left_join(pops,by = "state")
+mae_results_by_region_normalized <- ggplot(tmp_subset_w_pop %>% group_by(model) %>% summarize(mae=mean(mae), CENSUS2010POP=CENSUS2010POP[1]),aes(x=1,y=mae/CENSUS2010POP*1e6,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_region_normalized.png",mae_results_by_region_normalized,device="png",width=8,height=4)
+
 
 mae_results_by_target <- ggplot(tmp_subset %>% group_by(target,model) %>% summarize(mae=mean(mae)),aes(x=target,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_target.png",mae_results_by_target,device="png",width=8,height=4)
@@ -36,7 +48,7 @@ ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_time_zero.png",wis_resul
 
 
 wis_results_by_region <- ggplot(tmp_subset %>% group_by(unit,model) %>% summarize(wis=mean(wis)),aes(x=unit,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_region.png",mae_results_by_region,device="png",width=8,height=4)
+ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_region.png",wis_results_by_region,device="png",width=8,height=4)
 
 
 wis_results_by_target <- ggplot(tmp_subset %>% group_by(target,model) %>% summarize(wis=mean(wis)),aes(x=target,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
