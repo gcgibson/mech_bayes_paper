@@ -13,6 +13,13 @@ Chelsea~S Lutz, Mimi~P Huynh, Monica Schroeder, Sophia Anyatonwu, F~Scott
   forward using influenza forecasting examples.
 \newblock {\em BMC Public Health}, 19(1):1659, 2019.
 
+\bibitem{myers2000forecasting}
+Monica~F Myers, DJ~Rogers, J~Cox, Antoine Flahault, and Simon~I Hay.
+\newblock Forecasting disease risk for increased epidemic preparedness in
+  public health.
+\newblock In {\em Advances in parasitology}, volume~47, pages 309--330.
+  Elsevier, 2000.
+
 \bibitem{kermack1927contribution}
 William~Ogilvy Kermack and Anderson~G McKendrick.
 \newblock A contribution to the mathematical theory of epidemics.
@@ -87,12 +94,6 @@ Alexandra Smirnova, Linda deCamp, and Gerardo Chowell.
   time-dependent transmission rates using the seir model.
 \newblock {\em Bulletin of mathematical biology}, 81(11):4343--4365, 2019.
 
-\bibitem{lopez2020modified}
-Leonardo L{\'o}pez and Xavier Rodo.
-\newblock A modified seir model to predict the covid-19 outbreak in spain and
-  italy: simulating control scenarios and multi-scale epidemics.
-\newblock {\em Available at SSRN 3576802}, 2020.
-
 \bibitem{giordano2020modelling}
 Giulia Giordano, Franco Blanchini, Raffaele Bruno, Patrizio Colaneri,
   Alessandro Di~Filippo, Angela Di~Matteo, and Marta Colaneri.
@@ -129,6 +130,12 @@ Seth Flaxman, Swapnil Mishra, Axel Gandy, H~Juliette~T Unwin, Thomas~A Mellan,
   covid-19 in europe.
 \newblock {\em Nature}, pages 1--5, 2020.
 
+\bibitem{lopez2020modified}
+Leonardo L{\'o}pez and Xavier Rodo.
+\newblock A modified seir model to predict the covid-19 outbreak in spain and
+  italy: simulating control scenarios and multi-scale epidemics.
+\newblock {\em Available at SSRN 3576802}, 2020.
+
 \bibitem{pei2020differential}
 Sen Pei, Sasikiran Kandula, and Jeffrey Shaman.
 \newblock Differential effects of intervention timing on covid-19 spread in the
@@ -157,6 +164,11 @@ T~Russel, Joel Hellewell, S~Abbot, et~al.
 \newblock {\em Available at the Centre for Mathematical Modelling of Infectious
   Diseases Repository, here}, 2020.
 
+\bibitem{covidhub}
+ReichLab.
+\newblock {\em COVID-HUB}, 2020 (accessed July 27, 2020).
+\newblock \url{https://doi.org/10.5281/zenodo.3963372}.
+
 \bibitem{reich2020zoltar}
 Nicholas~G Reich, Matthew Cornell, Evan~L Ray, Katie House, and Khoa Le.
 \newblock The zoltar forecast archive: a tool to facilitate standardization and
@@ -168,11 +180,55 @@ Johannes Bracher, Evan~L Ray, Tilmann Gneiting, and Nicholas~G Reich.
 \newblock Evaluating epidemic forecasts in an interval format.
 \newblock {\em arXiv preprint arXiv:2005.12881}, 2020.
 
+\bibitem{bracher2019multibin}
+Johannes Bracher.
+\newblock On the multibin logarithmic score used in the flusight competitions.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  116(42):20809--20810, 2019.
+
+\bibitem{reich2019reply}
+Nicholas~G Reich, Dave Osthus, Evan~L Ray, Teresa~K Yamana, Matthew
+  Biggerstaff, Michael~A Johansson, Roni Rosenfeld, and Jeffrey Shaman.
+\newblock Reply to bracher: Scoring probabilistic forecasts to maximize public
+  health interpretability.
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America}, 116(42):20811, 2019.
+
+\bibitem{phan2019composable}
+Du~Phan, Neeraj Pradhan, and Martin Jankowiak.
+\newblock Composable effects for flexible and accelerated probabilistic
+  programming in numpyro.
+\newblock {\em arXiv preprint arXiv:1912.11554}, 2019.
+
+\bibitem{simonov2020persuasive}
+Andrey Simonov, Szymon~K Sacher, Jean-Pierre~H Dub{\'e}, and Shirsho Biswas.
+\newblock The persuasive effect of fox news: non-compliance with social
+  distancing during the covid-19 pandemic.
+\newblock Technical report, National Bureau of Economic Research, 2020.
+
+\bibitem{midas}
+Midas.
+\newblock Covid19 parameter estimates.
+\newblock
+  \url{https://github.com/midas-network/COVID-19/tree/master/parameter_estimates/2019_novel_coronavirus},
+  2020.
+
+\bibitem{heffner2020emotional}
+Joseph Heffner, Marc~Lluis Vives, and Oriel FeldmanHall.
+\newblock Emotional responses to prosocial messages increase willingness to
+  self-isolate during the covid-19 pandemic.
+\newblock 2020.
+
 \bibitem{wallinga2007generation}
 Jacco Wallinga and Marc Lipsitch.
 \newblock How generation intervals shape the relationship between growth rates
   and reproductive numbers.
 \newblock {\em Proceedings of the Royal Society B: Biological Sciences},
   274(1609):599--604, 2007.
+
+\bibitem{numpyro}
+Uber~AI Labs.
+\newblock {\em numpyro}, 2020 (accessed July 27, 2020).
+\newblock \url{https://readthedocs.org/projects/numpyro/downloads/pdf/stable/}.
 
 \end{thebibliography}

@@ -1,7 +1,7 @@
 ablation_res <- read.csv("/Users/gcgibson/mech_bayes_paper/summary-states.csv")
 ablation_res$mae <- ablation_res$MAE
 library(ggplot2)
-
+library(ggthemes)
 ### 
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(6),]
@@ -12,7 +12,7 @@ ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
   
 ablation_1 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
          summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + 
-  theme_bw() + ylab("MAE") + xlab("Date") 
+  theme_bw() + ylab("MAE") + xlab("Date")  + scale_color_brewer(palette="Set3")
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_1.png",ablation_1,device="png",width=6,height=6)
 
 
@@ -28,7 +28,7 @@ ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
 ablation_2 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
-                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + theme_bw()+ ylab("MAE") + xlab("Date")
+                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + theme_bw()+ ylab("MAE") + xlab("Date") + scale_color_brewer(palette="Set3")
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_2.png",ablation_2,device="png",width=6,height=6)
 
 
@@ -41,7 +41,7 @@ ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
 ablation_3 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
-                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + theme_bw()+ ylab("MAE") + xlab("Date")
+                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + theme_bw()+ ylab("MAE") + xlab("Date") +scale_color_brewer(palette="Set3")
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_3.png",ablation_3,device="png",width=6,height=6)
 
 
@@ -55,11 +55,11 @@ ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
 ablation_4 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
-                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5) + theme_bw()+ ylab("MAE") + xlab("Date")
+                       summarize(mae=mean(mae)),aes(x=forecast_date,y=mae,col=model)) + geom_point(size=1.5)  +theme_bw()+scale_color_brewer(palette="Set3")+ ylab("MAE") + xlab("Date") 
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_4.png",ablation_4,device="png",width=6,height=6)
 
 
 
 ablation_calibration <- ggplot(ablation_res %>% group_by(forecast_date,model) %>% 
-        summarize(ls=mean(LS)),aes(x=forecast_date,y=ls,col=model)) + geom_point(size=1.5) + theme_bw()
+        summarize(ls=mean(LS)),aes(x=forecast_date,y=ls,col=model)) + geom_point(size=1.5) + theme_bw() +scale_color_brewer(palette="Set3")
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_calibration.png",ablation_calibration,device="png",width=8,height=4)

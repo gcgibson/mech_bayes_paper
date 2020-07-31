@@ -22,6 +22,9 @@ tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_
 library(ggplot2)
 mae_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + 
   geom_vline(xintercept=as.numeric(as.Date("2020-05-10")),linetype=4) + geom_vline(xintercept=as.numeric(as.Date("2020-05-24")),linetype=4) +
+  annotate("text", x =as.Date("2020-05-08"), y = 400, label = "V1") +  annotate("text", x =as.Date("2020-05-22"), y = 400, label = "V2") +   annotate("text", x =as.Date("2020-07-22"), y = 400, label = "V3")
+
+
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_time_zero.png",mae_results_by_time_zero,device="png",width=8,height=4)
 
 
@@ -43,7 +46,10 @@ mae_results_by_target <- ggplot(tmp_subset %>% group_by(target,model) %>% summar
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_target.png",mae_results_by_target,device="png",width=8,height=4)
 
 
-wis_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(wis=mean(wis)),aes(x=timezero,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
+wis_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(wis=mean(wis)),aes(x=timezero,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + geom_vline(xintercept=as.numeric(as.Date("2020-05-10")),linetype=4) + geom_vline(xintercept=as.numeric(as.Date("2020-05-24")),linetype=4) +
+  geom_vline(xintercept=as.numeric(as.Date("2020-05-10")),linetype=4) + geom_vline(xintercept=as.numeric(as.Date("2020-05-24")),linetype=4) +
+  annotate("text", x =as.Date("2020-05-08"), y = 400, label = "V1") +  annotate("text", x =as.Date("2020-05-22"), y = 400, label = "V2") +   annotate("text", x =as.Date("2020-07-22"), y = 400, label = "V3")
+
 ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_time_zero.png",wis_results_by_time_zero,device="png",width=8,height=4)
 
 
