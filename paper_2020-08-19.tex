@@ -122,20 +122,11 @@ With the outbreak of COVID-19, accounting for testing has become a critical elem
 %\end{itemize}
 
 \section{Data}
-	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to August 1st 2020 and captures all 50 states, as well as Guam, Puerto Rico, and American Samoa. As noted in \cite{krantz2020level}, COVID-19 cases are often dramatically under-reported, with reporting rates for the U.S. estimated at 20-30\% \cite{russel2020using}. In addition, there has also been severe temporal variation in the percent of symptomatic cases  \cite{russel2020using}. There are large discrepancies in reporting practices across the states (Figure \ref{fig:data}). Most notably, New Jersey reported an additional 1600 incident deaths when changing reporting practices to include "probable" deaths as well as confirmed deaths due to COVID-19. However, many other states have at least one outlying value, usually due to backlog reporting, where a large quantity of previous deaths is reported on a single day. We can also see from Figure \ref{fig:data} that some states do not report on particular days (usually weekends) leading to 0 incident deaths for the day.  Some states exhibit relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. This effect is most pronounced at the aggregate U.S. level, with a clear weekly cycle in reporting. Finally, we can see that while some states have reached their first peak and dropped off, others are starting to see a rapid increase in confirmed deaths, such as the Carolinas, Texas, and Florida. 
-		
-In order to organize collaborative efforts across the modeling community, the ReichLab of UMass Amherst has developed the Covid19-ForecastHub forecast repository and visualization tool \cite{covidhub}. The repository is meant to standardize probabilistic forecast formats, submission times, and targets across the COVID-19 modeling community, allowing for both ensemble modeling and easy comparison against baseline models. The Covid19-ForecastHub team have been soliciting forecasts for 1-4 week ahead incident and cumulative deaths since the beginning of the April 2020.  A single submission file contains a forecast distribution for 1-4 week ahead incident and cumulative deaths for all geographies. An individual forecast distribution is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. The quantiles used are $\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}$, with the median ($.5$ quantile) representing the point-forecast.
-%\begin{itemize}
-%\item We use cases/deaths from JHU
-%\item Under-reporting issues
-%\item Batch reporting issues
-%\item Revision Issues
-%\item Weekly cycle issues
-%\item High variability in incident data
-%\item Ref Figure 1
-%\end{itemize}
-
-Forecasts are due on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts are stored in the generic repository Zoltar, which allows teams to access both their model and a baseline model \cite{reich2020zoltar}. Zoltar also scores models according to mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. This allows forecasts to be evaluated both point-wise and probabilistically. We can think of WIS as an approximation the the log-score, a commonly used metric in probabilistic forecasting \cite{bracher2019multibin}\cite{reich2019reply}.
+	In this analysis we use confirmed case counts and deaths as reported by the Johns Hopkins University Center for Systems Science and Engineering \cite{dong2020interactive}. This a time series dataset which we truncate to begin March 1st 2020 to August 1st 2020 and captures all 50 states, as well as Guam, Puerto Rico, American Samoa, District of Columbia, Northern Mariana Islands and U.S. Virgin Islands. As noted in \cite{krantz2020level}, COVID-19 cases are under-reported, with the fraction of all infections reported as cases for the U.S. estimated at 20-30\% \cite{russel2020using}. 
+	There are large discrepancies in reporting practices across the states (Figure \ref{fig:data}). For example, New Jersey reported an additional 1600 incident deaths when changing reporting practices to include \"probable" deaths as well as confirmed deaths due to COVID-19 on June 25th 2020. However, many other states have at least one outlying value, usually due to backlog reporting, where a large number of deaths occurring in previous weeks are reported on a single day. We can also see from Figure \ref{fig:data} that some states do not report on particular days (usually weekends) leading to 0 incident deaths for the day. Some states also revise the cause of death, allowing for negative incident deaths.  Some states exhibit relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. This effect is most pronounced at the aggregate U.S. level, which shows a clear weekly cycle in reporting. 
+	
+	
+We made probabilistic forecasts  for 1-4 week ahead incident and cumulative deaths for all geographies. An individual forecast distribution is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. The quantiles used are $\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}$, with the median ($.5$ quantile) representing the point-forecast. Forecasts were made on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts were evaluated using mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. The WIS is an approximation to the continuously ranked probability score (CRPS), a commonly used metric in probabilistic forecasting \cite{bracher2019multibin}\cite{reich2019reply}.
 
 
 
@@ -147,27 +138,14 @@ Forecasts are due on Monday evenings and therefore use the incident data up unti
  \end{figure}
  
  \section{Compartmental Model}
-% \begin{itemize}
-% \item Basic SEIR model description
-% \item Definition of compartmental model (description of diff eq as flow between compartments)
-% \item Ref Figure 2
-% \item Interpretation of parameters in basic SEIR model 
-% \begin{itemize}
-% \item Sigma
-% \item Gamma
-% \item beta
-% \end{itemize}
-% 
-% \end{itemize}
-% 
-% \begin{figure}
-In a given time-step (e.g. one day), each member of the population of interest belongs to one of the following mutually-and-exhaustive compartments:
- Susceptible $S$, Exposed but not yet infectious $E$, Infectious $I$, Recovered $R$, hospitalized before death $D_1$ , and finally deceased $D_2$. Here we assume everyone who is hospitalized will eventually become deceased in order to separate the rate into both a case fatality ratio (CFR) parameter as well as a time from symptoms to death parameter, which both have prior estimates from the literature. We omit an explicit hospitalization compartment since the available hospitalization data is highly variable by state and suffers even more reporting issues than case data.  For simplicity, we assume a closed population of size $N$. 
+
+In a given time-step (e.g. one day), each member of the population of a single geography belongs to one of the following mutually exhaustive compartments:
+ Susceptible $S$, Exposed but not yet infectious $E$, Infectious $I$, Recovered $R$, hospitalized before death $D_1$ , and  deceased $D_2$ (Figure \ref{fig:seird}). Here we assume everyone who is hospitalized will eventually become deceased in order to separate the rate into both a case fatality ratio (CFR) parameter as well as a time from symptoms to death parameter, which both have prior estimates from the literature \cite{russell2020estimating}. We omit an explicit hospitalization compartment since the available hospitalization data is highly variable by state and suffers even more reporting issues than case data.  For simplicity, we assume a closed population of size $N$. 
 The following parameters govern how members of the population move between compartments:  
 \begin{packed_item}
 \item $\beta(t)$: transmission rate, which we allow to vary by time $t$
-\item $\sigma$: rate of transition from the exposed state $E$ to infectious state $I$; i.e., $1/\sigma$ is the expected duration of the latent period
-\item $\gamma$: rate of transition from  the infectious state $I$ to no longer being infectious; i.e., $1/\gamma$ is the expected duration of the infectious period
+\item $\sigma$: rate of transition from the exposed state $E$ to infectious state $I$; i.e., $1/\sigma$ is the expected duration of the time between exposure and symptom onset. 
+\item $\gamma$: rate of transition from  the infectious state $I$ to no longer being infectious (either to state $D_1$ or $R$); i.e., $1/\gamma$ is the expected duration of the infectious period
 \item $\rho$: fatality rate (i.e., probability of transitioning from I to $D_1$ instead of I to R)
 \item $\lambda$: rate of transition from $D_1$ to $D_2$ 
 (i.e., the inverse of expected number of days in $D_1$ compartment before death) 
@@ -195,7 +173,7 @@ The update from time $t$ to time $t+1$ can be solved numerically as
 \begin{equation}
 \bm{X}(t+1)= \text{RK4}\left(\bm{X}(t),\frac{dX}{dt},\beta(t)\right)
 \end{equation},
-where RK4 is the Runge-Katta 4th order approximation (see numpyro ode docs) \cite{phan2019composable}.
+where RK4 is the Runge-Katta 4th order approximation \cite{phan2019composable}.
 
 
 \begin{figure}
@@ -204,15 +182,19 @@ where RK4 is the Runge-Katta 4th order approximation (see numpyro ode docs) \cit
     \node [int] (S)             {$S$};
       \node [int,right=of S] (E)  {$E$};
     \node [int, right=of E] (I) {$I$};
+        \node [int, above=of E] (C) {$C$};
+
     \node [int, right=of I] (D_1) {$D_1$};
+    
     \node [int, right=of D_1] (D_2) {$D_2$};
      \node [int, below=of I] (R) {$R$};
 
    % \coordinate[right=of ] (out); %
     \path[->, auto=false] (S) edge node[yshift=12pt] {$\beta(t) I$ \\[.2em]} (E)
                           (E) edge node[yshift=12pt] {$\sigma$       \\[.2em] } (I) 
+                           (E) edge node[yshift=12pt] {$\sigma$       \\[.2em] } (C) 
                            (I) edge node[yshift=12pt] {$\rho\gamma$       \\[.2em] } (D_1)
-                           (I) edge[bend right=90] node[xshift=-20pt,yshift=-20pt] {$(1-\rho)\gamma$       \\[.4em] } (R)
+                           (I) edge node[xshift=30pt,yshift=-5pt] {$(1-\rho)\gamma$       \\[.4em] } (R)
                             (D_1) edge node[yshift=12pt] {$\lambda$       \\[.2em] } (D_2)  ;
                           \end{tikzpicture}
 \end{center}
@@ -236,12 +218,13 @@ log(\beta(t)) \sim N(log(\beta(t-1), \sigma_{\beta}^2)
 
 This model assumes that forecasts are made on the current level of interventions because $\mathbb{E}[log(\beta(t+1))] = log(\beta(t))$. That is, the expected value of a random walk in the forecasting stage is simply $\beta(t)$ at the last observed value of $t$. 
 
-However, this non-parametric model is particularly susceptible to noise in reporting of cases, since $\beta(t)$ is the parameter that takes individuals from $S$ into $E$. To avoid instability issues, especially when forecasting, we set the random walk value for forecasting to the average of the last 10 days. This is a large enough window to smooth over most reporting issues (excepting data dumps). 
+However, this non-parametric model is particularly susceptible to noise in reporting of cases, since $\beta(t)$ is the parameter that takes individuals from $S$ into $E$. To avoid instability issues, especially when forecasting, we smooth each posterior sample of $\beta$ to be the average over the last 10 days from the sample. This is a large enough window to smooth over most reporting issues (excepting delayed reporting). 
 
 \begin{equation}
-\beta^{forecast}(t+k) = \frac{1}{10}\sum_{i=0}^{9}\beta(t-i)
+\beta^*_{forecast}(t+k) = \frac{1}{10}\sum_{i=0}^{9}\beta^*(t-i)
 \end{equation}
 
+where $\beta^*(t)$ denotes a sample from the posterior at time $t$.
 
 % \begin{itemize}
 % \item Non-parametrically models time-varying transmissibility through a random walk
@@ -254,18 +237,18 @@ However, this non-parametric model is particularly susceptible to noise in repor
  The observed data used to fit the model is based on time-series data of incident confirmed cases $Cases_{t}$ and incident recorded deaths $Deaths_{t}$. 
 For a given state and day, the change in the  confirmed cases and reported deaths are subset of the cumulative number of new infections $C(t)$ and cumulative number of deaths $D2(t)$, respectively. Therefore, we introduce two additional parameters for the detection probability of cases $p_c$ and the detection probability of deaths $p_d$. For both, we set fairly flat priors to reflect these parameters are poorly determined from observed data.
 
-In more detail, $p_c$ is the probability that an infectious person receives a positive test result and is confirmed as case. We assume its prior distribution is given by  $p \sim \Beta(15, 35)$, such that  $\E[p_c] = 0.3$ with concentration 50. This means that we expect 30\% of cases to be detected initially. However, we also allow this to vary by time.
+In more detail, $p_c$ is the probability that an infected person receives a positive test result and is reported by a state or local health authority as a case. We assume its prior distribution is given by  $p \sim \Beta(15, 35)$, such that  $\E[p_c] = 0.3$  with 90\% probability between \[ .22,0.38\]. This means that we expect 30\% of cases to be detected initially, as suggested by the literature \cite{midas}. However, we also allow this to vary by time.
 
 \begin{equation}
 logit(p_{c,t}) \sim N(logit(p_{c,t-1}), \sigma^2)
 \end{equation}
 
-We also assume the probability that a COVID-19 death is reported $p_d$ has a prior distribution given by  $p_d \sim \Beta(90, 10)$. This prior satisfies $\E[p_d] = 0.9$ with concentration 100. That is, we assume that deaths due to COVID-19 are most often correctly reported. 
+We also assume the probability that a COVID-19 death is reported $p_d$ has a prior distribution given by  $p_d \sim \Beta(90, 10)$. This prior satisfies $\E[p_d] = 0.9$ with concentration 100. That is, we assume that deaths due to COVID-19 are most often correctly reported \cite{weinberger2020estimation}. 
 
  
 
 
-Using the above SEIR model and these detection probabilities, we can then express the observed numbers of confirmed cases and deaths as follows.
+Using the above SEIR model and these detection probabilities, we can then express the observed incident numbers of confirmed cases and deaths as follows.
 \begin{equation}
 \text{Cases}_{t} \sim NB(p_{c,t}*[C_{t} - C_{t-1}],\sigma_{c}^2)
 \end{equation}
@@ -283,58 +266,15 @@ Where the difference in $C_{t}-C_{t-1}$ allows us to translate cumulative new ca
 %
 %  \end{itemize}
 
-\subsection{Seeding Epidemic}
-Due to the under-reporting of cases, we cannot use the observed data to seed the epidemic. We instead allow the model to find the initial state values for all compartments except the number of susceptible people, which we take as the population size of the geographic region minus the sum of the initial values for the other compartments to enforce the constraint that the entire system size sums to the population size. We do this by assigning uniform probability to all initial states where the number of people in any given compartment at time zero does not exceed 2\% of the total population. This is a highly conservative estimate for the number of infected, exposed, dead and recovered people at the start of the epidemic. 
+\subsection{Epidemiological Model Parameters}
 
-\begin{align*}
- E_0 &\sim \Unif(0, 0.02 N) \\
-I_0 &\sim \Unif(0, 0.02 N) \\
-  D_{1_0} &\sim \Unif(0, 0.02 N) \\
-   D_{2_0} &\sim \Unif(0, 0.02 N) \\   
-   R_{0} &\sim \Unif(0, 0.02 N) \\   
-\end{align*}
+We use relatively informative priors for epidemiological parameters, such as $\gamma$,$\sigma$, $\rho$,  $\lambda$, and initial compartment values. The details are described in the Appendix A1. However, the identifiability of model parameters in compartmental models where the data consists only of a time series of incident cases and deaths presents a problem for uninformative priors. Using the renewal style equations, it can be shown that the number of newly infected at time $t$ is a function of the time-varying reproductive number, serial interval and previously reported new infections \cite{wallinga2007generation}. This means that a single time series does not contain enough information to separately estimate both the serial interval and the time-varying reproduction number. In an SEIR model, the serial interval is distributed exponential with rate parameter $\sigma + \gamma$ \cite{wallinga2007generation}. Additionally, the time varying reproduction number is $R_t = \frac{\beta(t)*S(t)}{\gamma}$. Therefore, the time series of incident cases is not enough to uniquely identify $\gamma,\sigma,\beta(t)$. In order to make the model identifiable, we impose tight priors on the parameters $\sigma$ and $\gamma$ as estimated by the literature (in essence fixing the serial interval), and we let $\beta(t)$ vary freely. This reflects the underlying biology of the system, since the reciprocal of the sum of $\sigma$ and $\gamma$ may be interpreted as the average time from when an individual becomes infected to when they infect someone else, given that they infect someone else. This is a biological property of the disease, rather than $\beta(t)$ which contains both the biological transmissibility as well as the aggregate effects of human behavior through intervention. This highlights a fundamental philosophical difference between using compartmental models for forecasting rather than interpreting parameters for epidemiological purposes. However, putting relatively informative priors on $\sigma$ and $\gamma$, instead of fixing them, still allows for variation by state due to differing demographic characteristics such as age structure. Fitting the model in a Bayesian way allows for this unique trade off.  
 
-This allows us to initialize the process model:
- \begin{equation} 
- X(0) = (S(0), E(0), I(0), R(0), D_1(0), D_2(0), C(0)) = (N-E_0-I_0-D_{1_0}-D_{2_0},E_0,I_0, R_0, D_{1_0}, D_{2_0}, I_0)
- \end{equation}
-%
-% \begin{itemize}
-% \item Because of detection probability we cannot seed using initial reported data, since this is an underestimate
-% \item Put priors on initial seed
-%  \end{itemize}
-  
-  \subsection{Priors}
-We also place the following priors on the transition parameters: 
-\begin{align*}
-\sigma &\sim \Gamma(5, 5 \hat{d}_E)\\
-\gamma & \sim \Gamma(7, 7 \hat{d}_I) \\
-\beta(0) &\sim \Gamma(1, \hat{d}_I/\hat{R}) \\
-    \rho &\sim \Beta(10, 90)\\ 
-\lambda &\sim \Gamma(10, 100)
-\end{align*}
- Our prior on rate for leaving the exposed compartment $\sigma$ satisfies $\E[\sigma] = 1/\hat{d}_E$, where $\hat{d}_E$ is an initial guess of the duration of the latent period. Currently, we assume $\hat{d}_E = 4.0$ based on published estimates (shortened slightly to account for possible infectiousness prior to developing symptoms) \cite{midas}.
- %
- Our prior on the rate for leaving the infectious compartment $\gamma$ satisfies $\E[\gamma] = 1/\hat{d}_I$, where $\hat{d}_I$ is an initial guess for the duration of infectiousness. The current setting is $\hat{d}_I = 2.0$ to model the likely isolation of individuals after symptom onset \cite{heffner2020emotional}. 
-Our prior on the initial transmission rate is derived from the relationship between the basic reproductive number $R(0)$ and the length of the infectious period: $R(0) = \beta(0)/\gamma = \beta(0)\times \hat{d}_I$. Therefore, we set our prior on the initial transmission rate to satisfy $\E[\beta(0)] = \hat{R}/\hat{d}_I$ where $\hat{R} = 3.0$ is an initial guess for $R(0)$ and $\hat{d}_I = 2.0$, as described above. 
-%%
-Our prior on the fatality rate $\rho$ satisfies $\E[\rho] = 0.1$ with concentration of $100$.
-Finally, our prior on the rate at which dying patients succumb  satisfies $\lambda$ $\E[\lambda] = 0.1$ with shape 10 corresponding to roughly 10 days in the $D_{1}$ compartment.
-
-The identifiability of model parameters in compartmental models where the data consists only of a time series of incident cases and deaths presents a problem for uninformative priors. Using the renewal style equations, it can be shown that the number of newly infected at time $t$ is a function of the time-varying reproductive number, serial interval and previously reported new infections \cite{wallinga2007generation}. This means that a single time series does not contain enough information to separately estimate both the serial interval and the time-varying reproduction number. In an SEIR model, the serial interval is distributed exponential with rate parameter $\sigma + \gamma$ \cite{wallinga2007generation}. Additionally, the time varying reproduction number is $R_t = \frac{\beta(t)*S(t)}{\gamma}$. Therefore, the time series of incident cases is not enough to uniquely identify $\gamma,\sigma,\beta(t)$. In order to make the model identifiable, we impose tight priors on the parameters $\sigma$ and $\gamma$ as estimated by the literature (in essence fixing the serial interval), and we let $\beta(t)$ vary freely. This reflects the underlying biology of the system, since the reciprocal of the sum of $\sigma$ and $\gamma$ may be interpreted as the average time from when an individual becomes infected to when they infect someone else, given that they infect someone else. This is a biological property of the disease, rather than $\beta(t)$ which contains both the biological transmissibility as well as the aggregate effects of human behavior through intervention. This highlights a fundamental philosophical difference between using compartmental models for forecasting rather than interpreting parameters for epidemiological purposes. However, putting relatively informative priors on $\sigma$ and $\gamma$, instead of fixing them, still allows for variation by state due to differing demographic characteristics such as age structure. Fitting the model in a Bayesian way allows for this unique trade off.  
-% \begin{itemize}
-% \item We choose tight priors based on literature
-%  \item Fundamental unidentifiability due to renewal equation expression where $I(t)$ is a convolution between $R_t$ and Seiral interval
-%  \item Cannot estimate both simultaneously 
-%  \item Most flexibility comes in with beta and detection random walk
-%  \item Ideal for forecasting, maybe not for inference
-%  \end{itemize}
-%  
   \subsection{Fitting}
-We use the hamiltonian monte carlo algorithm implemented in numpyro to fit the model to data \cite{numpyro}. That is, given a time series of confirmed cases ($\text{Cases}_{1:t}$) and confirmed deaths ($\text{Deaths}_{1:t}$) we use Bayesian inference (via HMC) to obtain 
+We use the Hamiltonian Monte Carlo algorithm implemented in numpyro to fit the model to data \cite{numpyro}. That is, given a time series of confirmed cases ($\text{Cases}_{1:t}$) and confirmed deaths ($\text{Deaths}_{1:t}$) we use Bayesian inference (via HMC) to obtain 
 
 \begin{equation}
-f(\bm{\theta} | C_{1:t},D_{1:t}) \propto f(C_{1:t},D_{1:t} | \bm{\theta})f(\bm{\theta})
+f(\bm{\theta} | \text{Cases}_{1:t},D_{1:t}) \propto f(\text{Cases}_{1:t},\text{Deaths}_{1:t} | \bm{\theta})f(\bm{\theta})
 \end{equation}
 where $\bm{\theta}$ is a vector containing all model parameters. 
 
@@ -355,31 +295,29 @@ D_{2_0} ,
 R_0 ]
 \end{equation}
 
-We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in numpyro is its speed and ease of use on a cluster. In practice, we launch each state simultaneously on a cluster leading a total run time of under 30 minutes. This allows for rapid model development and evaluation. Convergence is monitored through $n_eff$ and $\hat{R}$. 
-%
-% \begin{itemize}
-% \item Fully Bayesian HMC on parameters
-% \item Why we choose deterministic compartmental model with only uncertainty on parameters and observations
-% \item Estimation in numpyro very fast
-%   \end{itemize}
-%   
-%   
-%   
+We draw 1000 warm-up sample and then 1000 posterior samples of model parameters. This allows us to forecast using the posterior predictive distribution.
+
+\begin{equation}
+f(C_{t:(t+h)}, D_{t:(t+h)}) =  \int_{\theta} f(C_{1:t},D_{1:t} | \bm{\theta})f(\bm{\theta})
+\end{equation}
+
+\textbf{For dan to fill in}
  \section{Experimental Setup}
  To evaluate our model, we examine two different scenarios. First, we describe the submission process and infrastructure used for the real time evaluation as part of the Covid19-ForecastHub consortium. Second, we describe the internal evaluation used to demonstrate our model enhancements improve accuracy over a naive compartmental model. 
  
- \subsection{Covid19-ForecastHub}
- The Covid19-ForecastHub began soliciting forecasts in the beginning of April 2020 for 1-4 week ahead cumulative deaths. We began submitting the first version on April 20th 2020 and have since submitted forecasts every Monday from then until August 1st 2020. The forecasts use daily data up to and including the Sunday before submission the next Monday. The one week ahead forecast corresponds to the following Saturday, the two week ahead to the second following Saturday and so on. Our model went through three distinct iterations as we evaluated performance in real-time. 
+ \subsection{Real-Time Forecast Evaluation}
+We began submitting forecasts to the U.S. Centers for Disease Control on April 20th 2020 and have since submitted forecasts every Monday from then until August 1st 2020. The forecasts use daily data up to and including the Sunday before submission the next Monday. The one week ahead forecast corresponds to the following Saturday, the two week ahead to the second following Saturday and so on. Our model went through two distinct iterations as we evaluated performance in real-time. 
  
  \begin{itemize}
  
- \item \textbf{Version 1: April 20th 2020 through May 10th 2020}. Model had normal observation noise (instead of negative binomial) and a non-time varying case detection probability. Model was fit to cumulative deaths and cases. 
- \begin{equation}
-\text{Cases}_{t} \sim N(p_{c}*C_{t} ,\sigma_{c}^2) \ \ \  
-\text{Deaths}_{t} \sim N(p_d*D_{2_{t}} , \sigma_d^2)
-\end{equation}
+% 
+% \item \textbf{Version 1: April 20th 2020 through May 10th 2020}. Model had normal observation noise (instead of negative binomial) and a non-time varying case detection probability. Model was fit to cumulative deaths and cases. 
+% \begin{equation}
+%\text{Cases}_{t} \sim N(p_{c}*C_{t} ,\sigma_{c}^2) \ \ \  
+%\text{Deaths}_{t} \sim N(p_d*D_{2_{t}} , \sigma_d^2)
+%\end{equation}
 
-  \item \textbf{Version 2: May 10th 2020 through May 24th 2020}. Model had normal observation noise (instead of negative binomial) and time varying case detection probability. Model was fit to cumulative deaths and cases. 
+  \item \textbf{Version 1: May 10th 2020 through May 24th 2020}. Model had normal observation noise (instead of negative binomial) and time varying case detection probability. Model was fit to cumulative deaths and cases. 
   
    \begin{equation}
 \text{Cases}_{t} \sim N(p_{t,c}*C_{t} ,\sigma_{c}^2) \ \ \  
@@ -387,7 +325,7 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
 \end{equation}
 
 
-    \item \textbf{Version 3: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case detection probability. Model was fit to incident deaths and cases. 
+    \item \textbf{Version 2: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case detection probability. Model was fit to incident deaths and cases. 
      \begin{equation}
 \text{Cases}_{t} \sim NB(p_{c,t}*[C_{t}-C_{t-1}] ,\sigma_{c}^2) \ \ \  
 \text{Deaths}_{t} \sim NB(p_d*[D_{2_{t}} - D_{2_{t-1}}] , \sigma_d^2)
@@ -396,18 +334,18 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
  \end{itemize} 
  
  
- These three versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for the weeks of 2020-05-05, 2020-05-10, 2020-05-17, 2020-05-24 2020-05-31, 2020-06-07, 2020-06-14, 2020-06-2, 2020-06-28, 2020-07-05, 2020-07-12, 2020-07-19, and 2020-07-26. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-12 and beyond not being observable by 2020-08-01.
+ These two versions highlight the complexities of forecasting during a real-time pandemic. Models evolve due to real-time evaluations by responding to the unique data collection environments of each pandemic. We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for submissions made on 2020-05-04, 2020-05-11, 2020-05-18, 2020-05-25, 2020-06-01, 2020-06-08, 2020-06-15,2020-06-22, 2020-06-29, 2020-07-06, 2020-07-13, 2020-07-20, and 2020-07-27. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-13 and beyond not being observable by 2020-08-01.
  
- In the real-time evaluation we also made manual adjustments to account for data dumps through a quality-assurance process. This involved,
+ In the real-time evaluation we also made manual adjustments to account for delayed reporting through a quality-assurance process. This involved,
  
  \begin{itemize}
  \item Identifying outliers in recently reported incident cases.
- \item Search for documented evidence of a data dump. These are usually recorded on state department of health websites and sometimes local news outlets.
- \item Manually redistribute the incident deaths evenly over the time-frame mentioned by the department of health or news outlet for the backlog window.
+ \item Searching for documented evidence of a data dump. These are usually recorded on state department of health websites and sometimes local news outlets.
+ \item Manually redistributing the incident deaths evenly over the time-frame mentioned by the department of health or news outlet for the backlog window.
  \end{itemize}
  
  
- This process ensured that the observed data does not contain any identifiable outliers (meaning documented by outside sources). In real-time this is necessary to avoid drastic over-predictions caused by data dumps. For example, New Jersey reported nearly 1600 daily deaths as it switched from reporting only confirmed deaths from COVID-19, to confirmed and probable. This would have caused a drastic increase in predictions if not properly identified as data dump. 
+ This process ensured that the observed data does not contain any identifiable outliers (meaning documented by outside sources). In real-time this is necessary to avoid drastic over-predictions caused by data dumps. For example, New Jersey reported nearly 1,600 daily deaths as it switched from reporting only confirmed deaths from COVID-19, to confirmed and probable on 2020-06-25. This would have caused a drastic increase in predictions if not properly identified as data dump. On 2020-07-07 Texas removed 3,000 confirmed cases when they discovered the reported cases were a result of anitgen testing, which were not considered reportable. 
 % \begin{itemize}
 % \item Real-time forecasting evaluation for 14 weeks starting April 20th 2020. 
 % \item Forecasts submitted every Monday using incident data up until Sunday
@@ -415,7 +353,7 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
 % \item 1-4 week ahead targets generated from 28 day ahead predictions 
 % \end{itemize}
  
- \subsection{Nested Model Comparison}
+ \subsection{Ablation Test}
  
  While real-time model evaluation is valuable for understanding evolving model performance, we also perform a retrospective evaluation using three model variants to demonstrate the improvement in accuracy over a baseline SEIR model. We define the following variations on MechBayes,
  
@@ -430,16 +368,15 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
  Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed Case Detection Probability contained in MechBayes Full. 
  
   
- We also fix all non-model component variation. That is, we average over the last 10 days of $\beta(t)$ when forecasting, as well as manually redistributing data dumps. This ensures that the comparison is only on model components, and not on data discrepancies. Note that we do not include a model without a time varying transmissibility parameter. This is because such a model would assume no interventions were put in place, which clearly violates the data-generating process. We feel that previous Covid-19 modeling attempts have established that time-varying transmissibility is essential \cite{pei2020differential} \cite{abbott2020estimating}\cite{flaxman2020estimating} \cite{smirnova2019forecasting}.
+ We also fix all non-model component variation. That is, we average over the last 10 days of $\beta(t)$ when forecasting, as well as manually redistributing data dumps. This ensures that the comparison is only on model components, and not on data discrepancies. Note that we do not include a model without a time varying transmissibility parameter. This is because such a model would assume no interventions were put in place, which clearly violates the data-generating process. Previous Covid-19 modeling attempts have established that time-varying transmissibility is essential \cite{pei2020differential} \cite{abbott2020estimating}\cite{flaxman2020estimating} \cite{smirnova2019forecasting}.
 
 
-\section{Covid19-ForecastHub Results}
 
 \begin{figure}
 
     \includegraphics[scale=.2]{fit_and_forecast_results.png}
 
-\caption{Example fit and forecast for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.}
+\caption{Example fit and forecast for 2020-07-26 for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.}
 \label{fig:fit_and_forecast_results}
 \end{figure}
 
@@ -458,7 +395,7 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
     \includegraphics[scale=.2]{detection_plot.png}
     \caption{Time-varying detection probability ($p_{c,t}$)}
 \end{subfigure} 
- \caption{  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S.. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta(t)$ upward for $t$ close to 0 in states that did not experience community transmission in March.  B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated detection probability trajectories between states.}
+ \caption{  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta(t)$ upward for $t$ close to 0 in states that did not experience community transmission in March.  B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated detection probability trajectories between states.}
 \label{fig:model_details}
 \end{figure}
 
@@ -494,21 +431,22 @@ We draw 1000 warm-up sample and then 1000 posterior samples. The advantage in nu
     \includegraphics[scale=.1]{wis_results_by_target.png}
     \caption{WIS by target}
 \end{subfigure}%
+\section{Real-Time Model Results}
 
-\caption{Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. Note that targets averaging over forecast week include an average over all model versions. }
+\caption{Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. We can also see that MAE varies heavily by region, which is an artifact of both population size and number of covid deaths. However, in regions with large MAE (left side) we see a significant improvement over the baseline model in terms of both MAE and WIS. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both MAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. }
 \label{fig:covidhub}
 \end{figure}
 
 
-We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version 3 is able to accurately model the observed data. The model is able to adapt to highly variable incident death reporting, variable transmission rates, and overall heterogeneity of incidence curves. The model is also able capture the uncertainty of the differential equation parameters well enough to produce well calibrated prediction intervals. Figure \ref{fig:fit_and_forecast_results}  shows prediction intervals at the 95\% level, with roughly 95\% of observations falling within the bounds for each state. However, we can also see that in some states, such as California and Florida, the model is biased high, with all observations outside of the 95\% prediction interval falling below. Figure \ref{fig:fit_and_forecast_results}  also shows 4 weeks of daily forecasts, along with the daily observed incidence for 1 week out. We can see that the predictions are tracking the data even under the weekly reporting cycles. 
+We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version 3 is able to accurately model the observed data. The model is able to adapt to highly variable incident death reporting, variable transmission rates, and overall heterogeneity of incidence curves. The model is also able capture the uncertainty of the differential equation parameters well enough to produce well calibrated prediction intervals. Figure \ref{fig:fit_and_forecast_results}  shows prediction intervals at the 95\% level, with 92.3\% of observations falling within the bounds for each state. However, we can also see that in some states, such as California and Florida, the model is biased high, with all observations outside of the 95\% prediction interval falling below. Figure \ref{fig:fit_and_forecast_results}  also shows 4 weeks of daily forecasts, along with the daily observed incidence for 1 week out. We can see that the predictions are tracking the data even under the weekly reporting cycles. 
 
-We can see from Figure \ref{fig:model_details} that MechBayes is able to learn to adapt to the evolving pandemic situation. Panel A shows the time-varying transmission $\beta(t)$ for three example states, CA, FL, and NY as well as the U.S. We can see that $\beta(0)$ is centered on our prior but as data comes in, the estimate increases. This is especially true in NY, where the epidemic took off quickly in March. However, the model is then able to adjust to the varying levels of non-pharamceutical interventions present in each of the three states as well as across the U.S. This radically reduces the transmissibility parameter by the first week of April 2020. This is consistent with a peak in overall deaths two weeks later in mid-April 2020. There seems to be some estimation issues at the boundary of $\beta(t)$ where the number of cases does not match the number of deaths, since the cases have not yet converted to deaths. This results in the model underestimating transmissibility to reduce the flow through the compartments. \textbf{Need to think on this a bit}
+We can see from Figure \ref{fig:model_details} that MechBayes is able to learn to adapt to the evolving pandemic situation. Panel A shows the time-varying transmission $\beta(t)$ for three example states, CA, FL, and NY as well as the U.S. We can see that $\beta(0)$ is centered on our prior but as data comes in, the estimate increases. This is especially true in NY, where the epidemic took off quickly in March. However, the model is then able to adjust to the varying levels of non-pharamceutical interventions present in each of the three states as well as across the U.S. This radically reduces the transmissibility parameter by the first week of April 2020. This is consistent with a peak in overall deaths two weeks later in mid-April 2020. There seems to be some estimation issues at the boundary of $\beta(t)$ where the number of cases does not match the number of deaths, since the cases have not yet converted to deaths. This results in the model underestimating transmissibility to reduce the flow through the compartments. 
 
 We can also see from Figure \ref{fig:model_details}  that MechBayes is able to account for the drastic increase in testing that has occurred across the U.S. since March 2020. Panel B also shows that our prior estimate of 30\% of cases being detected, may have been too high, as all regions show a dip in detection probability before climbing again. Note that interpreting this strictly as time-varying detection is obscuring the fact that this parameter $p_{t,d}$ can soak-up any excess variation beyond the ability of cases and the case-fatility ratio to explain the number of deaths. That is, the time-varying detection probability is able to "de-couple" cases and deaths beyond the case-fataility ratio regardless of the underlying reason (whether that be an increase in testing or shifting age distribution of cases). Thus, interpretation of this parameter as a strict mapping to testing is incorrect. As a forecasting model, we only need the ability to non-parametrically model deviations and reporting issues in cases.
 
 We next turn to the comparison of MechBayes against the Covid19-ForecastHub baseline model. This baseline model uses the previous daily incident as the mean forecast for the current daily incidence, along with  bootstrapped prediction intervals from historical changes in daily incidence. See Covid19-ForecastHub for more details. \cite{covidhub}. 
 
-We begin by breaking down the results by week the forecast was made (forecast week) and averaging over both region and target. As we can see from Figure \ref{fig:covidhub} (A,B), MechBayes V1 did not outperform the Covid19-ForecastHub baseline on MAE or WIS when broken down by forecast week. However, MechBayes V2 (the introduction of the time-varying detection probability), outperformed the Covid19-ForecastHub baseline model on both MAE and WIS when broken down by forecast week. The same is true for MechBayes V3 with the exception of June 26th, where the Covid19-ForecastHub baseline model slightly outperformed MechBayes V3. However, as seen in Figure \ref{fig:data}, overall incident deaths were at their lowest across the U.S. in late June and remarkably stable, meaning this week was the hardest of the weeks to beat the baseline model. 
+We begin by breaking down the results by week the forecast was made (forecast week) and averaging over both region and target. As we can see from Figure \ref{fig:covidhub} (A,B), MechBayes V1 outperform the Covid19-ForecastHub baseline on MAE or WIS when broken down by forecast week. However, MechBayes V2 (the introduction of the time-varying detection probability), outperformed the Covid19-ForecastHub baseline model on both MAE and WIS when broken down by forecast week. The same is true for MechBayes V3 with the exception of June 26th, where the Covid19-ForecastHub baseline model slightly outperformed MechBayes V3. However, as seen in Figure \ref{fig:data}, overall incident deaths were at their lowest across the U.S. in late June and remarkably stable, meaning this week was the hardest of the weeks to beat the baseline model. 
 
 We also break down the results by geographical region, as seen in Figure \ref{fig:covidhub} (C,D). Note that this break-down is averaged over target, but also forecast week, meaning that we average over each of the model versions. We feel this is important, as it reflects the real-time accuracy of our evolving model efforts, instead of \textbf{cherry-picking} the best model. However, we still consistent improvements in MAE under MechBayes when broken down by region, with the exception of New York. This is mainly due to MechBayes V1 large MAE for New York in March, where most of the cases (and therefore contribution to MAE) occurred. The WIS results are similar. 
 
@@ -608,9 +546,53 @@ While we chose an exponential random walk on $\beta(t)$ there are many other cho
 
 However, using relatively simple non-parametric methods we were able to beat the Covid19-ForecastHub baseline model in both point and probabilistic forecast evaluations. Our nested model comparisons show that extending the basic SEIR compartmental to real-world pandemic challenges improves forecasting accuracy. 
 
+
 \newpage
 
+\section{Appendix}
+\subsection{A1}
+\subsection{Seeding Epidemic}
+Due to the under-reporting of cases, we cannot use the observed data to seed the epidemic. We instead allow the model to find the initial state values for all compartments except the number of susceptible people, which we take as the population size of the geographic region minus the sum of the initial values for the other compartments to enforce the constraint that the entire system size sums to the population size. We do this by assigning uniform probability to all initial states where the number of people in any given compartment at time zero does not exceed 2\% of the total population. This is a highly conservative estimate for the number of infected, exposed, dead and recovered people at the start of the epidemic which is most likely much lower than 2\% of the population. 
+
+\begin{align*}
+ E_0 &\sim \Unif(0, 0.02 N) \\
+I_0 &\sim \Unif(0, 0.02 N) \\
+  D_{1_0} &\sim \Unif(0, 0.02 N) \\
+   D_{2_0} &\sim \Unif(0, 0.02 N) \\   
+   R_{0} &\sim \Unif(0, 0.02 N) \\   
+\end{align*}
+
+This allows us to initialize the process model:
+ \begin{equation} 
+ X(0) = (S(0), E(0), I(0), R(0), D_1(0), D_2(0), C(0)) = (N-E_0-I_0-D_{1_0}-D_{2_0},E_0,I_0, R_0, D_{1_0}, D_{2_0}, I_0)
+ \end{equation}
+%
+% \begin{itemize}
+% \item Because of detection probability we cannot seed using initial reported data, since this is an underestimate
+% \item Put priors on initial seed
+%  \end{itemize}
+  
+  \subsection{Priors}
+We also place the following priors on the transition parameters: 
+\begin{align*}
+\sigma &\sim \Gamma(5, 5 \hat{d}_E)\\
+\gamma & \sim \Gamma(7, 7 \hat{d}_I) \\
+\beta(0) &\sim \Gamma(1, \hat{d}_I/\hat{R}) \\
+    \rho &\sim \Beta(10, 90)\\ 
+\lambda &\sim \Gamma(10, 100)
+\end{align*}
+ Our prior on rate for leaving the exposed compartment $\sigma$ satisfies $\E[\sigma] = 1/\hat{d}_E$, where $\hat{d}_E$ is an initial guess of the duration of the latent period. Currently, we assume $\hat{d}_E = 4.0$ based on published estimates (shortened slightly to account for possible infectiousness prior to developing symptoms) \cite{midas}.
+ %
+ Our prior on the rate for leaving the infectious compartment $\gamma$ satisfies $\E[\gamma] = 1/\hat{d}_I$, where $\hat{d}_I$ is an initial guess for the duration of infectiousness. The current setting is $\hat{d}_I = 2.0$ to model the likely isolation of individuals after symptom onset \cite{heffner2020emotional}. 
+Our prior on the initial transmission rate is derived from the relationship between the basic reproductive number $R(0)$ and the length of the infectious period: $R(0) = \beta(0)/\gamma = \beta(0)\times \hat{d}_I$. Therefore, we set our prior on the initial transmission rate to satisfy $\E[\beta(0)] = \hat{R}/\hat{d}_I$ where $\hat{R} = 3.0$ is an initial guess for $R(0)$ and $\hat{d}_I = 2.0$, as described above. 
+%%
+Our prior on the fatality rate $\rho$ satisfies $\E[\rho] = 0.1$ with 90\% probability of being between \[0.06,.14\].
+Finally, our prior on the rate at which dying patients succumb  satisfies $\lambda$ $\E[\lambda] = 0.1$ with shape 10 corresponding to roughly 10 days in the $D_{1}$ compartment.
+
+\newpage 
 \bibliographystyle{unsrt}
 \bibliography{bib}
+
+
 
 \end{document}  

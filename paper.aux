@@ -1,5 +1,4 @@
 \relax 
-\citation{dong2020interactive}
 \citation{lutz2019applying}
 \citation{myers2000forecasting}
 \citation{kermack1927contribution}
@@ -28,54 +27,58 @@
 \citation{dong2020interactive}
 \citation{krantz2020level}
 \citation{russel2020using}
-\citation{russel2020using}
-\citation{covidhub}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Data}}{4}}
-\citation{reich2020zoltar}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Related Work}}{4}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{Data}}{4}}
 \citation{bracher2020evaluating}
 \citation{bracher2019multibin}
 \citation{reich2019reply}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{Compartmental Model}}{5}}
+\citation{russell2020estimating}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{Compartmental Model}}{5}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There are significant data-dumps, with New Jersey reporting over 1500 backlogged deaths when switching to include "probable" deaths. In some states, there appears to be a weekly cycle where deaths are under-reported on the weekend. This is especially pronounced for the U.S. as a whole. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. \relax }}{6}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:data}{{1}{6}}
 \citation{phan2019composable}
 \citation{simonov2020persuasive}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparmental model parameters \relax }}{8}}
-\newlabel{fig:seird}{{2}{8}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.1}{Time-varying transmission parameter}}{8}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.2}{Observation Model}}{9}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.3}{Seeding Epidemic}}{10}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{Time-varying transmission parameter}}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparmental model parameters \relax }}{9}}
+\newlabel{fig:seird}{{2}{9}}
 \citation{midas}
-\citation{heffner2020emotional}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.4}{Priors}}{11}}
+\citation{weinberger2020estimation}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{Observation Model}}{10}}
 \citation{wallinga2007generation}
 \citation{wallinga2007generation}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.3}{Epidemiological Model Parameters}}{11}}
 \citation{numpyro}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{3.5}{Fitting}}{13}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{Experimental Setup}}{13}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{Covid19-ForecastHub}}{13}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{Nested Model Comparison}}{15}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.4}{Fitting}}{12}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{Experimental Setup}}{12}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.1}{Real-Time Forecast Evaluation}}{13}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Ablation Test}}{14}}
 \citation{pei2020differential}
 \citation{abbott2020estimating}
 \citation{flaxman2020estimating}
 \citation{smirnova2019forecasting}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{Covid19-ForecastHub Results}}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example fit and forecast for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.\relax }}{17}}
-\newlabel{fig:fit_and_forecast_results}{{3}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S.. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta (t)$ upward for $t$ close to 0 in states that did not experience community transmission in March. B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated detection probability trajectories between states.\relax }}{18}}
-\newlabel{fig:model_details}{{4}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. Note that targets averaging over forecast week include an average over all model versions. \relax }}{19}}
-\newlabel{fig:covidhub}{{5}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example fit and forecast for 2020-07-26 for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.\relax }}{16}}
+\newlabel{fig:fit_and_forecast_results}{{3}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta (t)$ upward for $t$ close to 0 in states that did not experience community transmission in March. B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated detection probability trajectories between states.\relax }}{17}}
+\newlabel{fig:model_details}{{4}{17}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Real-Time Model Results}}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. We can also see that MAE varies heavily by region, which is an artifact of both population size and number of covid deaths. However, in regions with large MAE (left side) we see a significant improvement over the baseline model in terms of both MAE and WIS. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both MAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. \relax }}{18}}
+\newlabel{fig:covidhub}{{5}{18}}
 \citation{covidhub}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Nested Model Comparison Reults}}{21}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{Discussion}}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Nested model comparison MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes No Detection Random Walk and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{23}}
-\newlabel{fig:ablation}{{6}{23}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{Nested Model Comparison Reults}}{20}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Discussion}}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Nested model comparison MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes No Detection Random Walk and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{22}}
+\newlabel{fig:ablation}{{6}{22}}
 \citation{bracher2020evaluating}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{26}}
-\newlabel{fig:results_discussion}{{7}{26}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Conclusion}}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{25}}
+\newlabel{fig:results_discussion}{{7}{25}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{9}{Conclusion}}{25}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{10}{Appendix}}{27}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.1}{A1}}{27}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.2}{Seeding Epidemic}}{27}}
+\citation{midas}
+\citation{heffner2020emotional}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.3}{Priors}}{28}}
 \bibstyle{unsrt}
 \bibdata{bib}
 \bibcite{dong2020interactive}{1}
@@ -91,7 +94,7 @@
 \bibcite{syafruddin2012seir}{11}
 \bibcite{hotta2010bayesian}{12}
 \bibcite{dukic2012tracking}{13}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{}{References}}{28}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{}{References}}{29}}
 \bibcite{frasso2016bayesian}{14}
 \bibcite{smirnova2019forecasting}{15}
 \bibcite{giordano2020modelling}{16}
@@ -117,6 +120,6 @@
 \bibcite{numpyro}{36}
 \newlabel{tocindent-1}{0pt}
 \newlabel{tocindent0}{13.9917pt}
-\newlabel{tocindent1}{19.4667pt}
-\newlabel{tocindent2}{32.18062pt}
+\newlabel{tocindent1}{24.94171pt}
+\newlabel{tocindent2}{38.47682pt}
 \newlabel{tocindent3}{0pt}
