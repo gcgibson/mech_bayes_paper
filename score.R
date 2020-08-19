@@ -12,7 +12,7 @@ tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %
   mutate(wis = (abs_error+.01*interval_2+.025*interval_5+.05*interval_10+.1*interval_20+.15*interval_30+.2*interval_40+.25*interval_50+.3*interval_60+.35*interval_70+.40*interval_80+.45*interval_90)/12,
          mae=abs_error,error=error)
 
-tmp <- tmp[tmp$target %in% paste0(1:4, " wk ahead inc death"),]
+tmp <- tmp[tmp$target %in% paste0(1:4, " wk ahead cum death"),]
 tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
 tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
 #tmp_mech_bayes <- tmp_mech_baye
@@ -23,11 +23,11 @@ tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target) %>
 tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-04-20",]
 tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
 library(ggplot2)
-mae_results_by_time_zero <- ggplot(tmp_subset[tmp_subset$timezero >= "2020-05-10",] %>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + 
-  #annotate("text", x =as.Date("2020-04-15"), y = 150, label = "V1") + 
-  annotate("text", x =as.Date("2020-05-12"), y = 150, label = "V1") +   
-  annotate("text", x =as.Date("2020-07-01"), y = 150, label = "V2") + 
-  #geom_ribbon(aes(xmin =as.Date("2020-04-05"),xmax=as.Date("2020-05-05") ),alpha=.1,fill='thistle1',colour='thistle1') +
+mae_results_by_time_zero <- ggplot(tmp_subset%>% group_by(timezero,model) %>% summarize(mae=mean(mae)),aes(x=timezero,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + 
+  annotate("text", x =as.Date("2020-04-15"), y = 150, label = "V1") + 
+  annotate("text", x =as.Date("2020-05-12"), y = 150, label = "V2") +   
+  annotate("text", x =as.Date("2020-07-01"), y = 150, label = "V3") + 
+  geom_ribbon(aes(xmin =as.Date("2020-04-05"),xmax=as.Date("2020-05-05") ),alpha=.1,fill='thistle1',colour='thistle1') +
   geom_ribbon(aes(xmin =as.Date("2020-05-05"),xmax=as.Date("2020-05-20") ),alpha=.1,fill='thistle3',colour='thistle3') +
   geom_ribbon(aes(xmin =as.Date("2020-05-20"),xmax=as.Date("2020-08-20") ),alpha=.1,fill='thistle4',colour='thistle4') + xlab("Date")
   
@@ -52,17 +52,17 @@ tmp_subset$state <- as.integer(tmp_subset$unit)
 tmp_subset_w_pop <- tmp_subset %>% left_join(pops,by = "state")
 mae_results_by_region_normalized <- ggplot(tmp_subset_w_pop %>% group_by(model) %>% summarize(mae=mean(mae), CENSUS2010POP=CENSUS2010POP[1]),aes(x=1,y=mae/CENSUS2010POP*1e6,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_region_normalized.png",mae_results_by_region_normalized,device="png",width=8,height=4)
-
-
+tmp_pop_df <- tmp_subset_w_pop %>% group_by(model) %>% summarize(mae=max(mae), CENSUS2010POP=CENSUS2010POP[1])
+tmp_pop_df$mae/tmp_pop_df$CENSUS2010POP*100000
 mae_results_by_target <- ggplot(tmp_subset %>% group_by(target,model) %>% summarize(mae=mean(mae)),aes(x=target,y=mae,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
 ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_target.png",mae_results_by_target,device="png",width=8,height=4)
 
 
-wis_results_by_time_zero <- ggplot(tmp_subset[tmp_subset$timezero >= "2020-05-10",] %>% group_by(timezero,model) %>% summarize(wis=mean(wis)),aes(x=timezero,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) +
-  #annotate("text", x =as.Date("2020-04-15"), y = 100, label = "V1") + 
+wis_results_by_time_zero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(wis=mean(wis)),aes(x=timezero,y=wis,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) +
+  annotate("text", x =as.Date("2020-04-15"), y = 100, label = "V1") + 
   annotate("text", x =as.Date("2020-05-12"), y = 100, label = "V1") +   
-  annotate("text", x =as.Date("2020-07-01"), y = 100, label = "V2") + 
-  #geom_ribbon(aes(xmin =as.Date("2020-04-05"),xmax=as.Date("2020-05-05") ),alpha=.1,fill='thistle1',colour='thistle1') +
+  annotate("text", x =as.Date("2020-07-01"), y = 100, label = "V3") + 
+  geom_ribbon(aes(xmin =as.Date("2020-04-05"),xmax=as.Date("2020-05-05") ),alpha=.1,fill='thistle1',colour='thistle1') +
   geom_ribbon(aes(xmin =as.Date("2020-05-05"),xmax=as.Date("2020-05-20") ),alpha=.1,fill='thistle3',colour='thistle3') +
   geom_ribbon(aes(xmin =as.Date("2020-05-20"),xmax=as.Date("2020-08-20") ),alpha=.1,fill='thistle4',colour='thistle4') + xlab("Date")
 
