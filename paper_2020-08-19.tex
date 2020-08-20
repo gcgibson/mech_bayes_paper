@@ -87,7 +87,7 @@ In this work, we introduce a novel operational forecast model based on mechanist
 
 Compartmental models have also been adopted into a Bayesian framework before, including both stochastic disease dynamics and deterministic dynamics \cite{hotta2010bayesian}\cite{dukic2012tracking}. Non-parametric transmissibility was included in a Bayesian SEIR model to study Ebola by Frasso and Lambert \cite{frasso2016bayesian}. Time-varying transmissibility has also been studied in the frequentist setting using complex non-parametric functions \cite{smirnova2019forecasting}. Many efforts have been made to use SEIR models in forecasting COVID-19 \cite{giordano2020modelling}\cite{yang2020modified} \cite{bertozzi2020challenges}\cite{prem2020effect}\cite{flaxman2020estimating}.
 
-With the outbreak of COVID-19, accounting for testing has become a critical element in effectively using an SEIR model. Lopez et al. used a fixed detection probability to model undiagnosed individuals in Spain and Italy \cite{lopez2020modified}.  Perhaps the most similar model to ours was put forth by Pei et al. \cite{pei2020differential}. This model was an extension to the SEIR model with time varying transmission and detection probability. However, their model fixed detection probability across time and was fit using Kalman Filter techniques instead of Bayesian HMC. They also used the model mostly for counterfactual scenario projections instead of forecasting. Models that have accounted for time-varying testing have mostly used the renewal style equations \cite{abbott2020estimating}\cite{flaxman2020estimating}. These models do not use a differential equation model as the core component, but rather parameterizes new cases as a function of the time varying reproduction number and the serial interval. 
+With the outbreak of COVID-19, accounting for testing has become a critical element in effectively using an SEIR model. Lopez et al. used a fixed case and death deviation model to model undiagnosed individuals in Spain and Italy \cite{lopez2020modified}.  Perhaps the most similar model to ours was put forth by Pei et al. \cite{pei2020differential}. This model was an extension to the SEIR model with time varying transmission and case and death deviation model. However, their model fixed case and death deviation model across time and was fit using Kalman Filter techniques instead of Bayesian HMC. They also used the model mostly for counterfactual scenario projections instead of forecasting. Models that have accounted for time-varying testing have mostly used the renewal style equations \cite{abbott2020estimating}\cite{flaxman2020estimating}. These models do not use a differential equation model as the core component, but rather parameterizes new cases as a function of the time varying reproduction number and the serial interval. 
 
 
 %\begin{itemize}
@@ -108,7 +108,7 @@ With the outbreak of COVID-19, accounting for testing has become a critical elem
 %\item Extensions to basic model needed 
 %\begin{itemize}
 %\item Observations on cases and deaths
-%\item Time-varying detection probability for varied testing
+%\item Time-varying case and death deviation model for varied testing
 %\item Non-parametric model of interventions
 %\item Full Bayesian fitting due to unidentifiability of parameters given only a time series of cases and deaths.
 %\end{itemize}
@@ -126,7 +126,7 @@ With the outbreak of COVID-19, accounting for testing has become a critical elem
 	There are large discrepancies in reporting practices across the states (Figure \ref{fig:data}). For example, New Jersey reported an additional 1600 incident deaths when changing reporting practices to include \"probable" deaths as well as confirmed deaths due to COVID-19 on June 25th 2020. However, many other states have at least one outlying value, usually due to backlog reporting, where a large number of deaths occurring in previous weeks are reported on a single day. We can also see from Figure \ref{fig:data} that some states do not report on particular days (usually weekends) leading to 0 incident deaths for the day. Some states also revise the cause of death, allowing for negative incident deaths.  Some states exhibit relatively regular weekly reporting cycles, with reporting dropping off significantly on the weekends. This effect is most pronounced at the aggregate U.S. level, which shows a clear weekly cycle in reporting. 
 	
 	
-We made probabilistic forecasts  for 1-4 week ahead incident and cumulative deaths for all geographies. An individual forecast distribution is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. The quantiles used are $\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}$, with the median ($.5$ quantile) representing the point-forecast. Forecasts were made on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts were evaluated using mean-absolute-error (MAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. The WIS is an approximation to the continuously ranked probability score (CRPS), a commonly used metric in probabilistic forecasting \cite{bracher2019multibin}\cite{reich2019reply}.
+We made probabilistic forecasts  for 1-4 week ahead incident and cumulative deaths for all geographies. An individual forecast distribution is represented by a set of quantiles for incident and cumulative deaths from 1-4 weeks ahead. The quantiles used are $\mathbb{Q} = {.05,.10,....,.90,.95} \cup {.01,.99}$, with the median ($.5$ quantile) representing the point-forecast. Forecasts were made on Monday evenings and therefore use the incident data up until the Sunday before. A one-week ahead target corresponds to the following Saturday. A two-week ahead corresponds two the next Saturday and so on. Forecasts were evaluated using relative mean-absolute-error (relMAE) and the weighted-interval score (WIS) \cite{bracher2020evaluating}. Relative mean absolute error is the ratio of the mean absolute error of the model of interest divided by the baseline model \cite{reich2016case}. The WIS is an approximation to the continuously ranked probability score (CRPS), a commonly used metric in probabilistic forecasting \cite{bracher2019multibin}\cite{reich2019reply}.
 
 
 
@@ -235,7 +235,7 @@ where $\beta^*(t)$ denotes a sample from the posterior at time $t$.
  \subsection{Observation Model}
  
  The observed data used to fit the model is based on time-series data of incident confirmed cases $Cases_{t}$ and incident recorded deaths $Deaths_{t}$. 
-For a given state and day, the change in the  confirmed cases and reported deaths are subset of the cumulative number of new infections $C(t)$ and cumulative number of deaths $D2(t)$, respectively. Therefore, we introduce two additional parameters for the detection probability of cases $p_c$ and the detection probability of deaths $p_d$. For both, we set fairly flat priors to reflect these parameters are poorly determined from observed data.
+For a given state and day, the change in the  confirmed cases and reported deaths are subset of the cumulative number of new infections $C(t)$ and cumulative number of deaths $D2(t)$, respectively. Therefore, we introduce two additional parameters for the case and death deviation model of cases $p_c$ and the case and death deviation model of deaths $p_d$. For both, we set fairly flat priors to reflect these parameters are poorly determined from observed data.
 
 In more detail, $p_c$ is the probability that an infected person receives a positive test result and is reported by a state or local health authority as a case. We assume its prior distribution is given by  $p \sim \Beta(15, 35)$, such that  $\E[p_c] = 0.3$  with 90\% probability between \[ .22,0.38\]. This means that we expect 30\% of cases to be detected initially, as suggested by the literature \cite{midas}. However, we also allow this to vary by time.
 
@@ -262,7 +262,7 @@ Where the difference in $C_{t}-C_{t-1}$ allows us to translate cumulative new ca
 % \item Non-parametrically models time varying testing and overall detection of case issues
 % \item Allows for "data dumps"
 % \item Logistic random walk 
-% \item Fixed detection probability on deaths
+% \item Fixed case and death deviation model on deaths
 %
 %  \end{itemize}
 
@@ -306,7 +306,7 @@ f(C_{t:(t+h)}, D_{t:(t+h)}) =  \int_{\theta} f(C_{1:t},D_{1:t} | \bm{\theta})f(\
  To evaluate our model, we examine two different scenarios. First, we describe the submission process and infrastructure used for the real time evaluation as part of the Covid19-ForecastHub consortium. Second, we describe the internal evaluation used to demonstrate our model enhancements improve accuracy over a naive compartmental model. 
  
  \subsection{Real-Time Forecast Evaluation}
-We began submitting forecasts to the U.S. Centers for Disease Control for incident deaths on May 10th 2020 and have since submitted forecasts every Monday from then until August 1st 2020. The forecasts use daily data up to and including the Sunday before submission the next Monday. The one week ahead forecast corresponds to the following Saturday, the two week ahead to the second following Saturday and so on.  We use the model submissions made in real-time, under the corresponding version of the model as dated above, evaluated on both MAE and WIS for submissions made on 2020-05-04, 2020-05-11, 2020-05-18, 2020-05-25, 2020-06-01, 2020-06-08, 2020-06-15,2020-06-22, 2020-06-29, 2020-07-06, 2020-07-13, 2020-07-20, and 2020-07-27. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-13 and beyond not being observable by 2020-08-01.
+We began submitting forecasts to the U.S. Centers for Disease Control for incident deaths on May 10th 2020 and have since submitted forecasts every Monday from then until August 1st 2020. The forecasts use daily data up to and including the Sunday before submission the next Monday. The one week ahead forecast corresponds to the following Saturday, the two week ahead to the second following Saturday and so on.  We use the model submissions made in real-time evaluated on both relMAE and WIS for submissions made on 2020-05-04, 2020-05-11, 2020-05-18, 2020-05-25, 2020-06-01, 2020-06-08, 2020-06-15,2020-06-22, 2020-06-29, 2020-07-06, 2020-07-13, 2020-07-20, and 2020-07-27. Note that not all targets are observed at all weeks. This is due to 4 week ahead targets for weeks 2020-07-13 and beyond not being observable by 2020-08-01.
  
  In the real-time evaluation we also made manual adjustments to account for delayed reporting through a quality-assurance process. This involved,
  
@@ -332,12 +332,12 @@ We began submitting forecasts to the U.S. Centers for Disease Control for incide
  \begin{itemize}
  \item \textbf{MechBayes Full} Mech Bayes as of model version 3. That is, a model using negative binomial observation noise as well as a time-varying random walk, using a joint likelihood over cases and deaths.
  
- \item \textbf{MechBayes Fixed Case Detection Probability} MechBayes Full with $p_{c,t}$ fixed to $p_c$, that is, removing the time-varying detection probability.
+ \item \textbf{MechBayes Fixed case and death deviation model} MechBayes Full with $p_{c,t}$ fixed to $p_c$, that is, removing the time-varying case and death deviation model.
  
  \item \textbf{MechBayes Death Only} MechBayes Full with observations on cases removed.
  \end{itemize}
  
- Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed Case Detection Probability contained in MechBayes Full. 
+ Note that these are nested models, with MechBayes Death Only contained in MechBayes Fixed case and death deviation model contained in MechBayes Full. 
  
   
  We also fix all non-model component variation. That is, we average over the last 10 days of $\beta(t)$ when forecasting, as well as manually redistributing data dumps. This ensures that the comparison is only on model components, and not on data discrepancies. Note that we do not include a model without a time varying transmissibility parameter. This is because such a model would assume no interventions were put in place, which clearly violates the data-generating process. Previous Covid-19 modeling attempts have established that time-varying transmissibility is essential \cite{pei2020differential} \cite{abbott2020estimating}\cite{flaxman2020estimating} \cite{smirnova2019forecasting}.
@@ -365,9 +365,9 @@ We began submitting forecasts to the U.S. Centers for Disease Control for incide
 \begin{subfigure}{1\textwidth}
   \centering
     \includegraphics[scale=.2]{detection_plot.png}
-    \caption{Time-varying detection probability ($p_{c,t}$)}
+    \caption{Time-varying case and death deviation model ($p_{c,t}$)}
 \end{subfigure} 
- \caption{  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta(t)$ upward for $t$ close to 0 in states that did not experience community transmission in March.  B) Time varying detection probability for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated detection probability trajectories between states.}
+ \caption{  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta(t)$ upward for $t$ close to 0 in states that did not experience community transmission in March.  B) Time varying case and death deviation model for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated case and death deviation model trajectories between states.}
 \label{fig:model_details}
 \end{figure}
 
@@ -376,7 +376,7 @@ We can see from Figure \ref{fig:fit_and_forecast_results} that MechBayes version
 
 We can see from Figure \ref{fig:model_details} that MechBayes is able to learn to adapt to the evolving pandemic situation. Panel A shows the time-varying transmission $\beta(t)$ for three example states, CA, FL, and NY as well as the U.S. We can see that $\beta(0)$ is centered on our prior but as data comes in, the estimate increases. This is especially true in NY, where the epidemic took off quickly in March. However, the model is then able to adjust to the varying levels of non-pharamceutical interventions present in each of the three states as well as across the U.S. This radically reduces the transmissibility parameter by the first week of April 2020. This is consistent with a peak in overall deaths two weeks later in mid-April 2020. There seems to be some estimation issues at the boundary of $\beta(t)$ where the number of cases does not match the number of deaths, since the cases have not yet converted to deaths. This results in the model underestimating transmissibility to reduce the flow through the compartments. 
 
-We can also see from Figure \ref{fig:model_details}  that MechBayes is able to account for the drastic increase in testing that has occurred across the U.S. since March 2020. Panel B also shows that our prior estimate of 30\% of cases being detected, may have been too high, as all regions show a dip in detection probability before climbing again. Note that interpreting this strictly as time-varying detection is obscuring the fact that this parameter $p_{t,d}$ can soak-up any excess variation beyond the ability of cases and the case-fatility ratio to explain the number of deaths. That is, the time-varying detection probability is able to "de-couple" cases and deaths beyond the case-fataility ratio regardless of the underlying reason (whether that be an increase in testing or shifting age distribution of cases). Thus, interpretation of this parameter as a strict mapping to testing is incorrect. As a forecasting model, we only need the ability to non-parametrically model deviations and reporting issues in cases.
+We can also see from Figure \ref{fig:model_details}  that MechBayes is able to account for the drastic increase in testing that has occurred across the U.S. since March 2020. Panel B also shows that our prior estimate of 30\% of cases being detected, may have been too high, as all regions show a dip in case and death deviation model before climbing again. Note that interpreting this strictly as time-varying detection is obscuring the fact that this parameter $p_{t,d}$ can soak-up any excess variation beyond the ability of cases and the case-fatility ratio to explain the number of deaths. That is, the time-varying case and death deviation model is able to "de-couple" cases and deaths beyond the case-fataility ratio regardless of the underlying reason (whether that be an increase in testing or shifting age distribution of cases). Thus, interpretation of this parameter as a strict mapping to testing is incorrect. As a forecasting model, we only need the ability to non-parametrically model deviations and reporting issues in cases.
 
 
 
@@ -384,37 +384,37 @@ We can also see from Figure \ref{fig:model_details}  that MechBayes is able to a
   \centering
      \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{mae_results_by_time_zero_inc.png}
-    \caption{MAE by forecast week}
+    \includegraphics[scale=.1005]{mae_results_by_time_zero_inc.png}
+    \caption{relMAE by forecast week}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{wis_results_by_time_zero_inc.png}
+    \includegraphics[scale=.1005]{wis_results_by_time_zero_inc.png}
     \caption{WIS by forecast week}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{mae_results_by_region_inc.png}
-    \caption{MAE by region}
+    \includegraphics[scale=.1005]{mae_results_by_region_inc.png}
+    \caption{relMAE by region}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{wis_results_by_region_inc.png}
+    \includegraphics[scale=.1005]{wis_results_by_region_inc.png}
     \caption{WIS by region}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{mae_results_by_target_inc.png}
-    \caption{MAE by target}
+    \includegraphics[scale=.1005]{mae_results_by_target_inc.png}
+    \caption{relMAE by target}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-    \includegraphics[scale=.1]{wis_results_by_target_inc.png}
+    \includegraphics[scale=.1005]{wis_results_by_target_inc.png}
     \caption{WIS by target}
 \end{subfigure}%
 \section{Real-Time Model Results}
 
-\caption{Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. We can also see that MAE varies heavily by region, which is an artifact of both population size and number of covid deaths. However, in regions with large MAE (left side) we see a significant improvement over the baseline model in terms of both MAE and WIS. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both MAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. }
+\caption{Scores from Covid19-ForecastHub broken down by region, target and forecast week. We use the relative MAE metric which takes the MAE of MechBayes model and divides by the MAE of the baseline model. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. We can also see that MAE varies heavily by region, which is an artifact of both population size and number of covid deaths. However, in regions with large MAE (left side) we see a significant improvement over the baseline model in terms of both MAE and WIS. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both relMAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. }
 \label{fig:covidhub_appendix}
 \end{figure}
 
@@ -432,7 +432,7 @@ Finally, we break down the results by target by averaging over region and foreca
 %\item MechBayes is almost always better than baseline model when broken down by region, target, and forecast week after June 1st 2020.
 %\item MechBayes has improved over time.
 %\begin{itemize}
-%\item First two submissions did not have detection probability random walk
+%\item First two submissions did not have case and death deviation model random walk
 %\item Observations were Normally distributed on cumulative deaths
 %\item Switched to current model
 %\end{itemize}
@@ -444,9 +444,9 @@ Finally, we break down the results by target by averaging over region and foreca
    
    \section{Ablation Test Results}
 
-We can see from Figure \ref{fig:ablation} that MechBayes Full is consistently better than MechBayes Death Only or MechBayes Fixed Case Detection Probability. The only exception seems to be June 22nd 2020 for the two week ahead target. Late June 2020 is when many states in the U.S. began to see an uptick in cases again, with Texas, Florida, and California seeing their largest total case counts since the beginning of the pandemic. Since MechBayes is conditional on the current level of interventions, forecasts made from June 22nd assumed the same level of intervention present on June 22nd. During this time, each state was re-opening various establishments, while cases were rising. MechBayes Full forecasted an exponential growth in cases, which was reflected in a large over prediction two weeks later on July 4th. Finally, we can also see that the difference in MAE between MechBayes Full and the competing models increases as forecast horizon increases. This suggest that MechBayes Full is a better long term forecasting model.
+We can see from Figure \ref{fig:ablation} that MechBayes Full is consistently better than MechBayes Death Only or MechBayes Fixed case and death deviation model. The only exception seems to be June 22nd 2020 for the two week ahead target. Late June 2020 is when many states in the U.S. began to see an uptick in cases again, with Texas, Florida, and California seeing their largest total case counts since the beginning of the pandemic. Since MechBayes is conditional on the current level of interventions, forecasts made from June 22nd assumed the same level of intervention present on June 22nd. During this time, each state was re-opening various establishments, while cases were rising. MechBayes Full forecasted an exponential growth in cases, which was reflected in a large over prediction two weeks later on July 4th. Finally, we can also see that the difference in MAE between MechBayes Full and the competing models increases as forecast horizon increases. This suggest that MechBayes Full is a better long term forecasting model.
 
-We can also see that the MechBayes Death Only is consistently better than MechBayes Fixed Case Detection Probability.  This may be evidence that naively including case data, without adjusting for time-varying testing rates, may be worse than not including it at all. 
+We can also see that the MechBayes Death Only is consistently better than MechBayes Fixed case and death deviation model.  This may be evidence that naively including case data, without adjusting for time-varying testing rates, may be worse than not including it at all. 
 
 \begin{figure}
   \centering
@@ -483,9 +483,9 @@ We can also see that the MechBayes Death Only is consistently better than MechBa
 MechBayes is a fast, fully Bayesian compartmental model capable of accounting for real-world data challenges during a pandemic.  This model produced consistently accurate real-time forecasts over the course of 3 months, and was ranked as one of the top 3 of 11 models on an independent scoreboard of COVID-19 forecast models \cite{yyg}. Our experiments led us to the following conclusions about the performance of this model and the underlying methodology.
 
 \begin{itemize}
-\item \textbf{Adding case data when predicting deaths is helpful but only when accounting for data quality issues}. Our ablation tests (Figure \ref{fig:ablation}) clearly shows that time-varying detection probability is a key feature in the model for reducing MAE of forecasts. The "Full" model that both incorporates incident cases into the model likelihood and allows for a flexible time-varying case detection rate is consistently more accurate than a model that does not account for cases at all ("Death Only" model) and a model that does account for cases but does not account for a time-varying case detection probability.
+\item \textbf{Adding case data when predicting deaths is helpful but only when accounting for data quality issues}. Our ablation tests (Figure \ref{fig:ablation}) clearly shows that time-varying case and death deviation model is a key feature in the model for reducing MAE of forecasts. The "Full" model that both incorporates incident cases into the model likelihood and allows for a flexible time-varying case detection rate is consistently more accurate than a model that does not account for cases at all ("Death Only" model) and a model that does account for cases but does not account for a time-varying case and death deviation model.
 
-%As we can see in Figure \ref{fig:model_details}, the model relies on this parameter heavily, setting the detection probability at around 15\% at the start of the pandemic in March, to nearly 80\% by August 1st 2020. There is remarkable similarity between the increase across geographical locations as well, suggesting (as testing data reflects) an overall increase in the number of detected cases across the U.S. Adjusting for case data quality also requires a QA process, where data dumps are redistributed across a specific time-window. This avoids the situation where MechBayes interprets data dumps as a drastic change in disease dynamics. This is visible in Figure \ref{fig:model_details}, where the time-varying detection probability in New Jersey follows the typical trend of other states, until the data dump, where the detection probability dips significantly down.
+%As we can see in Figure \ref{fig:model_details}, the model relies on this parameter heavily, setting the case and death deviation model at around 15\% at the start of the pandemic in March, to nearly 80\% by August 1st 2020. There is remarkable similarity between the increase across geographical locations as well, suggesting (as testing data reflects) an overall increase in the number of detected cases across the U.S. Adjusting for case data quality also requires a QA process, where data dumps are redistributed across a specific time-window. This avoids the situation where MechBayes interprets data dumps as a drastic change in disease dynamics. This is visible in Figure \ref{fig:model_details}, where the time-varying case and death deviation model in New Jersey follows the typical trend of other states, until the data dump, where the case and death deviation model dips significantly down.
 
 
 \item \textbf{Models must evolve in order to be successful in real-time pandemic forecasting}. As Figure \ref{fig:covidhub} shows, MechBayes significantly improved over time relative to the baseline model. Forecasting during a real-time pandemic is subject to a wide variety of data reporting issues. Continuously responding to challenges is key to being able to forecast well. This extends to manual QA processes and extensive forecast validation outside of the model itself as described in section 5.1. 
@@ -518,7 +518,7 @@ MechBayes is a fast, fully Bayesian compartmental model capable of accounting fo
 
 \section{Conclusion}
 
-We have seen that MechBayes is a powerful Bayesian compartmental model that can capture the real-world complexities of forecasting during a pandemic. Through real-time and retrospective evaluation, we have demonstrated the success of MechBayes in forecasting COVID-19. The model is able to improve over a naive baseline model as well as a naive compartmental model. Allowing for time-varying interventions and detection probability is a necessary model component during a real-time pandemic forecasting effort. 
+We have seen that MechBayes is a powerful Bayesian compartmental model that can capture the real-world complexities of forecasting during a pandemic. Through real-time and retrospective evaluation, we have demonstrated the success of MechBayes in forecasting COVID-19. The model is able to improve over a naive baseline model as well as a naive compartmental model. Allowing for time-varying interventions and case and death deviation model is a necessary model component during a real-time pandemic forecasting effort. 
 
 While we chose an exponential random walk on $\beta(t)$ there are many other choices for flexible non-parametric modeling of transmissibility. Further work might consider a spline model, or a Gaussian process, or semi-parametric models capable of taking intervention dates as covariates. 
 
@@ -546,7 +546,7 @@ This allows us to initialize the process model:
  \end{equation}
 %
 % \begin{itemize}
-% \item Because of detection probability we cannot seed using initial reported data, since this is an underestimate
+% \item Because of case and death deviation model we cannot seed using initial reported data, since this is an underestimate
 % \item Put priors on initial seed
 %  \end{itemize}
   
@@ -574,13 +574,13 @@ The Covid19-ForecastHub began soliciting forecasts in the beginning of April 202
  
  \begin{itemize}
  
- \item \textbf{Version 1: April 20th 2020 through May 10th 2020}. Model had normal observation noise (instead of negative binomial) and a non-time varying case detection probability. Model was fit to cumulative deaths and cases. 
+ \item \textbf{Version 1: April 20th 2020 through May 10th 2020}. Model had normal observation noise (instead of negative binomial) and a non-time varying case and death deviation model. Model was fit to cumulative deaths and cases. 
  \begin{equation}
 \text{Cases}_{t} \sim N(p_{c}*C_{t} ,\sigma_{c}^2) \ \ \  
 \text{Deaths}_{t} \sim N(p_d*D_{2_{t}} , \sigma_d^2)
 \end{equation}
 
-  \item \textbf{Version 2: May 10th 2020 through May 24th 2020}. Model had normal observation noise (instead of negative binomial) and time varying case detection probability. Model was fit to cumulative deaths and cases. 
+  \item \textbf{Version 2: May 10th 2020 through May 24th 2020}. Model had normal observation noise (instead of negative binomial) and time varying case and death deviation model. Model was fit to cumulative deaths and cases. 
   
    \begin{equation}
 \text{Cases}_{t} \sim N(p_{t,c}*C_{t} ,\sigma_{c}^2) \ \ \  
@@ -588,7 +588,7 @@ The Covid19-ForecastHub began soliciting forecasts in the beginning of April 202
 \end{equation}
 
 
-    \item \textbf{Version 3: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case detection probability. Model was fit to incident deaths and cases. 
+    \item \textbf{Version 3: May 24th 2020 through August 1st 2020}. Model had negative binomial observation noise  and time varying case and death deviation model. Model was fit to incident deaths and cases. 
      \begin{equation}
 \text{Cases}_{t} \sim NB(p_{c,t}*[C_{t}-C_{t-1}] ,\sigma_{c}^2) \ \ \  
 \text{Deaths}_{t} \sim NB(p_d*[D_{2_{t}} - D_{2_{t-1}}] , \sigma_d^2)
