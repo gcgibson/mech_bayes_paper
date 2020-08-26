@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  20 AUG 2020 09:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  26 AUG 2020 08:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -554,11 +554,8 @@ File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
-) (./paper_2020-08-19.aux
-
-LaTeX Warning: Label `fig:covidhub_appendix' multiply defined.
-
 )
+No file paper_2020-08-19.aux.
 \openout1 = `paper_2020-08-19.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
@@ -574,7 +571,7 @@ LaTeX Font Info:    ... okay on input line 42.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
 LaTeX Font Info:    ... okay on input line 42.
 LaTeX Font Info:    Try loading font information for U+msa on input line 42.
- (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 42.
@@ -676,44 +673,45 @@ LaTeX Warning: Citation `syafruddin2012seir' on page 2 undefined on input line
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [2]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3]
-
-LaTeX Warning: Citation `hotta2010bayesian' on page 4 undefined on input line 8
+LaTeX Warning: Citation `hotta2010bayesian' on page 3 undefined on input line 8
 8.
 
 
-LaTeX Warning: Citation `dukic2012tracking' on page 4 undefined on input line 8
+LaTeX Warning: Citation `dukic2012tracking' on page 3 undefined on input line 8
 8.
 
 
-LaTeX Warning: Citation `frasso2016bayesian' on page 4 undefined on input line 
+LaTeX Warning: Citation `frasso2016bayesian' on page 3 undefined on input line 
 88.
 
 
-LaTeX Warning: Citation `smirnova2019forecasting' on page 4 undefined on input 
+LaTeX Warning: Citation `smirnova2019forecasting' on page 3 undefined on input 
 line 88.
 
 
-LaTeX Warning: Citation `giordano2020modelling' on page 4 undefined on input li
+LaTeX Warning: Citation `giordano2020modelling' on page 3 undefined on input li
 ne 88.
 
 
-LaTeX Warning: Citation `yang2020modified' on page 4 undefined on input line 88
+LaTeX Warning: Citation `yang2020modified' on page 3 undefined on input line 88
 .
 
 
-LaTeX Warning: Citation `bertozzi2020challenges' on page 4 undefined on input l
+LaTeX Warning: Citation `bertozzi2020challenges' on page 3 undefined on input l
 ine 88.
 
 
-LaTeX Warning: Citation `prem2020effect' on page 4 undefined on input line 88.
+LaTeX Warning: Citation `prem2020effect' on page 3 undefined on input line 88.
 
 
-LaTeX Warning: Citation `flaxman2020estimating' on page 4 undefined on input li
+LaTeX Warning: Citation `flaxman2020estimating' on page 3 undefined on input li
 ne 88.
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
 
 LaTeX Warning: Citation `lopez2020modified' on page 4 undefined on input line 9
 0.
@@ -742,6 +740,12 @@ LaTeX Warning: Citation `krantz2020level' on page 4 undefined on input line 125
 LaTeX Warning: Citation `russel2020using' on page 4 undefined on input line 125
 .
 
+
+LaTeX Warning: Reference `fig:data' on page 4 undefined on input line 126.
+
+
+LaTeX Warning: Reference `fig:data' on page 4 undefined on input line 126.
+
 [4]
 
 LaTeX Warning: Citation `bracher2020evaluating' on page 5 undefined on input li
@@ -765,14 +769,13 @@ Package pdftex.def Info: data_plot.png used on input line 135.
 (pdftex.def)             Requested size: 421.57213pt x 421.57213pt.
 
 
+LaTeX Warning: Reference `fig:seird' on page 5 undefined on input line 143.
+
+
 LaTeX Warning: Citation `russell2020estimating' on page 5 undefined on input li
 ne 143.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [5]
-[6 <./data_plot.png>]
+[5] [6 <./data_plot.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
@@ -870,17 +873,42 @@ Overfull \hbox (51.78685pt too wide) in paragraph at lines 367--368
 LaTeX Warning: Float too large for page by 130.31491pt on input line 372.
 
 
+LaTeX Warning: Reference `fig:fit_and_forecast_results' on page 14 undefined on
+ input line 375.
+
+
+LaTeX Warning: Reference `fig:fit_and_forecast_results' on page 14 undefined on
+ input line 375.
+
+
+LaTeX Warning: Reference `fig:fit_and_forecast_results' on page 14 undefined on
+ input line 375.
+
+
 Underfull \vbox (badness 4403) has occurred while \output is active []
 
  [14]
 [15 <./fit_and_forecast_results.png>] [16 <./beta_t_plot.png> <./detection_plot
-.png>] <mae_results_by_time_zero_inc.png, id=81, 2107.875pt x 1204.5pt>
+.png>]
+
+LaTeX Warning: Reference `fig:model_details' on page 17 undefined on input line
+ 377.
+
+
+LaTeX Warning: Reference `fig:model_details' on page 17 undefined on input line
+ 379.
+
+<mae_results_by_time_zero_inc.png, id=81, 2107.875pt x 1204.5pt>
 File: mae_results_by_time_zero_inc.png Graphic file (type png)
 
 <use mae_results_by_time_zero_inc.png>
 Package pdftex.def Info: mae_results_by_time_zero_inc.png used on input line 38
 7.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
+(pdftex.def)             Requested size: 284.55084pt x 162.60048pt.
+
+Overfull \hbox (69.54854pt too wide) in paragraph at lines 387--388
+ [][] 
+ []
 
 <wis_results_by_time_zero_inc.png, id=82, 2107.875pt x 1204.5pt>
 File: wis_results_by_time_zero_inc.png Graphic file (type png)
@@ -888,123 +916,153 @@ File: wis_results_by_time_zero_inc.png Graphic file (type png)
 <use wis_results_by_time_zero_inc.png>
 Package pdftex.def Info: wis_results_by_time_zero_inc.png used on input line 39
 2.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
+(pdftex.def)             Requested size: 284.55084pt x 162.60048pt.
 
-<mae_results_by_region_inc.png, id=83, 2107.875pt x 1204.5pt>
-File: mae_results_by_region_inc.png Graphic file (type png)
+Overfull \hbox (69.54854pt too wide) in paragraph at lines 392--393
+ [][] 
+ []
 
-<use mae_results_by_region_inc.png>
-Package pdftex.def Info: mae_results_by_region_inc.png used on input line 397.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
-
-<wis_results_by_region_inc.png, id=84, 2107.875pt x 1204.5pt>
-File: wis_results_by_region_inc.png Graphic file (type png)
-
-<use wis_results_by_region_inc.png>
-Package pdftex.def Info: wis_results_by_region_inc.png used on input line 402.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
-
-<mae_results_by_target_inc.png, id=85, 2107.875pt x 1204.5pt>
+<mae_results_by_target_inc.png, id=83, 2107.875pt x 1204.5pt>
 File: mae_results_by_target_inc.png Graphic file (type png)
 
 <use mae_results_by_target_inc.png>
-Package pdftex.def Info: mae_results_by_target_inc.png used on input line 407.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
+Package pdftex.def Info: mae_results_by_target_inc.png used on input line 397.
+(pdftex.def)             Requested size: 284.55084pt x 162.60048pt.
 
-<wis_results_by_target_inc.png, id=86, 2107.875pt x 1204.5pt>
+Overfull \hbox (69.54854pt too wide) in paragraph at lines 397--398
+ [][] 
+ []
+
+<wis_results_by_target_inc.png, id=84, 2107.875pt x 1204.5pt>
 File: wis_results_by_target_inc.png Graphic file (type png)
 
 <use wis_results_by_target_inc.png>
-Package pdftex.def Info: wis_results_by_target_inc.png used on input line 412.
-(pdftex.def)             Requested size: 211.82907pt x 121.04518pt.
+Package pdftex.def Info: wis_results_by_target_inc.png used on input line 402.
+(pdftex.def)             Requested size: 284.55084pt x 162.60048pt.
 
-
-LaTeX Warning: Float too large for page by 67.74142pt on input line 419.
+Overfull \hbox (69.54854pt too wide) in paragraph at lines 402--403
+ [][] 
+ []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [17]
+<mae_results_by_region_inc.png, id=88, 2107.875pt x 1204.5pt>
+File: mae_results_by_region_inc.png Graphic file (type png)
 
-LaTeX Warning: Citation `covidhub' on page 18 undefined on input line 423.
+<use mae_results_by_region_inc.png>
+Package pdftex.def Info: mae_results_by_region_inc.png used on input line 416.
+(pdftex.def)             Requested size: 421.56754pt x 240.89574pt.
+
+<wis_results_by_region_inc.png, id=89, 2107.875pt x 1204.5pt>
+File: wis_results_by_region_inc.png Graphic file (type png)
+
+<use wis_results_by_region_inc.png>
+Package pdftex.def Info: wis_results_by_region_inc.png used on input line 421.
+(pdftex.def)             Requested size: 421.56754pt x 240.89574pt.
 
 
-LaTeX Warning: Reference `fig:covidhub' on page 18 undefined on input line 425.
+LaTeX Warning: Float too large for page by 52.31491pt on input line 426.
+
+
+LaTeX Warning: Citation `covidhub' on page 18 undefined on input line 431.
+
+
+Underfull \vbox (badness 1389) has occurred while \output is active []
+
+ [18 <./mae_results_by_time_zero_inc.png> <./wis_results_by_time_zero_inc.png> 
+<./mae_results_by_target_inc.png> <./wis_results_by_target_inc.png>] [19 <./mae
+_results_by_region_inc.png> <./wis_results_by_region_inc.png>]
+
+LaTeX Warning: Reference `fig:covidhub' on page 20 undefined on input line 433.
 
 
 
-LaTeX Warning: Reference `fig:covidhub' on page 18 undefined on input line 427.
+LaTeX Warning: Reference `fig:data' on page 20 undefined on input line 433.
+
+
+LaTeX Warning: Reference `fig:covidhub' on page 20 undefined on input line 435.
 
 
 
-LaTeX Warning: Reference `fig:covidhub' on page 18 undefined on input line 429.
+LaTeX Warning: Reference `fig:covidhub' on page 20 undefined on input line 437.
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [18]
-[19 <./mae_results_by_time_zero_inc.png> <./wis_results_by_time_zero_inc.png> <
-./mae_results_by_region_inc.png> <./wis_results_by_region_inc.png> <./mae_resul
-ts_by_target_inc.png> <./wis_results_by_target_inc.png>]
-<ablation_1.png, id=103, 1204.5pt x 1806.75pt>
+ [20]
+
+LaTeX Warning: Reference `fig:ablation' on page 21 undefined on input line 486.
+
+
+[21] <ablation_1.png, id=109, 1204.5pt x 1806.75pt>
 File: ablation_1.png Graphic file (type png)
  <use ablation_1.png>
-Package pdftex.def Info: ablation_1.png used on input line 455.
+Package pdftex.def Info: ablation_1.png used on input line 494.
 (pdftex.def)             Requested size: 180.6672pt x 271.00081pt.
 
-<ablation_2.png, id=104, 1806.75pt x 1806.75pt>
+<ablation_2.png, id=110, 1806.75pt x 1806.75pt>
 File: ablation_2.png Graphic file (type png)
  <use ablation_2.png>
-Package pdftex.def Info: ablation_2.png used on input line 460.
+Package pdftex.def Info: ablation_2.png used on input line 499.
 (pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
 
-Overfull \hbox (55.9985pt too wide) in paragraph at lines 460--461
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 499--500
  [][] 
  []
 
-<ablation_3.png, id=105, 1204.5pt x 1806.75pt>
+<ablation_3.png, id=111, 1204.5pt x 1806.75pt>
 File: ablation_3.png Graphic file (type png)
  <use ablation_3.png>
-Package pdftex.def Info: ablation_3.png used on input line 465.
+Package pdftex.def Info: ablation_3.png used on input line 504.
 (pdftex.def)             Requested size: 180.6672pt x 271.00081pt.
 
-<ablation_4.png, id=106, 1806.75pt x 1806.75pt>
+<ablation_4.png, id=112, 1806.75pt x 1806.75pt>
 File: ablation_4.png Graphic file (type png)
  <use ablation_4.png>
-Package pdftex.def Info: ablation_4.png used on input line 470.
+Package pdftex.def Info: ablation_4.png used on input line 509.
 (pdftex.def)             Requested size: 271.00081pt x 271.00081pt.
 
-Overfull \hbox (55.9985pt too wide) in paragraph at lines 470--471
+Overfull \hbox (55.9985pt too wide) in paragraph at lines 509--510
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.52505pt on input line 476.
+LaTeX Warning: Float too large for page by 112.52505pt on input line 515.
 
 
-LaTeX Warning: Citation `yyg' on page 20 undefined on input line 483.
+LaTeX Warning: Citation `yyg' on page 22 undefined on input line 522.
 
-[20] [21 <./ablation_1.png> <./ablation_2.png> <./ablation_3.png> <./ablation_4
+
+LaTeX Warning: Reference `fig:ablation' on page 22 undefined on input line 525.
+
+
+[22] [23 <./ablation_1.png> <./ablation_2.png> <./ablation_3.png> <./ablation_4
 .png>]
 
-LaTeX Warning: Reference `fig:covidhub' on page 22 undefined on input line 491.
+LaTeX Warning: Reference `fig:covidhub' on page 24 undefined on input line 529.
 
+
+
+LaTeX Warning: Reference `fig:covidhub_region_results' on page 24 undefined on 
+input line 529.
+
+
+LaTeX Warning: Reference `fig:results_discussion' on page 24 undefined on input
+ line 532.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22]
+ [24]
 
-LaTeX Warning: Citation `bracher2020evaluating' on page 23 undefined on input l
-ine 497.
-
-
-LaTeX Warning: Reference `fig:covidhub' on page 23 undefined on input line 501.
+LaTeX Warning: Citation `bracher2020evaluating' on page 25 undefined on input l
+ine 536.
 
 
-
-Overfull \hbox (19.34431pt too wide) in paragraph at lines 503--504
+Overfull \hbox (19.34431pt too wide) in paragraph at lines 542--543
 []\OT1/cmr/bx/n/10.95 Allowing for time-varying trans-mis-si-bil-ity is nec-es-
 sary to non-parametrically
  []
@@ -1012,19 +1070,19 @@ sary to non-parametrically
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23]
+ [25]
 
-LaTeX Warning: Reference `fig:covidhub' on page 24 undefined on input line 506.
+LaTeX Warning: Reference `fig:covidhub' on page 26 undefined on input line 545.
 
 
-<bias_by_timezero.png, id=123, 2107.875pt x 1204.5pt>
+<bias_by_timezero.png, id=130, 2107.875pt x 1204.5pt>
 File: bias_by_timezero.png Graphic file (type png)
 
 <use bias_by_timezero.png>
-Package pdftex.def Info: bias_by_timezero.png used on input line 512.
+Package pdftex.def Info: bias_by_timezero.png used on input line 551.
 (pdftex.def)             Requested size: 316.1676pt x 180.6672pt.
- [24] [25 <./bias_by_timezero.png>]
-Overfull \hbox (46.27472pt too wide) detected at line 546
+ [26 <./bias_by_timezero.png>] [27]
+Overfull \hbox (46.27472pt too wide) detected at line 585
 \OML/cmm/m/it/10.95 X\OT1/cmr/m/n/10.95 (0) = (\OML/cmm/m/it/10.95 S\OT1/cmr/m/
 n/10.95 (0)\OML/cmm/m/it/10.95 ; E\OT1/cmr/m/n/10.95 (0)\OML/cmm/m/it/10.95 ; I
 \OT1/cmr/m/n/10.95 (0)\OML/cmm/m/it/10.95 ; R\OT1/cmr/m/n/10.95 (0)\OML/cmm/m/i
@@ -1039,88 +1097,88 @@ it/10.95 I[] \OMS/cmsy/m/n/10.95 ^^@ \OML/cmm/m/it/10.95 D[] \OMS/cmsy/m/n/10.9
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26]
+ [28]
 
-LaTeX Warning: Citation `midas' on page 27 undefined on input line 562.
+LaTeX Warning: Citation `midas' on page 29 undefined on input line 601.
 
 
-LaTeX Warning: Citation `heffner2020emotional' on page 27 undefined on input li
-ne 564.
+LaTeX Warning: Citation `heffner2020emotional' on page 29 undefined on input li
+ne 603.
 
-[27]
+[29]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [28]
-<mae_results_by_time_zero.png, id=141, 2409.0pt x 1204.5pt>
+ [30]
+<mae_results_by_time_zero.png, id=147, 2409.0pt x 1204.5pt>
 File: mae_results_by_time_zero.png Graphic file (type png)
 
 <use mae_results_by_time_zero.png>
-Package pdftex.def Info: mae_results_by_time_zero.png used on input line 610.
+Package pdftex.def Info: mae_results_by_time_zero.png used on input line 649.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 610--611
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 649--650
  [][] 
  []
 
-<wis_results_by_time_zero.png, id=142, 2409.0pt x 1204.5pt>
+<wis_results_by_time_zero.png, id=148, 2409.0pt x 1204.5pt>
 File: wis_results_by_time_zero.png Graphic file (type png)
 
 <use wis_results_by_time_zero.png>
-Package pdftex.def Info: wis_results_by_time_zero.png used on input line 615.
+Package pdftex.def Info: wis_results_by_time_zero.png used on input line 654.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 615--616
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 654--655
  [][] 
  []
 
-<mae_results_by_region.png, id=143, 2409.0pt x 1204.5pt>
+<mae_results_by_region.png, id=149, 2409.0pt x 1204.5pt>
 File: mae_results_by_region.png Graphic file (type png)
 
 <use mae_results_by_region.png>
-Package pdftex.def Info: mae_results_by_region.png used on input line 620.
+Package pdftex.def Info: mae_results_by_region.png used on input line 659.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 620--621
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 659--660
  [][] 
  []
 
-<wis_results_by_region.png, id=144, 2409.0pt x 1204.5pt>
+<wis_results_by_region.png, id=150, 2409.0pt x 1204.5pt>
 File: wis_results_by_region.png Graphic file (type png)
 
 <use wis_results_by_region.png>
-Package pdftex.def Info: wis_results_by_region.png used on input line 625.
+Package pdftex.def Info: wis_results_by_region.png used on input line 664.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 625--626
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 664--665
  [][] 
  []
 
-<mae_results_by_target.png, id=145, 2409.0pt x 1204.5pt>
+<mae_results_by_target.png, id=151, 2409.0pt x 1204.5pt>
 File: mae_results_by_target.png Graphic file (type png)
 
 <use mae_results_by_target.png>
-Package pdftex.def Info: mae_results_by_target.png used on input line 630.
+Package pdftex.def Info: mae_results_by_target.png used on input line 669.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 630--631
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 669--670
  [][] 
  []
 
-<wis_results_by_target.png, id=146, 2409.0pt x 1204.5pt>
+<wis_results_by_target.png, id=152, 2409.0pt x 1204.5pt>
 File: wis_results_by_target.png Graphic file (type png)
 
 <use wis_results_by_target.png>
-Package pdftex.def Info: wis_results_by_target.png used on input line 635.
+Package pdftex.def Info: wis_results_by_target.png used on input line 674.
 (pdftex.def)             Requested size: 240.91411pt x 120.45705pt.
 
-Overfull \hbox (25.9118pt too wide) in paragraph at lines 635--636
+Overfull \hbox (25.9118pt too wide) in paragraph at lines 674--675
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 39.97702pt on input line 642.
+LaTeX Warning: Float too large for page by 39.97702pt on input line 681.
 
-[29] [30 <./mae_results_by_time_zero.png> <./wis_results_by_time_zero.png> <./m
+[31] [32 <./mae_results_by_time_zero.png> <./wis_results_by_time_zero.png> <./m
 ae_results_by_region.png> <./wis_results_by_region.png> <./mae_results_by_targe
 t.png> <./wis_results_by_target.png>]
 No file paper_2020-08-19.bbl.
@@ -1129,14 +1187,14 @@ No file paper_2020-08-19.bbl.
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 15303 strings out of 492995
- 298450 string characters out of 6132704
- 334707 words of memory out of 5000000
- 18378 multiletter control sequences out of 15000+600000
+ 15304 strings out of 492995
+ 298467 string characters out of 6132704
+ 334589 words of memory out of 5000000
+ 18381 multiletter control sequences out of 15000+600000
  18582 words of font info for 69 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  55i,10n,60p,2275b,962s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1156,10 +1214,10 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/201
 7/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on paper_2020-08-19.pdf (30 pages, 3520249 bytes).
+Output written on paper_2020-08-19.pdf (32 pages, 3552724 bytes).
 PDF statistics:
- 211 PDF objects out of 1000 (max. 8388607)
- 119 compressed objects within 2 object streams
+ 218 PDF objects out of 1000 (max. 8388607)
+ 124 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  118 words of extra memory for PDF output out of 10000 (max. 10000000)
 

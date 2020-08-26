@@ -1,0 +1,108 @@
+---
+title: "Untitled"
+author: "Graham Casey Gibson"
+date: "8/20/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r test, warning=FALSE,echo=FALSE, message=FALSE}
+
+## read packages
+library(lme4)
+library(zoltr) ## devtools::install_github("reichlab/zoltr")
+library(tidyverse)
+library(lubridate)
+## connect to zoltar
+zoltar_connection <- new_connection()
+zoltar_authenticate(zoltar_connection, "gcgibson", "casey!ili")
+## read in fips
+fips_csv <- read.csv(url("https://raw.githubusercontent.com/reichlab/covid19-forecast-hub/master/data-locations/locations.csv"))
+
+## access scores for the COVID-19 Forecasts project
+tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %>%
+  mutate(wis = (abs_error+.01*interval_2+.025*interval_5+.05*interval_10+.1*interval_20+.15*interval_30+.2*interval_40+.25*interval_50+.3*interval_60+.35*interval_70+.40*interval_80+.45*interval_90)/12,
+         mae=abs_error,error=error)
+
+## subset to inc
+tmp <- tmp[tmp$target %in% paste0(1:4, " wk ahead inc death"),]
+## subset to models of interest
+tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
+## convert time to date
+tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
+
+## subset to exactly what we want
+tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis),error=mean(error))
+
+## get geographies MB used
+states_ <- unique(tmp_subset[tmp_subset$model == "UMass-MechBayes",]$unit) 
+## remove goes we added in July 
+states_ <- states_[states_!="US" & states_ != "60" & states_ != "66"&states_ != "69" & states_ != "78" & states_ != "72"]
+## subset to common geos
+tmp_subset <- tmp_subset[tmp_subset$unit %in% states_,]
+## move timezero to V3
+tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-12",]
+## adjust timezero from monday to sunday to be consistent with MB
+tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
+print (head(tmp_subset))
+print (nrow(tmp_subset))
+```
+
+```{r test2, fig.align='center',warning=FALSE,echo=FALSE, message=FALSE}
+mae_results_by_time_zero_df <- tmp_subset[tmp_subset$timezero >= "2020-05-12" & tmp_subset$timezero <= "2020-08-02",] %>% group_by(timezero,model,unit,target) %>% summarize(mae=mean(mae))
+
+mae_results_by_time_zero_df$timezero <- as.factor(mae_results_by_time_zero_df$timezero)
+mae_results_by_time_zero <- ggplot(mae_results_by_time_zero_df,aes(x=timezero,y=log(mae),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) 
+mae_results_by_time_zero <- mae_results_by_time_zero + geom_hline(yintercept = 0)
+print (mae_results_by_time_zero)
+```
+
+# Model 1
+In order to answer the question of whether there is a stisticaly significant difference between models in terms of MAE, we model log(MAE) as follows
+
+\begin{eqnarray}
+log(MAE)_{m,r,t,h}, &=& \beta_0 + \beta_1*\text{model} + \beta_2*\text{2 week ahead} + \beta_3*\text{3 week ahead} + \beta_4*\text{4 week ahead}  \\
+&+&  \beta_5*\text{2 week ahead}*\text{model} + \beta_6*\text{3 week ahead}*\text{model} \\
+&+& \beta_7*\text{4 week ahead}*\text{model} + \Sigma_{m,r,t,h}
+\end{eqnarray}
+
+where $m$ is a model index, $r$ is a geographic index, $t$ is a time index and $h$ is a horizon index. Here we let $\Sigma$ be an auto-regressive covariance matrix of the form, 
+
+\begin{equation}
+Cov(log(MAE_{m,r,t_i,h}),log(MAE_{m,r,t_j,h})) = \sigma^2 * \rho^{|t_i-t_j|}
+\end{equation}
+
+
+```{r model 1, message=FALSE}
+
+library(lme4)
+library(nlme)
+library(pander)
+diagnostic_fit <- lme(log(mae + .00001)~ model*target ,random  = ~ 1  + timezero | unit,data=mae_results_by_time_zero_df)
+diagnostic_fit <- update(diagnostic_fit, correlation = corAR1())
+pander(summary(diagnostic_fit))
+
+```
+
+# Model 2
+
+We can also fit a pure random effects model, with a general covariance structure.
+
+\begin{eqnarray}
+log(MAE)_{m,r,t,h}, &=& \beta_0 + \beta_1*\text{model} + \beta_2*\text{2 week ahead} + \beta_3*\text{3 week ahead} + \beta_4*\text{4 week ahead}  \\
+&+&  \beta_5*\text{2 week ahead}*\text{model} + \beta_6*\text{3 week ahead}*\text{model}  \\
+&+& \beta_7*\text{4 week ahead}*\text{model} +  \beta_8*\text{time} + b_0_r + b_1_r*\text{time} \\
+b_0_r &~& N(0,\Sigma_{b_0}^2)\\
+b_1_r &~& N(0,\Sigma_{b_1}^2)\\
+\end{eqnarray}
+
+```{r model 2, message=FALSE}
+diagnostic_fit <- lmer(log(mae+.00001)~ model*target +timezero+  ( 1  + timezero | unit),data=mae_results_by_time_zero_df)
+
+summary(diagnostic_fit)
+```
+
+
+
