@@ -37,7 +37,7 @@ library(nlme)
 
 
 #diagnostic_fit <- update(diagnostic_fit, correlation = corAR1())
-diagnostic_fit <- lmer(log(mae+.01)~ factor(target) + factor(model):factor(target) +  ( 1   | unit),data=mae_results_by_time_zero_df)
+diagnostic_fit <- lmer(log(mae+1)~ factor(target) + factor(model):factor(target) +  ( 1   | unit),data=mae_results_by_time_zero_df)
 
 summary(diagnostic_fit)
 library(sjPlot)

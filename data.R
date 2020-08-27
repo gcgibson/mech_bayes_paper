@@ -27,6 +27,7 @@ state_deaths_subset$location_name <- as.factor(state_deaths_subset$location_name
 state_deaths_subset <- state_deaths_subset[order(state_deaths_subset$total_deaths),]
 state_deaths_subset$location_name <- factor(state_deaths_subset$location_name,levels = unique(state_deaths_subset$location_name))
 data_plot <- ggplot(state_deaths_subset,aes(x=date,y=incident)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free") + theme_bw() +ylab("Incident Reported COVID-19 Deaths (per day)") + xlab("")
+#data_plot <- data_plot + ylab("Incident Deaths") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ggsave("/Users/gcgibson/mech_bayes_paper/data_plot.png",data_plot,device="png",width=10,height=10)
 
 
@@ -79,6 +80,7 @@ plot_df_subset[is.na(plot_df_subset$location_name), ]$location_name <- "US"
 fit_and_forecast_results <- ggplot(plot_df_subset,aes(x=time,y=median)) + geom_line(col="cornflowerblue") +
   geom_ribbon(aes(ymin=lower, ymax=upper),alpha=0.2,size=0,colour="cornflowerblue")+geom_point(data=state_deaths_subset_for_addition,aes(x=date,y=incident),size=.5)  +facet_wrap(~location_name,scales='free') +
   theme_bw() + geom_vline(xintercept = as.Date("2020-07-26"),alpha=.75)
+fit_and_forecast_results <- fit_and_forecast_results + ylab("Incident Deaths") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ggsave("/Users/gcgibson/mech_bayes_paper/fit_and_forecast_results.png",fit_and_forecast_results,device="png",width=8,height=8)
 
 

@@ -1,9 +1,8 @@
 \relax 
+\@writefile{toc}{\contentsline {section}{\tocsection {}{}{Abstract}}{1}}
 \citation{lutz2019applying}
 \citation{myers2000forecasting}
 \citation{kermack1927contribution}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{}{Abstract}}{1}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{1}{Introduction}}{1}}
 \citation{shaman2012forecasting}
 \citation{osthus2017forecasting}
 \citation{ong2010real}
@@ -11,6 +10,7 @@
 \citation{lekone2006statistical}
 \citation{bokler1993chaos}
 \citation{syafruddin2012seir}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{1}{Introduction}}{2}}
 \citation{hotta2010bayesian}
 \citation{dukic2012tracking}
 \citation{frasso2016bayesian}
@@ -28,16 +28,12 @@
 \citation{krantz2020level}
 \citation{russel2020using}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Related Work}}{4}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{Data}}{4}}
-\citation{bracher2020evaluating}
-\citation{reich2016case}
-\citation{bracher2019multibin}
-\citation{reich2019reply}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{3}{Data}}{5}}
 \citation{russell2020estimating}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{Compartmental Model}}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There are significant data-dumps, with New Jersey reporting over 1500 backlogged deaths when switching to include "probable" deaths. In some states, there appears to be a weekly cycle where deaths are under-reported on the weekend. This is especially pronounced for the U.S. as a whole. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. \relax }}{6}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{4}{Compartmental Model}}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Deaths by state for any state with over 50 incident deaths for a given day. Notice the large variability in incident reporting. There are significant data-dumps, with New Jersey reporting over 1500 backlogged deaths when switching to include "probable" deaths. In some states, there appears to be a weekly cycle where deaths are under-reported on the weekend. This is especially pronounced for the U.S. as a whole. We can also see that there are some negative incident deaths, where data are revised to account for deaths that were incorrectly attributed to COVID. \relax }}{7}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:data}{{1}{6}}
+\newlabel{fig:data}{{1}{7}}
 \citation{phan2019composable}
 \citation{simonov2020persuasive}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{Time-varying transmission parameter}}{8}}
@@ -58,36 +54,32 @@
 \citation{flaxman2020estimating}
 \citation{smirnova2019forecasting}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Ablation Test}}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example fit and forecast for 2020-07-26 for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.\relax }}{15}}
-\newlabel{fig:fit_and_forecast_results}{{3}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta (t)$ upward for $t$ close to 0 in states that did not experience community transmission in March. B) Time varying case and death deviation model for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated case and death deviation model trajectories between states.\relax }}{16}}
-\newlabel{fig:model_details}{{4}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example fit and forecast for 2020-07-26 for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.\relax }}{16}}
+\newlabel{fig:fit_and_forecast_results}{{3}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to non-parametrically account for the non-pharmaceutical interventions retrospectively, with transmission dropping in states like New York quite rapidly. While it may seem that many states follow the same trend, this is slightly misleading since the prior pulls $\beta (t)$ upward for $t$ close to 0 in states that did not experience community transmission in March. B) Time varying case and death deviation model for example states. The time varying detection random walk is able account for the increase in testing and other reporting anomolies. There is remarkable similarity among the estimated case and death deviation model trajectories between states.\relax }}{17}}
+\newlabel{fig:model_details}{{4}{17}}
 \citation{covidhub}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from Covid19-ForecastHub broken down by target and forecast week. We use the relative MAE metric which takes the MAE of MechBayes model and divides by the MAE of the baseline model. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both relMAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. \relax }}{18}}
-\newlabel{fig:covidhub_appendix}{{5}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Scores from Covid19-ForecastHub broken down by region for the 20 regions with the highest incident deaths. Regions are sorted by total deaths left to right. Here we can see that MechBayes has the greatest increase in states with large total death counts. States with medium or small death counts have more mixed results. The trends are similar for WIS, with an even more pronounced improvement for states with large death counts. \relax }}{19}}
-\newlabel{fig:covidhub_region_results}{{6}{19}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Real-Time Model Results}}{20}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{Ablation Test Results}}{21}}
-\citation{yyg}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Real-Time Model Results}}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by target and forecast week. We use the relative MAE metric which takes the MAE of MechBayes model and divides by the MAE of the baseline model. Here we can see that the MechBayes model improves in both MAE and coverage probability over time, consistently beating the baseline model in the month of July 2020. We can see that as the horizon increases from 1 to 4 weeks ahead, MAE, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. We also see a uniform improvement in coverage probability when broken down by timezero and target. Here the horizontal line represents 95\% coverage interval. \relax }}{19}}
+\newlabel{fig:covidhub_appendix}{{5}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by region for the 20 regions with the highest incident deaths. Regions are sorted by total deaths left to right. Here we can see that MechBayes has the greatest increase in states with large total death counts. States with medium or small death counts have more mixed results. The improvements in coverage probability are more mixed, with MechBayes improving coverage probability in 12 of 20 regions. \relax }}{20}}
+\newlabel{fig:covidhub_region_results}{{6}{20}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Coefficient estimates and t-values for MAE evaluation model. We can see that MechBayes performs statistically significantly better than the baseline model for 2-4 weeks ahead. The performance increase does not seem to follow a particular pattern.\relax }}{22}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Discussion}}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Ablation test MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes No Detection Random Walk and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{23}}
-\newlabel{fig:ablation}{{7}{23}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{7}{Ablation Test Results}}{22}}
+\citation{yyg}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Discussion}}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Ablation test MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes No Detection Random Walk and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{24}}
+\newlabel{fig:ablation}{{7}{24}}
 \citation{bracher2020evaluating}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{26}}
-\newlabel{fig:results_discussion}{{8}{26}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{9}{Conclusion}}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{27}}
+\newlabel{fig:results_discussion}{{8}{27}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{10}{Appendix}}{28}}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.1}{A1}}{28}}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.2}{Seeding Epidemic}}{28}}
 \citation{midas}
 \citation{heffner2020emotional}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.3}{Priors}}{29}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{10.4}{A2}}{29}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{11}{Real-Time Model Results}}{32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Scores from Covid19-ForecastHub broken down by region, target and forecast week. Here we can see that the MechBayes model improves in both MAE and WIS over time, consistently beating the baseline model in the month of July 2020. We can also see that MAE varies heavily by region, which is an artifact of both population size and number of covid deaths. However, in regions with large MAE (left side) we see a significant improvement over the baseline model in terms of both MAE and WIS. Finally, we can see that as the horizon increases from 1 to 4 weeks ahead, both MAE and WIS increase, reflecting an increase in difficulty of forecasting further ahead in time. Note that targets averaging over forecast week include an average over all model versions. \relax }}{32}}
-\newlabel{fig:covidhub_appendix}{{9}{32}}
 \bibstyle{unsrt}
 \bibdata{bib}
 \newlabel{tocindent-1}{0pt}

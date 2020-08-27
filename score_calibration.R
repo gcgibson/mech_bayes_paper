@@ -3,100 +3,94 @@ library(tidyverse)
 library(lubridate)
 zoltar_connection <- new_connection()
 zoltar_authenticate(zoltar_connection, "gcgibson", "casey!ili")
-## read in fips
-fips_csv <- read.csv(url("https://raw.githubusercontent.com/reichlab/covid19-forecast-hub/master/data-locations/locations.csv"))
 
-## access scores for the COVID-19 Forecasts project
-#tmp <-  download_forecast(zoltar_connection, "https://www.zoltardata.com/api/model//")   
-tmp <- do_zoltar_query(zoltar_connection, "https://www.zoltardata.com/api/project/44/", c("MechBayes"))
 
-tmp <- tmp[tmp$target %in% paste0(1:4, " wk ahead inc death"),]
-tmp_mech_bayes <- tmp[tmp$model %in%  c("UMass-MechBayes","COVIDhub-baseline"),]
-tmp_mech_bayes$timezero <- as.Date(tmp_mech_bayes$timezero)
-#tmp_mech_bayes <- tmp_mech_baye
-tmp_subset <- tmp_mech_bayes %>%  dplyr::group_by(timezero,unit,model,target,truth) %>% dplyr::summarize(mae=mean(mae),wis=mean(wis),error=mean(error))
-states_ <- unique(tmp_subset[tmp_subset$model == "UMass-MechBayes",]$unit) 
-states_ <- states_[states_!="US" & states_ != "60" & states_ != "66"&states_ != "69" & states_ != "78" & states_ != "72"]
-tmp_subset <- tmp_subset[tmp_subset$unit %in% states_,]
+tmp <- scores(zoltar_connection, "https://www.zoltardata.com/api/project/44/") %>%
+  mutate(truth=truth)
 
-#tmp_subset$timezero <- as.factor(tmp_subset$timezero)
-tmp_subset <- tmp_subset[tmp_subset$timezero > "2020-05-12",]
-tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero <- tmp_subset[tmp_subset$model == "COVIDhub-baseline",]$timezero -1
+
+mb_prefix <- "/Users/gcgibson/mech_bayes_paper/UMass-MechBayes/"
+baseline_prefix <- "/Users/gcgibson/mech_bayes_paper/COVIDhub-baseline/"
+
+baseline_files <- list.files(baseline_prefix)
+mb_files <- list.files(mb_prefix)
+dates <- c("2020-05-17", "2020-05-24", "2020-05-31", "2020-06-07", "2020-06-14", "2020-06-21",
+           "2020-06-28", "2020-07-05", "2020-07-12", "2020-07-19", "2020-07-26", "2020-08-02" ,"2020-08-09" ,
+           "2020-08-16")
+
+locations <-   c("01", "02", "04", "05", "06", "08", "09", "10", "12", "13", 
+  "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", 
+  "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", 
+  "37", "38", "39", "40", "41", "42", "44", "45", "46", "47", "48", 
+  "49", "50", "51", "53", "54", "55", "56")
+
+
+coverage_probability_mb <- array(NA,dim = c(length(dates),length(locations),4))
+coverage_probability_baseline <-array(NA,dim = c(length(dates),length(locations),4))
+
+date_idx <- 1
+for (date_ in dates){
+  file_idx_mb <- which(grepl(date_,mb_files))
+  mb_file <- read.csv(paste0(mb_prefix,mb_files[file_idx_mb]))
+  
+  file_idx_baseline <- which(grepl(as.Date(date_)+1,baseline_files))
+  baseline_file <- read.csv(paste0(baseline_prefix,baseline_files[file_idx_baseline]))
+  location_idx <- 1
+  for (location in locations){
+    target_idx <- 1
+    for (target in 1:4){
+      tmp_mb <- mb_file[mb_file$location == location & mb_file$quantile == .025 & mb_file$target == paste0(target," wk ahead inc death"),]
+      tmp_mb_lower <- tmp_mb[complete.cases(tmp_mb),]$value
+      
+      tmp_mb <- mb_file[mb_file$location == location & mb_file$quantile == .975 & mb_file$target == paste0(target," wk ahead inc death"),]
+      tmp_mb_upper <- tmp_mb[complete.cases(tmp_mb),]$value
+      
+      tmp_baseline <- baseline_file[baseline_file$location == location & baseline_file$quantile == .025 & baseline_file$target == paste0(target," wk ahead inc death"),]
+      tmp_baseline_lower <- tmp_baseline[complete.cases(tmp_baseline),]$value
+      
+      tmp_baseline <- baseline_file[baseline_file$location == location & baseline_file$quantile == .975 & baseline_file$target == paste0(target," wk ahead inc death"),]
+      tmp_baseline_upper <- tmp_baseline[complete.cases(tmp_baseline),]$value
+      
+      truth_local <- tmp[tmp$timezero==date_ & tmp$unit == location & tmp$target == paste0(target," wk ahead inc death"),]$truth[1]
+      coverage_probability_mb[date_idx,location_idx,target_idx] <- ifelse(truth_local <=tmp_mb_upper & truth_local >= tmp_mb_lower,1,0  )
+      coverage_probability_baseline[date_idx,location_idx,target_idx] <- ifelse(truth_local <=tmp_baseline_upper & truth_local >= tmp_baseline_lower,1,0  )
+      
+      target_idx <- target_idx + 1
+    }
+    location_idx <- location_idx + 1
+  }
+  date_idx <- date_idx + 1
+}
+
 library(ggplot2)
-library(tidyr)
 
-mae_results_by_time_zero_df <- tmp_subset[tmp_subset$timezero >= "2020-05-12" & tmp_subset$timezero <= "2020-08-02",] %>% group_by(timezero,model,unit,target) %>% summarize(mae=mean(mae))
-
-
-mae_results_by_time_zero_df$timezero <- as.factor(mae_results_by_time_zero_df$timezero)
-mae_results_by_time_zero <- ggplot(mae_results_by_time_zero_df,aes(x=timezero,y=log(.01+mae),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) 
-mae_results_by_time_zero <- mae_results_by_time_zero + ylab("log(MAE)")
-
-ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_time_zero_inc.png",mae_results_by_time_zero,device="png",width=7,height=4)
-
-fips_csv$unit <- fips_csv$location
-tmp_subset_r <- tmp_subset %>% group_by(unit,model,timezero,truth) %>% summarize(mae=mean(mae)) %>% left_join(fips_csv,by='unit')
-
-#tmp_subset_r <- tmp_subset_r %>% spread(model,mae)
-#tmp_subset_r$rmae <- tmp_subset_r$`UMass-MechBayes`/tmp_subset_r$`COVIDhub-baseline`
-tmp_subset_r <- tmp_subset_r[rev(order(tmp_subset_r$truth)),]
-tmp_subset_r$abbreviation <- factor(tmp_subset_r$abbreviation,levels=unique(tmp_subset_r$abbreviation))
-regions_to_show <- levels(tmp_subset_r$abbreviation)[1:20]
-mae_results_by_region <- ggplot(tmp_subset_r[tmp_subset_r$abbreviation %in% regions_to_show,],aes(x=abbreviation,y=log(.01+mae),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + xlab("State") 
-mae_results_by_region <- mae_results_by_region + ylab("log(MAE)")
-
-ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_region_inc.png",mae_results_by_region,device="png",width=7,height=4)
+coverage_probability_df <- data.frame(date = rep(dates,each = 4*length(locations)),
+                                         location =rep(rep(locations,each=4),length(dates)),
+                                         target = rep(paste0(1:4, " wk ahead inc death"),length(locations)*length(dates)),
+                                         bl = c(coverage_probability_baseline),
+                                      mb = c(coverage_probability_mb))
+library(reshape2)
+coverage_probability_df_long <- melt(coverage_probability_df[complete.cases(coverage_probability_df),], id.vars=c("date", "location","target"))
+coverage_probability_df_long$model <- coverage_probability_df_long$variable
+coverage_probability_df_long$cp <- coverage_probability_df_long$value
+levels(coverage_probability_df_long$model) <- c("COVIDhub-baseline","UMass-MechBayes")
 
 
-#normalize by population
-pops <- read.csv("/Users/gcgibson/Downloads/nst-est2019-alldata.csv")
-pops$state <- pops$STATE
-library(dplyr)
-tmp_subset$state <- as.integer(tmp_subset$unit)
-tmp_subset_w_pop <- tmp_subset %>% left_join(pops,by = "state")
-mae_results_by_region_normalized <- ggplot(tmp_subset_w_pop %>% group_by(model) %>% summarize(mae=mean(mae), CENSUS2010POP=CENSUS2010POP[1]),aes(x=1,y=mae/CENSUS2010POP*1e6,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_region_normalized.png",mae_results_by_region_normalized,device="png",width=8,height=4)
-tmp_pop_df <- tmp_subset_w_pop %>% group_by(model) %>% summarize(mae=max(mae), CENSUS2010POP=CENSUS2010POP[1])
-tmp_pop_df$mae/tmp_pop_df$CENSUS2010POP*100000
-
-target_df <- tmp_subset %>% group_by(target,model,timezero) %>% summarize(mae=mean(mae))
-#target_df <- target_df%>% spread(model,mae)
-#target_df$rmae <- target_df$`UMass-MechBayes`/target_df$`COVIDhub-baseline`
-
-mae_results_by_target <- ggplot(target_df,aes(x=target,y=log(.01+mae),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-mae_results_by_target <- mae_results_by_target + ylab("log(MAE)")
-ggsave("/Users/gcgibson/mech_bayes_paper/mae_results_by_target_inc.png",mae_results_by_target,device="png",width=7,height=4)
-
-wis_results_by_time_zero_df <- tmp_subset[tmp_subset$timezero >= "2020-05-10",] %>% group_by(timezero,model,unit) %>% summarize(wis=mean(wis))
-#wis_results_by_time_zero_df <- wis_results_by_time_zero_df %>% spread(model,wis)
-#wis_results_by_time_zero_df$rwis <- wis_results_by_time_zero_df$`UMass-MechBayes`/wis_results_by_time_zero_df$`COVIDhub-baseline`
-wis_results_by_time_zero <- ggplot(wis_results_by_time_zero_df,aes(x=as.factor(timezero),y=log(.01+wis),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) 
-wis_results_by_time_zero <-wis_results_by_time_zero + ylab("log(WIS)")
-ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_time_zero_inc.png",wis_results_by_time_zero,device="png",width=7,height=4)
+cp_results_by_time_zero <- ggplot(coverage_probability_df_long %>% group_by(date,model) %>% summarize(cp=mean(cp)),aes(x=as.Date(date),y=cp,col=model)) + geom_point() + theme_bw() + geom_hline(yintercept = .95)+ ylab("Coverage Probability") + xlab("Date")
+ggsave("/Users/gcgibson/mech_bayes_paper/cp_results_by_time_zero.png",cp_results_by_time_zero,device="png",width=7,height=4)
 
 
-tmp_subset_rw <- tmp_subset %>% group_by(unit,model, timezero,truth) %>% summarize(wis=mean(wis))%>% left_join(fips_csv,by='unit')
-tmp_subset_rw <- tmp_subset_rw[rev(order(tmp_subset_rw$wis)),]
-tmp_subset_rw$abbreviation <- factor(tmp_subset_rw$abbreviation,levels=unique(tmp_subset_rw$abbreviation))
-#tmp_subset_rw <- tmp_subset_rw %>% spread(model,wis)
-#tmp_subset_rw$rwis <- tmp_subset_rw$`UMass-MechBayes`/tmp_subset_rw$`COVIDhub-baseline`
-tmp_subset_rw <- tmp_subset_rw[rev(order(tmp_subset_rw$truth)),]
-tmp_subset_rw$abbreviation <- factor(tmp_subset_rw$abbreviation,levels=unique(tmp_subset_rw$abbreviation))
+regions_to_show <- c("TX", "FL", "CA", "NY", "NJ", "IL", "PA", "MA", "AZ", "GA", 
+  "OH", "MI", "CT", "SC", "MD", "LA", "IN", "TN", "MS", "VA")
+fips_csv <- read.csv(url("https://raw.githubusercontent.com/reichlab/covid19-forecast-hub/master/data-locations/locations.csv"))
+tmp_subset_r <- coverage_probability_df_long %>% group_by(location,model) %>% summarize(cp=mean(cp)) %>% left_join(fips_csv,by='location')
+tmp_subset_r <- tmp_subset_r[tmp_subset_r$abbreviation %in% regions_to_show,]
 
-wis_results_by_region <- ggplot(tmp_subset_rw[tmp_subset_rw$abbreviation %in% regions_to_show,],aes(x=abbreviation,y=log(.01+wis),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90)) + xlab("State")
-wis_results_by_region <- wis_results_by_region + ylab("log(WIS)")
-ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_region_inc.png",wis_results_by_region,device="png",width=7,height=4)
-
-wis_results_by_target_df <- tmp_subset %>% group_by(target,model,unit,timezero) %>% summarize(wis=mean(wis))
-#wis_results_by_target_df <- wis_results_by_target_df %>% spread(model,wis)
-#wis_results_by_target_df$rwis <- wis_results_by_target_df$`UMass-MechBayes`/wis_results_by_target_df$`COVIDhub-baseline`
-wis_results_by_target <- ggplot(wis_results_by_target_df,aes(x=target,y=log(wis),col=model)) + geom_boxplot() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-wis_results_by_target <- wis_results_by_target + ylab("log(WIS)")
-ggsave("/Users/gcgibson/mech_bayes_paper/wis_results_by_target_inc.png",wis_results_by_target,device="png",width=7,height=4)
+tmp_subset_r$abbreviation <- factor(tmp_subset_r$abbreviation,levels=regions_to_show)
+cp_results_by_location <- ggplot(tmp_subset_r,aes(x=abbreviation,y=cp,col=model)) + geom_point() + theme_bw() + ylab("Coverage Probability") + xlab("State") + geom_hline(yintercept = .95)
+ggsave("/Users/gcgibson/mech_bayes_paper/cp_results_by_location.png",cp_results_by_location,device="png",width=7,height=4)
 
 
+cp_results_by_target <- ggplot(coverage_probability_df_long %>% group_by(target,model) %>% summarize(cp=mean(cp)),aes(x=target,y=cp,col=model)) + geom_point() + theme_bw() + ylab("Coverage Probability") + xlab("Target")+ geom_hline(yintercept = .95)
+ggsave("/Users/gcgibson/mech_bayes_paper/cp_results_by_target.png",cp_results_by_target,device="png",width=7,height=4)
 
-error_results_by_time_zero <- ggplot(tmp_subset %>% group_by(unit,model) %>% summarize(error=mean(error)),aes(x=unit,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-
-bias_by_timezero <- ggplot(tmp_subset %>% group_by(timezero,model) %>% summarize(error=mean(error)),aes(x=timezero,y=error,col=model)) + geom_point() + theme_bw() +  theme(axis.text.x = element_text(angle = 90))
-ggsave("/Users/gcgibson/mech_bayes_paper/bias_by_timezero.png",bias_by_timezero,device="png",width=7,height=4)
