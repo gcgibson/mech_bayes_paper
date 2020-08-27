@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: paper_2020-08-26.aux
+The style file: unsrt.bst
+Database file #1: bib.bib
+Warning--empty journal in heffner2020emotional
+You've used 35 entries,
+            1791 wiz_defined-function locations,
+            655 strings with 11898 characters,
+and the built_in function-call counts, 8263 in all, are:
+= -- 656
+> -- 544
+< -- 5
++ -- 195
+- -- 160
+* -- 623
+:= -- 1417
+add.period$ -- 106
+call.type$ -- 35
+change.case$ -- 34
+chr.to.int$ -- 0
+cite$ -- 36
+duplicate$ -- 319
+empty$ -- 711
+format.name$ -- 160
+if$ -- 1753
+int.to.chr$ -- 0
+int.to.str$ -- 35
+missing$ -- 30
+newline$ -- 178
+num.names$ -- 35
+pop$ -- 80
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 140
+stack$ -- 0
+substring$ -- 457
+swap$ -- 60
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 75
+width$ -- 37
+write$ -- 375
+(There was 1 warning)

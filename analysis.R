@@ -94,7 +94,9 @@ data_for_detection  = data.frame(R0 = as.numeric(c((det_probs))),
                                 R0_lower = as.numeric(c((det_probs_lower))),                     
                                  t= rep(1:137,length(states)), state=rep(states,each=137))
 
-data_for_detection$state <- as.factor(data_for_detection$state)
+#data_for_detection$state <- as.factor(data_for_detection$state)
+data_for_detection$state <- factor(data_for_detection$state,levels=regions_to_show)
+
 data_for_detection$date <- rep(seq(as.Date("2020-03-05"),as.Date("2020-07-19"),"days"),length(states))
 detection_plot <- ggplot(data_for_detection, aes(x=date,y=R0,group=state)) + geom_line() + facet_wrap(~state) + 
   theme_bw() + ylab("Detection Probability") + xlab("Date") #+ scale_y_discrete(breaks=seq(0,1,by=.1))

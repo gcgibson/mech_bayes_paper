@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 AUG 2020 15:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 AUG 2020 15:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**paper_2020-08-19.tex
-(./paper_2020-08-19.tex
+**paper_2020-08-26.tex
+(./paper_2020-08-26.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amscls/amsart.cls
@@ -554,8 +554,8 @@ File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
-) (./paper_2020-08-19.aux)
-\openout1 = `paper_2020-08-19.aux'.
+) (./paper_2020-08-26.aux)
+\openout1 = `paper_2020-08-26.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
 LaTeX Font Info:    ... okay on input line 42.
@@ -847,7 +847,7 @@ it/10.95 I[] \OMS/cmsy/m/n/10.95 ^^@ \OML/cmm/m/it/10.95 D[] \OMS/cmsy/m/n/10.9
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [28]
-[29] (./paper_2020-08-19.bbl
+[29] (./paper_2020-08-26.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [30]
@@ -862,7 +862,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 221--225
 / / covid19-[]projections . com / about /
  []
 
-) [33] (./paper_2020-08-19.aux) ) 
+) [33] (./paper_2020-08-26.aux) ) 
 Here is how much of TeX's memory you used:
  15280 strings out of 492995
  297556 string characters out of 6132704
@@ -890,7 +890,7 @@ sy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti
 9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.
 pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msb
 m10.pfb>
-Output written on paper_2020-08-19.pdf (33 pages, 3291609 bytes).
+Output written on paper_2020-08-26.pdf (33 pages, 3291609 bytes).
 PDF statistics:
  217 PDF objects out of 1000 (max. 8388607)
  132 compressed objects within 2 object streams

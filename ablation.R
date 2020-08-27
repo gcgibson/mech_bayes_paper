@@ -6,22 +6,22 @@ library(ggthemes)
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(6),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case Detection Probability","Death Only")
+levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
   
 ablation_1 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
-         summarize(se = sqrt(var(mae)),mae_t=mean(mae)),aes(x=as.factor(forecast_date),y=mae_t,col=model)) + geom_point(size=1.5) +theme_bw() + ylab("MAE") + xlab("Date")  + scale_color_brewer(palette="Dark2") + ylim(0,800) + theme(legend.position = "none")  
+         summarize(se = sqrt(var(mae)),mae_t=mean(mae)),aes(x=as.Date(forecast_date),y=mae_t,col=model)) + geom_point(size=1.5) +theme_bw() + ylab("MAE") + xlab("Date")  + scale_color_brewer(palette="Dark2") + ylim(0,800) + theme(legend.position = "none")  
 ggsave("/Users/gcgibson/mech_bayes_paper/ablation_1.png",ablation_1,device="png",width=4,height=6)
 
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(13),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case Detection Probability","Death Only")
+levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case Detection Probability","Death Only")
+levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
@@ -35,7 +35,7 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_2.png",ablation_2,device="png"
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(20),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case Detection Probability","Death Only")
+levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
@@ -49,7 +49,7 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_3.png",ablation_3,device="png"
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(27),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case Detection Probability","Death Only")
+levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
