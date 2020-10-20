@@ -1,5 +1,6 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\tocsection {}{}{Abstract}}{1}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{}{Abstract}}{2}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{1}{Introduction}}{2}}
 \citation{lutz2019applying}
 \citation{myers2000forecasting}
 \citation{kermack1927contribution}
@@ -10,7 +11,6 @@
 \citation{lekone2006statistical}
 \citation{bokler1993chaos}
 \citation{syafruddin2012seir}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{1}{Introduction}}{2}}
 \citation{hotta2010bayesian}
 \citation{dukic2012tracking}
 \citation{frasso2016bayesian}
@@ -27,7 +27,7 @@
 \citation{dong2020interactive}
 \citation{krantz2020level}
 \citation{russel2020using}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Related Work}}{4}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{2}{Related Work}}{5}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{3}{Data}}{5}}
 \citation{russell2020estimating}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{4}{Compartmental Model}}{6}}
@@ -36,43 +36,41 @@
 \newlabel{fig:data}{{1}{7}}
 \citation{phan2019composable}
 \citation{simonov2020persuasive}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{Time-varying transmission parameter}}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparmental model parameters \relax }}{9}}
-\newlabel{fig:seird}{{2}{9}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.1}{Time-varying transmission parameter}}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparmental model parameters \relax }}{10}}
+\newlabel{fig:seird}{{2}{10}}
 \citation{midas}
 \citation{weinberger2020estimation}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{Observation Model}}{10}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.2}{Observation Model}}{11}}
 \citation{wallinga2007generation}
 \citation{wallinga2007generation}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.3}{Epidemiological Model Parameters}}{11}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.3}{Epidemiological Model Parameters}}{12}}
 \citation{numpyro}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.4}{Fitting}}{12}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{Experimental Setup}}{12}}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.1}{Real-Time Forecast Evaluation}}{13}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{4.4}{Fitting}}{13}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{5}{Experimental Setup}}{13}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.1}{Real-Time Forecast Evaluation}}{14}}
 \citation{pei2020differential}
 \citation{abbott2020estimating}
 \citation{flaxman2020estimating}
 \citation{smirnova2019forecasting}
-\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Ablation Test}}{14}}
-\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Real-time Forecasting Results}}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example fit and forecast for 2020-07-26 for states with over 50 incident deaths and the U.S.. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths.\relax }}{16}}
-\newlabel{fig:fit_and_forecast_results}{{3}{16}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  A) Time varying beta parameter for all states with a day exceeding 50 incident deaths, including the U.S. by 2020-07-26. We can clearly see that the random walk is able to account for a composite of intervention efforts. B) Time varying case and death deviation model for example states. The time varying case and death deviation model is able account for the increase in testing and other reporting anomolies.\relax }}{17}}
-\newlabel{fig:model_details}{{4}{17}}
+\@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{5.2}{Ablation Test}}{15}}
+\@writefile{toc}{\contentsline {section}{\tocsection {}{6}{Real-time Forecasting Results}}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {A} Example fit and forecast for 2020-07-26 for four selected states. Grey bands represent 95\% prediction intervals. Blue line represents median forecast. MechBayes is able to produce well calibrated fits to the data as well as accurately tracking trends in incident deaths. \textbf  {B} Posterior of $\beta _t$ for each of the four states, with 95\% credible intervals in blue. Note that this parameter does not reflect interventions specifically, but rather any change in transmissibility. \textbf  {C} Posterior of the case-death discrepancy for the four example states. Here we can see that over time, the number of observed cases that resulted in deaths increased. This does not necessarily reflect testing, but an overall increase in the ability to observe cases as compared to the predicted number of cases one would obtain through the case-fatality ratio. \relax }}{17}}
+\newlabel{fig:fit_and_forecast_results}{{3}{17}}
 \citation{covidhub}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by target and forecast week. MechBayes improves in average MAE in 9 out of 12 timepoints. MechBayes improves in MAE across all targets. We can see that as the horizon increases from 1 to 4 weeks ahead, MAE, reflecting an increase in difficulty of forecasting further ahead in time. We also see a uniform improvement in coverage probability when broken down by timezero and target. Here the horizontal line represents 95\% coverage interval. \relax }}{18}}
-\newlabel{fig:covidhub}{{5}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by region for the 20 regions with the highest incident deaths. Regions are sorted by total deaths left to right. Here we can see that MechBayes has the greatest increase in states with large total death counts. States with medium or small death counts have more mixed results. The improvements in coverage probability are more mixed, with MechBayes improving coverage probability in 12 of 20 regions. \relax }}{19}}
-\newlabel{fig:covidhub_region_results}{{6}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by target and forecast week. MechBayes improves in average MAE in 9 out of 12 timepoints. MechBayes improves in MAE across all targets. We can see that as the horizon increases from 1 to 4 weeks ahead, MAE, reflecting an increase in difficulty of forecasting further ahead in time. We also see a uniform improvement in coverage probability when broken down by timezero and target. Here the horizontal line represents 95\% coverage interval. \relax }}{18}}
+\newlabel{fig:covidhub}{{4}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Scores from COVID-19 Forecast Hub broken down by region for the 20 regions with the highest incident deaths. Regions are sorted by total deaths left to right. Here we can see that MechBayes has the greatest increase in states with large total death counts. States with medium or small death counts have more mixed results. The improvements in coverage probability are more mixed, with MechBayes improving coverage probability in 12 of 20 regions. \relax }}{19}}
+\newlabel{fig:covidhub_region_results}{{5}{19}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{7}{Real-Time Model Results}}{20}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Coefficient estimates and t-values for MAE evaluation model. We can see that MechBayes performs statistically significantly better than the baseline model for 1-4 weeks ahead. The performance increase seems to grow as horizon increases.\relax }}{21}}
 \citation{yyg}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{8}{Ablation Test Results}}{22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Ablation test MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes Fixed Case/Death Deviation and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{23}}
-\newlabel{fig:ablation}{{7}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Ablation test MAE broken down by forecast week and target. We can see that MechBayes Full performs better than MechBayes Fixed Case/Death Deviation and MechBayes Only death in almost all breakdowns. We can also see that the improvement becomes more pronounced at larger horizons, suggesting that MechBayes Full is a better longer term forecasting model. \relax }}{23}}
+\newlabel{fig:ablation}{{6}{23}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{9}{Discussion}}{24}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{26}}
-\newlabel{fig:results_discussion}{{8}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Bias of MechBayes and COVID-Baseline as a function of time. \relax }}{26}}
+\newlabel{fig:results_discussion}{{7}{26}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{10}{Conclusion}}{26}}
 \@writefile{toc}{\contentsline {section}{\tocsection {}{11}{Appendix}}{28}}
 \@writefile{toc}{\contentsline {subsection}{\tocsubsection {}{11.1}{A1}}{28}}

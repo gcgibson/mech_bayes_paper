@@ -1,0 +1,209 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: paper_2020-10-14.aux
+The style file: unsrt.bst
+Database file #1: mechbayes.bib
+Repeated entry---line 354 of file mechbayes.bib
+ : @article{pei2020differential
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 368 of file mechbayes.bib
+ : @article{flaxman2020estimating
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 599 of file mechbayes.bib
+ : @article{dong2020interactive
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 607 of file mechbayes.bib
+ : @article{krantz2020level
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 615 of file mechbayes.bib
+ : @incollection{myers2000forecasting
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 635 of file mechbayes.bib
+ : @article{russell2020estimating
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 666 of file mechbayes.bib
+ : @manual{covidhub
+ :                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 673 of file mechbayes.bib
+ : @manual{numpyro
+ :                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 681 of file mechbayes.bib
+ :  @techreport{simonov2020persuasive
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 688 of file mechbayes.bib
+ :     @article{phan2019composable
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 694 of file mechbayes.bib
+ : @article{flaxman2020estimating
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 703 of file mechbayes.bib
+ : @article{abbott2020estimating
+ :                              ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 713 of file mechbayes.bib
+ : @article{pei2020differential
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 721 of file mechbayes.bib
+ : @article{smirnova2019forecasting
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 743 of file mechbayes.bib
+ : @article{prem2020effect
+ :                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 750 of file mechbayes.bib
+ : @article{bertozzi2020challenges
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 756 of file mechbayes.bib
+ : @article{yang2020modified
+ :                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 766 of file mechbayes.bib
+ : @article{giordano2020modelling
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 775 of file mechbayes.bib
+ : @article{lopez2020modified
+ :                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 781 of file mechbayes.bib
+ : @article{frasso2016bayesian
+ :                            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 791 of file mechbayes.bib
+ : @article{dukic2012tracking
+ :                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 802 of file mechbayes.bib
+ : @article{hotta2010bayesian
+ :                           ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 813 of file mechbayes.bib
+ : @article{syafruddin2012seir
+ :                            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 821 of file mechbayes.bib
+ : @article{bokler1993chaos
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 831 of file mechbayes.bib
+ : @article{lekone2006statistical
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 893 of file mechbayes.bib
+ : @article{kermack1927contribution
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1120 of file mechbayes.bib
+ : @article{frasso2016bayesian
+ :                            ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1145 of file mechbayes.bib
+ : @article{osthus2017forecasting
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1200 of file mechbayes.bib
+ : @article{wallinga2007generation
+ :                                ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1210 of file mechbayes.bib
+ : @article{hall2007real
+ :                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1220 of file mechbayes.bib
+ : @article{ong2010real
+ :                     ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1230 of file mechbayes.bib
+ : @article{osthus2017forecasting
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1242 of file mechbayes.bib
+ : @article{shaman2012forecasting
+ :                               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1252 of file mechbayes.bib
+ : @article{kermack1927contribution
+ :                                 ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1262 of file mechbayes.bib
+ : @article{lutz2019applying
+ :                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1273 of file mechbayes.bib
+ : @misc{yyg
+ :          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1306 of file mechbayes.bib
+ : @article{russel2020using
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1312 of file mechbayes.bib
+ : @article{weinberger2020estimation
+ :                                  ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1329 of file mechbayes.bib
+ : @article{heffner2020emotional
+ :                              ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 1344 of file mechbayes.bib
+ : @misc{midas
+ :            ,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "jhu"
+Warning--empty journal in heffner2020emotional
+You've used 36 entries,
+            1791 wiz_defined-function locations,
+            659 strings with 12192 characters,
+and the built_in function-call counts, 8526 in all, are:
+= -- 668
+> -- 579
+< -- 5
++ -- 207
+- -- 171
+* -- 646
+:= -- 1471
+add.period$ -- 109
+call.type$ -- 36
+change.case$ -- 35
+chr.to.int$ -- 0
+cite$ -- 37
+duplicate$ -- 327
+empty$ -- 725
+format.name$ -- 171
+if$ -- 1803
+int.to.chr$ -- 0
+int.to.str$ -- 36
+missing$ -- 31
+newline$ -- 183
+num.names$ -- 36
+pop$ -- 83
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 143
+stack$ -- 0
+substring$ -- 457
+swap$ -- 61
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 76
+width$ -- 38
+write$ -- 385
+(There were 40 error messages)

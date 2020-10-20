@@ -6,7 +6,7 @@ library(ggthemes)
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(6),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
+levels(ablation_res_subset$model) <- c("Case/Death Time-Varying","Case/Death Fixed","Death Fixed")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
   
 ablation_1 <- ggplot(ablation_res_subset %>% group_by(forecast_date,model) %>% 
@@ -16,12 +16,12 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_1.png",ablation_1,device="png"
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(13),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
+levels(ablation_res_subset$model) <- c("Case/Death Time-Varying","Case/Death Fixed","Death Fixed")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
+levels(ablation_res_subset$model) <- c("Case/Death Time-Varying","Case/Death Fixed","Death Fixed")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
@@ -35,7 +35,7 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_2.png",ablation_2,device="png"
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(20),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
+levels(ablation_res_subset$model) <- c("Case/Death Time-Varying","Case/Death Fixed","Death Fixed")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
@@ -49,7 +49,7 @@ ggsave("/Users/gcgibson/mech_bayes_paper/ablation_3.png",ablation_3,device="png"
 
 ablation_res_subset <- ablation_res[ablation_res$horizon %in% c(27),]
 ablation_res_subset$model <- as.factor(ablation_res_subset$model)
-levels(ablation_res_subset$model) <- c("Full","Fixed Case/Death Deviation","Death Only")
+levels(ablation_res_subset$model) <- c("Case/Death Time-Varying","Case/Death Fixed","Death Fixed")
 ablation_res_subset$forecast_date <- as.Date(ablation_res_subset$forecast_date)
 
 
