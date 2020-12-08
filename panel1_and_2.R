@@ -122,20 +122,26 @@ obs_w_fips$region <- obs_w_fips$abbreviation
 obs_w_fips$date <- as.Date(obs_w_fips$date)
 obs_w_fips_subset <- obs_w_fips[obs_w_fips$region %in% tmp_out_of_sample$region,]
 
-top_panel <- ggplot() + geom_ribbon(data=tmp_out_of_sample,aes(x=date,ymax=q_u,ymin=q_l,fill="Out of Sample"),alpha=.4) +
-  geom_ribbon(data=tmp,aes(x=date,ymax=q_u,ymin=q_l,fill="In Sample"),alpha=.4) +
-   geom_line(data=top_panel_df_median_long,aes(x=date,y=median),col='red')+
-  geom_line(data=top_panel_df_median_long_out_of_sample,aes(x=date,y=median),col='blue')+
-  geom_point(data=obs_w_fips_subset,aes(x=date,y=value),alpha=.8,size=.2)+
-   facet_wrap(~region,scales="free",nrow = 1) + theme_bw()  + ylab("Incident Deaths") +theme(legend.title =element_blank()) 
 
-top_panel_log <- ggplot() + geom_ribbon(data=tmp_out_of_sample,aes(x=date,ymax=q_u,ymin=q_l,fill="Out of Sample"),alpha=.4) +
-  geom_ribbon(data=tmp,aes(x=date,ymax=q_u,ymin=q_l,fill="In Sample"),alpha=.4) +
-  geom_line(data=top_panel_df_median_long,aes(x=date,y=median),col='red')+
-  geom_line(data=top_panel_df_median_long_out_of_sample,aes(x=date,y=median),col='blue')+
-  geom_point(data=obs_w_fips_subset,aes(x=date,y=value),alpha=.8,size=.2)+  scale_y_continuous(trans='log10')+
-  facet_wrap(~region,scales="free",nrow=1) + theme_bw()  + ylab("Incident Deaths (Log Scale)") +theme(legend.title =element_blank()) 
+cutoff <- "2020-03-08"
+top_panel <- ggplot() + geom_ribbon(data=tmp_out_of_sample[tmp_out_of_sample$date >= cutoff,],aes(x=date,ymax=q_u,ymin=q_l,fill="Out of Sample"),alpha=.4) +
+  geom_ribbon(data=tmp[tmp$date > cutoff, ],aes(x=date,ymax=q_u,ymin=q_l,fill="In Sample"),alpha=.4) +
+   geom_line(data=top_panel_df_median_long[top_panel_df_median_long$date > cutoff,],aes(x=date,y=median),col='red')+
+  geom_line(data=top_panel_df_median_long_out_of_sample[top_panel_df_median_long_out_of_sample$date > cutoff,],aes(x=date,y=median),col='blue')+
+  geom_point(data=obs_w_fips_subset[obs_w_fips_subset$date > cutoff,],aes(x=date,y=value),alpha=.8,size=.2)+
+   facet_wrap(~region,scales="free",nrow = 1) + theme_bw()  + ylab("Incident Deaths") +theme(legend.position= "none") 
 
+top_panel_log <- ggplot() + geom_ribbon(data=tmp_out_of_sample[tmp_out_of_sample$date > cutoff,],aes(x=date,ymax=q_u,ymin=q_l,fill="Out of Sample"),alpha=.4) +
+  geom_ribbon(data=tmp[tmp$date > cutoff,],aes(x=date,ymax=q_u,ymin=q_l,fill="In Sample"),alpha=.4) +
+  geom_line(data=top_panel_df_median_long[top_panel_df_median_long$date > cutoff,],aes(x=date,y=median),col='red')+
+  geom_line(data=top_panel_df_median_long_out_of_sample[top_panel_df_median_long_out_of_sample$date > cutoff,],aes(x=date,y=median),col='blue')+
+  geom_point(data=obs_w_fips_subset[obs_w_fips_subset$date > cutoff,],aes(x=date,y=value),alpha=.8,size=.2)+  scale_y_continuous(trans='log10')+
+  facet_wrap(~region,scales="free",nrow=1) + theme_bw()  + ylab("Incident Deaths (Log Scale)") +theme(legend.position= "none") 
+
+beta_t <- beta_t + theme(legend.position= "none")  + xlab("") +theme(axis.title.y = element_text(size=15))
+top_panel <- top_panel + xlab("")
+top_panel_log <- top_panel_log + xlab("")
+last_panel <- last_panel + theme(legend.position= "bottom")  + xlab("Date") +theme(axis.title.y = element_text(size=15))
 library(cowplot)  
 fig_4 <- cowplot::plot_grid(top_panel,top_panel_log,beta_t,last_panel,nrow = 4,align = T)
-ggsave("fig_4.png",fig_4,height=8,width=10)  
+ggsave("fig_4.png",fig_4,height=10,width=8)  

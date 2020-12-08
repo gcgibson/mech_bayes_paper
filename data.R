@@ -13,22 +13,22 @@ state_deaths <- deaths %>%
 state_deaths$date <- as.Date(state_deaths$date)
 state_deaths <- state_deaths %>% group_by(location_name) %>%mutate(incident=c(value[1],diff(value))) %>% ungroup()
 
-state_deaths_subset_idx  <- unique(state_deaths[state_deaths$incident >= 50,]$location_name)
+state_deaths_subset_idx  <- setdiff(state_deaths$location_name,c("US","American Samoa","Mariana Island","Northern Mariana Islands", "Puerto Rico", "Virgin Islands","Guam","US"))
 
 state_deaths_subset <- state_deaths[state_deaths$location_name %in% state_deaths_subset_idx,]
 library(ggplot2)
 
 
-state_deaths_subset_total_deaths <- state_deaths_subset %>% group_by(location) %>% mutate(total_deaths = sum(value)) %>% ungroup()
+state_deaths_subset_total_deaths <- state_deaths_subset %>% group_by(location) %>% mutate(total_deaths = sum(incident)) %>% ungroup()
 state_deaths_subset <- left_join(state_deaths_subset,state_deaths_subset_total_deaths)
 state_deaths_subset$total_deaths <- as.factor(state_deaths_subset$total_deaths)
 state_deaths_subset$total_deaths <- factor(state_deaths_subset$total_deaths,levels = rev(levels(state_deaths_subset$total_deaths)))
 state_deaths_subset$location_name <- as.factor(state_deaths_subset$location_name)
 state_deaths_subset <- state_deaths_subset[order(state_deaths_subset$total_deaths),]
 state_deaths_subset$location_name <- factor(state_deaths_subset$location_name,levels = unique(state_deaths_subset$location_name))
-
+state_deaths_subset$total_deaths <- as.numeric(as.character(state_deaths_subset$total_deaths))
 state_deaths_subset[state_deaths_subset$location_name == "New Jersey" & state_deaths_subset$date == "2020-07-26",]$incident <- 1887
-data_plot <- ggplot(state_deaths_subset,aes(x=date,y=incident)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free") + theme_bw() +ylab("Incident Reported COVID-19 Deaths (per day)") + xlab("")
+data_plot <- ggplot(state_deaths_subset[state_deaths_subset$total_deaths >= 5000,],aes(x=date,y=incident)) + geom_point(size=.5) + facet_wrap(~location_name,scales="free") + theme_bw() +ylab("Incident Reported COVID-19 Deaths (per day)") + xlab("")
 #data_plot <- data_plot + ylab("Incident Deaths") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ggsave("/Users/gcgibson/mech_bayes_paper/data_plot.png",data_plot,device="png",width=10,height=10)
 

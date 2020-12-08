@@ -114,4 +114,4 @@ last_panel <- ggplot() + geom_ribbon(data=tmp_mid,aes(x=date,ymax=q_u,ymin=q_l,f
   geom_ribbon(data=tmp_mid_out,aes(x=date,ymax=q_u,ymin=q_l,fill="Out of Sample"),alpha=.5) +
   geom_line(data=mid_panel_df_median_long_out_of_sample,aes(x=date,y=median),col='blue')+
   geom_line(data=mid_panel_df_median_long_in_sample,aes(x=date,y=median),col='red')+
-  facet_wrap(~region,scales='free',nrow=1) + theme_bw() + ylab(expression(p[c][","][t]))
+  facet_wrap(~region,scales='free',nrow=1) + theme_bw() + ylab(expression(p[t][","][c]))
