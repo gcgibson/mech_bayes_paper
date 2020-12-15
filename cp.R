@@ -80,7 +80,9 @@ joined_mb_and_bl_truth_complete_mb_wide_cp <- joined_mb_and_bl_truth_complete_mb
                                                    mb_cp_60 = ifelse(value <= mb_0.8& value >= mb_0.2 ,1,0),
                                                    bl_cp_60 = ifelse(value <= bl_0.8 & value >= bl_0.2 ,1,0),
                                                    mb_cp_90 = ifelse(value <= mb_0.95& value >= mb_0.05 ,1,0),
-                                                   bl_cp_90 = ifelse(value <= bl_0.95 & value >= bl_0.05 ,1,0))
+                                                   bl_cp_90 = ifelse(value <= bl_0.95 & value >= bl_0.05 ,1,0),
+                                                   mb_cp_98 = ifelse(value <= mb_0.99& value >= mb_0.01 ,1,0),
+                                                   bl_cp_98 = ifelse(value <= bl_0.99 & value >= bl_0.01 ,1,0))
 
 
 
@@ -99,6 +101,7 @@ cp_plot_df_long$model <- as.factor(cp_plot_df_long$cp_model)
 cp_plot_df_long$model <- cp_plot_df_long$model %>% recode("bl"="Baseline","mb"="MechBayes")
 fig_9 <- ggplot(cp_plot_df_long[cp_plot_df_long$cp_level > .20,],aes(x=cp_level,y=cp,col=model,group=cp_model)) + geom_point() + geom_line()+
   geom_abline(slope=1,intercept=0,alpha=.5)+
-  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")   +coord_cartesian(xlim=c(.5,1),ylim=c(.5,1)) 
+  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")   +coord_cartesian(xlim=c(.5,1),ylim=c(.5,1))  + theme(legend.title=element_blank())
+
 ggsave(filename = "fig_9.png",fig_9,width=6,height=4)
 

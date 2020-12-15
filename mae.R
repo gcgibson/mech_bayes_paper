@@ -58,7 +58,7 @@ joined_mb_and_bl <- mb_common_dates_point_only_states_only_inc_death %>%
 
 
 # get truth 
-truth <- read.csv("/Users/gcgibson/covid19-forecast-hub/data-truth/truth-Incident Deaths.csv")
+truth <- read.csv(url("https://raw.githubusercontent.com/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Deaths.csv"))#read.csv("/Users/gcgibson/covid19-forecast-hub/data-truth/truth-Incident Deaths.csv")
 #subset truth to states
 truth_states <- truth[which(nchar(truth$location) == 2),]
 # aggregate by week Sun-Sat
@@ -102,21 +102,31 @@ quantile_df_theoretical$bl_q <- quantile(joined_mb_and_bl_truth_complete$bl_ae,p
 
 #### FIGURE 5 a TODO: label quantile values
 library(ggplot2)
-figure_5 <- ggplot(quantile_df,aes(x=bl_q,y=mb_q)) + geom_point() + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
+colours = c("80%" = "blue1", "90%" = "blue2", "95%" = "blue3", "97.5%" = "blue4","99%"="blue5","Median" = "deepskyblue1","Mean"="deepskyblue4")
+
+figure_5 <- ggplot(quantile_df,aes(x=bl_q,y=mb_q)) + geom_point(size=.5) + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
   theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1,alpha=.4) +
   geom_point(data=quantile_df_theoretical,aes(x=bl_q[5],y=mb_q[5],col="99%"),size=2) +
   geom_point(data=quantile_df_theoretical,aes(x=bl_q[4],y=mb_q[4],col="97.5%"),size=2) +
   geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="95%"),size=2) +
   geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="90%"),size=2) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="80%"),size=2) + theme(legend.title = element_blank()) + xlab("") + ylab("") + coord_cartesian( ylim=c(0,3000),xlim=c(0,3000)) 
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="80%"),size=2) + theme(legend.title = element_blank()) + xlab("") + ylab("") + coord_cartesian( ylim=c(0,3000),xlim=c(0,3000))  +
+  scale_color_manual(values = colours)
+
   
 ##### FIGURE 5 B
 
-figure_5_b <- ggplot(quantile_df,aes(x=bl_q,y=mb_q)) + geom_point() + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
+figure_5_b <- ggplot(quantile_df,aes(x=bl_q,y=mb_q)) + geom_point(size=.5) + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
   theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1,alpha=.4) +
-  geom_point(aes(x=median(joined_mb_and_bl_truth_complete$bl_ae),y=median(joined_mb_and_bl_truth_complete$mb_ae),col="Median")) +
-  geom_point(aes(x=mean(joined_mb_and_bl_truth_complete$bl_ae),y=mean(joined_mb_and_bl_truth_complete$mb_ae),col="Mean")) +
-  coord_cartesian( ylim=c(0,200),xlim=c(0,200)) +  theme(legend.title = element_blank())  + ylab("")
+  geom_point(aes(x=median(joined_mb_and_bl_truth_complete$bl_ae),y=median(joined_mb_and_bl_truth_complete$mb_ae),col="Median"),size=2) +
+  geom_point(aes(x=mean(joined_mb_and_bl_truth_complete$bl_ae),y=mean(joined_mb_and_bl_truth_complete$mb_ae),col="Mean"),size=2) +
+  coord_cartesian( ylim=c(0,200),xlim=c(0,200)) +  theme(legend.title = element_blank())  + ylab("") +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="80%"),size=2) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="90%"),size=2) +
+geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="95%"),size=2) +
+  scale_color_manual(values = colours)
+
+  
 
 library(cowplot)
 library(gridExtra)
@@ -141,10 +151,15 @@ ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","fig_5_total.png"),fig_5_total
 
 ## TODO: remove US forecasts and territories
 
-fig_6 <- ggplot(joined_mb_and_bl_truth_complete %>% group_by(forecast_date) %>% summarize(mb_ae=mean(mb_ae,na.rm=T),bl_ae =mean(bl_ae,a.rm=T)),
-       aes(x=forecast_date,y=mb_ae,col="MechBayes")) + geom_line() + geom_point() +
-  geom_line(aes(x=forecast_date,y=bl_ae,col="Baseline")) + geom_point(aes(x=forecast_date,y=bl_ae,col="Baseline"))+  theme_bw()  +ylab("Mean Absolute Error") +xlab("Forecast Date") +theme(legend.title=element_blank())
+fig_6_b <- ggplot(joined_mb_and_bl_truth_complete %>% group_by(target_end_date) %>% summarize(mb_ae=mean(mb_ae,na.rm=T),bl_ae =mean(bl_ae,a.rm=T)),
+       aes(x=target_end_date,y=mb_ae,col="MechBayes")) + geom_line() + geom_point() +
+  geom_line(aes(x=target_end_date,y=bl_ae,col="Baseline")) + geom_point(aes(x=target_end_date,y=bl_ae,col="Baseline"))+  theme_bw()  +ylab("Mean Absolute Error") +xlab("Target Date") +theme(legend.title=element_blank(),legend.position = "bottom")
+truth_states_by_week_subset <- truth_states_by_week[truth_states_by_week$target_end_date >= "2020-05-16" & truth_states_by_week$target_end_date  <= "2020-11-07",]
+fig_6_df <- truth_states_by_week_subset %>% group_by(target_end_date) %>% summarize(value=sum(value))
+fig_6_df$date <- fig_6_df$target_end_date
+fig_6_a <- ggplot(fig_6_df,aes(x=target_end_date,y=value)) + geom_line() + geom_point() + theme_bw() + xlab("") + ylab("Total Incident Deaths")
 
+fig_6 <- cowplot::plot_grid(fig_6_a,fig_6_b,align = "v",ncol=1,rel_heights = c(.75,1))
 ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","fig_6.png"),fig_6,device="png",width = 6,height=6)
 
 
@@ -154,7 +169,8 @@ ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","fig_6.png"),fig_6,device="png
 fig_7_df <- joined_mb_and_bl_truth_complete %>% group_by(location,target) %>% summarize(mb_ae=mean(mb_ae,na.rm=T),bl_ae =mean(bl_ae,a.rm=T))
 fips <- read.csv("/Users/gcgibson/covid19-forecast-hub/data-locations/locations.csv")
 fig_7_df <- fig_7_df %>% left_join(fips,by="location")
-
+fig_7_df$target <- factor(fig_7_df$target)
+levels(fig_7_df$target) <- paste0(1:4," week ahead")
 fig_7 <- ggplot(fig_7_df[fig_7_df$location !="US",],
        aes(x=bl_ae,y=mb_ae)) + geom_text(aes(label=abbreviation),size=2)  + ylab("MechBayes Mean Absolute Error") + xlab("Baseline Mean Absolute Error") +
   geom_abline(intercept=0,slope=1,alpha=.4) + theme_bw() + facet_wrap(~target,scales="free")
@@ -169,7 +185,8 @@ levels(joined_mb_and_bl_truth_complete_long$model) <- c("Baseline","MechBayes")
 joined_mb_and_bl_truth_complete_long$target <- factor(joined_mb_and_bl_truth_complete_long$target)
 levels(joined_mb_and_bl_truth_complete_long$target) <- paste0(1:4, " week ahead")
 fig_8 <- ggplot(joined_mb_and_bl_truth_complete_long %>% group_by(target,forecast_date,model) %>% summarize(model_ae=mean(model_ae)),aes(x=target,y=model_ae,col=model)) +
-  geom_boxplot() + theme_bw()  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + ylab("Mean Absolute Error")
+  geom_boxplot() + theme_bw()  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + ylab("Mean Absolute Error") +   theme(legend.title=element_blank())
+
 
 ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","fig_8.png"),fig_8,device="png",width = 6,height=6)
 
