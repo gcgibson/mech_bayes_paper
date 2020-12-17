@@ -15,12 +15,31 @@ mb_forecasts <- covidHubUtils::load_forecasts(models = c("UMass-MechBayes"),
                                            types = "point",locations=state_fips)
 
 
-mb_forecasts$model
 
 
 baseline_forecasts <- covidHubUtils::load_forecasts(models = c("COVIDhub-baseline"),
                                               forecast_date = dates, 
                                               types = "point",locations=state_fips)
+
+ua_forecasts <- covidHubUtils::load_forecasts(models = c("UA-EpiCovDA"),
+                                                    forecast_date = dates_off_by_1, 
+                                                    types = "point",locations=state_fips)
+
+usac_forecasts <- covidHubUtils::load_forecasts(models = c("USACE-ERDC_SEIR"),
+                                              forecast_date = dates, 
+                                              types = "point",locations=state_fips)
+
+ow_forecasts <- covidHubUtils::load_forecasts(models = c("OliverWyman-Navigator"),
+                                                forecast_date = dates_off_by_1, 
+                                                types = "point",locations=state_fips)
+
+gt_forecasts <- covidHubUtils::load_forecasts(models = c("GT-DeepCOVID"),
+                                              forecast_date = dates, 
+                                              types = "point",locations=state_fips)
+jhu_forecasts <- covidHubUtils::load_forecasts(models = c("JHU_IDD-CovidSP"),
+                                              forecast_date = dates_off_by_1, 
+                                              types = "point",locations=state_fips)
+
 
 lanl_forecasts <- covidHubUtils::load_forecasts(models = c("LANL-GrowthRate"),
                                                     forecast_date = dates, 
@@ -35,7 +54,7 @@ cu_forecasts <- covidHubUtils::load_forecasts(models = c("CU-select"),
                                                 types = "point",locations=state_fips)
 
 
-ut_forecasts <- covidHubUtils::load_forecasts(models = c("UT-Mobility"),
+nd_forecasts <- covidHubUtils::load_forecasts(models = c("NotreDame-mobility"),
                                               forecast_date = dates, 
                                               types = "point",locations=state_fips)
 
@@ -51,7 +70,20 @@ ihme_forecasts <- covidHubUtils::load_forecasts(models = c("IHME-CurveFit"),
 yyg_forecasts <- covidHubUtils::load_forecasts(models = c("YYG-ParamSearch"),
                                                 forecast_date = dates, 
                                                 types = "point",locations=state_fips)
-total_forecasts <- rbind(mb_forecasts,baseline_forecasts,lanl_forecasts,cu_forecasts,ut_forecasts,mobs_forecasts,cu_forecasts,ucla_forecasts,ihme_forecasts,yyg_forecasts)
+
+total_forecasts <- rbind(mb_forecasts,baseline_forecasts,ua_forecasts,usac_forecasts,ow_forecasts,gt_forecasts,jhu_forecasts,lanl_forecasts,ucla_forecasts,cu_forecasts,nd_forecasts,mobs_forecasts,yyg_forecasts)
+
+
+forecast_dates_df <- total_forecasts %>% group_by(model) %>% summarize(target_end_date = unique(target_end_date))#,region=unique(location),horizon=unique(horizon))
+
+
+ggplot(forecast_dates_df,aes(x=target_end_date,y=model)) + geom_point() + theme_bw() + xlab("Date")
+
+forecast_locations_df <- total_forecasts %>% group_by(model) %>% summarize(location = unique(location))#,region=unique(location),horizon=unique(horizon))
+
+ggplot(forecast_locations_df,aes(x=location,y=model)) + geom_point() + theme_bw() + xlab("Location")+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
 
 library(dplyr)
 total_forecasts_w_truth <- total_forecasts %>% left_join(state_obs,by=c("target_end_date","location"))
@@ -78,36 +110,51 @@ total_forecasts_w_truth_point_complete_wide <- tmp_fk[complete.cases(tmp_fk),]
 
 total_panel_a <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=sort(`COVIDhub-baseline`),y=sort(`UMass-MechBayes`),col="COVIDhub-baseline")) + geom_point(size=.5) + theme_bw() + geom_abline(slope=1) +
   geom_point(aes(x=sort(`LANL-GrowthRate`),y=sort(`UMass-MechBayes`),col="LANL-GrowthRate"),size=.5)+
-  geom_point(aes(x=sort(`UT-Mobility`),y=sort(`UMass-MechBayes`),col="UT-Mobility"),size=.5) + 
-  geom_point(aes(x=sort(`IHME-CurveFit`),y=sort(`UMass-MechBayes`),col="IHME-CurveFit"),size=.5) + 
   geom_point(aes(x=sort(`UCLA-SuEIR`),y=sort(`UMass-MechBayes`),col="UCLA-SuEIR"),size=.5) + 
   geom_point(aes(x=sort(`YYG-ParamSearch`),y=sort(`UMass-MechBayes`),col="YYG-ParamSearch"),size=.5) + 
   geom_point(aes(x=sort(`CU-select`),y=sort(`UMass-MechBayes`),col="CU-select"),size=.5) + 
+  geom_point(aes(x=sort(`UA-EpiCovDA`),y=sort(`UMass-MechBayes`),col="UA-EpiCovDA"),size=.5) + 
+  geom_point(aes(x=sort(`USACE-ERDC_SEIR`),y=sort(`UMass-MechBayes`),col="USACE-ERDC_SEIR"),size=.5) + 
+  geom_point(aes(x=sort(`OliverWyman-Navigator`),y=sort(`UMass-MechBayes`),col="OliverWyman-Navigator"),size=.5) + 
+  geom_point(aes(x=sort(`GT-DeepCOVID`),y=sort(`UMass-MechBayes`),col="GT-DeepCOVID"),size=.5) + 
+  geom_point(aes(x=sort(`JHU_IDD-CovidSP`),y=sort(`UMass-MechBayes`),col="JHU_IDD-CovidSP"),size=.5) + 
+  geom_point(aes(x=sort(`MOBS-GLEAM_COVID`),y=sort(`UMass-MechBayes`),col="MOBS-GLEAM_COVID"),size=.5) + 
   
   coord_cartesian(ylim = c(0,3000),xlim=c(0,3000)) + ylab("MechBayes AE") + xlab("") + theme(legend.title=element_blank()) 
 
 total_panel_b <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=mean(`COVIDhub-baseline`),y=mean(`UMass-MechBayes`),col="COVIDhub-baseline",shape="Mean")) + geom_point() +
-   geom_point(aes(x=mean(`LANL-GrowthRate`),y=mean(`UMass-MechBayes`),col="LANL-GrowthRate",shape="Mean")) +
-  geom_point(aes(x=mean(`UT-Mobility`),y=mean(`UMass-MechBayes`),col="UT-Mobility",shape="Mean")) +
-  geom_point(aes(x=mean(`IHME-CurveFit`),y=mean(`UMass-MechBayes`),col="IHME-CurveFit",shape="Mean")) +
-  geom_point(aes(x=mean(`UCLA-SuEIR`),y=mean(`UMass-MechBayes`),col="UCLA-SuEIR",shape="Mean")) +
-  geom_point(aes(x=mean(`YYG-ParamSearch`),y=mean(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Mean")) +
-  geom_point(aes(x=median(`COVIDhub-baseline`),y=median(`UMass-MechBayes`),col="COVIDhub-baseline",shape="Median")) +
-  geom_point(aes(x=median(`LANL-GrowthRate`),y=median(`UMass-MechBayes`),col="LANL-GrowthRate",shape="Median")) +
-  geom_point(aes(x=median(`UT-Mobility`),y=median(`UMass-MechBayes`),col="UT-Mobility",shape="Median")) +
-  geom_point(aes(x=median(`IHME-CurveFit`),y=median(`UMass-MechBayes`),col="IHME-CurveFit",shape="Median")) +
-  geom_point(aes(x=median(`UCLA-SuEIR`),y=median(`UMass-MechBayes`),col="UCLA-SuEIR",shape="Median")) +
-  geom_point(aes(x=median(`CU-select`),y=median(`UMass-MechBayes`),col="CU-select",shape="Median"))   + geom_abline(slope=1) + theme_bw() + theme(legend.title=element_blank()) + ylab("") + xlab("Alternative AE")+
-  geom_point(aes(x=median(`YYG-ParamSearch`),y=median(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Median")) +
-    geom_point(aes(x=quantile(`COVIDhub-baseline`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="COVIDhub-baseline",shape="95%")) +
-    geom_point(aes(x=quantile(`LANL-GrowthRate`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="LANL-GrowthRate",shape="95%")) +
-    geom_point(aes(x=quantile(`UT-Mobility`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="UT-Mobility",shape="95%")) +
-    geom_point(aes(x=quantile(`IHME-CurveFit`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="IHME-CurveFit",shape="95%")) +
-    geom_point(aes(x=quantile(`UCLA-SuEIR`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="UCLA-SuEIR",shape="95%")) +
-    geom_point(aes(x=quantile(`CU-select`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="CU-select",shape="95%")) +
-  geom_point(aes(x=quantile(`YYG-ParamSearch`,probs=c(.95)),y=quantile(`UMass-MechBayes`,probs=c(.95)),col="YYG-ParamSearch",shape="95%")) +
+  geom_point(aes(x=mean(`LANL-GrowthRate`),y=mean(`UMass-MechBayes`),col="LANL-GrowthRate",shape="Mean"))+
+  geom_point(aes(x=mean(`UCLA-SuEIR`),y=mean(`UMass-MechBayes`),col="UCLA-SuEIR",shape="Mean")) + 
+  geom_point(aes(x=mean(`YYG-ParamSearch`),y=mean(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Mean")) + 
+  geom_point(aes(x=mean(`CU-select`),y=mean(`UMass-MechBayes`),col="CU-select",shape="Mean")) + 
+  geom_point(aes(x=mean(`UA-EpiCovDA`),y=mean(`UMass-MechBayes`),col="UA-EpiCovDA",shape="Mean")) + 
+  geom_point(aes(x=mean(`USACE-ERDC_SEIR`),y=mean(`UMass-MechBayes`),col="USACE-ERDC_SEIR",shape="Mean")) + 
+  geom_point(aes(x=mean(`OliverWyman-Navigator`),y=mean(`UMass-MechBayes`),col="OliverWyman-Navigator",shape="Mean")) + 
+  geom_point(aes(x=mean(`GT-DeepCOVID`),y=mean(`UMass-MechBayes`),col="GT-DeepCOVID",shape="Mean")) + 
+  geom_point(aes(x=mean(`JHU_IDD-CovidSP`),y=mean(`UMass-MechBayes`),col="JHU_IDD-CovidSP",shape="Mean")) + 
+  geom_point(aes(x=mean(`MOBS-GLEAM_COVID`),y=mean(`UMass-MechBayes`),col="MOBS-GLEAM_COVID",shape="Mean")) +
   
-    coord_cartesian(ylim=c(0,200),xlim=c(0,200))
+  geom_point(aes(x=median(`LANL-GrowthRate`),y=median(`UMass-MechBayes`),col="LANL-GrowthRate",shape="Median"))+
+  geom_point(aes(x=median(`UCLA-SuEIR`),y=median(`UMass-MechBayes`),col="UCLA-SuEIR",shape="Median")) + 
+  geom_point(aes(x=median(`YYG-ParamSearch`),y=median(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Median")) + 
+  geom_point(aes(x=median(`CU-select`),y=median(`UMass-MechBayes`),col="CU-select",shape="Median")) + 
+  geom_point(aes(x=median(`UA-EpiCovDA`),y=median(`UMass-MechBayes`),col="UA-EpiCovDA",shape="Median")) + 
+  geom_point(aes(x=median(`USACE-ERDC_SEIR`),y=median(`UMass-MechBayes`),col="USACE-ERDC_SEIR",shape="Median")) + 
+  geom_point(aes(x=median(`OliverWyman-Navigator`),y=median(`UMass-MechBayes`),col="OliverWyman-Navigator",shape="Median")) + 
+  geom_point(aes(x=median(`GT-DeepCOVID`),y=median(`UMass-MechBayes`),col="GT-DeepCOVID",shape="Median")) + 
+  geom_point(aes(x=median(`JHU_IDD-CovidSP`),y=median(`UMass-MechBayes`),col="JHU_IDD-CovidSP",shape="Median")) + 
+  geom_point(aes(x=median(`MOBS-GLEAM_COVID`),y=median(`UMass-MechBayes`),col="MOBS-GLEAM_COVID",shape="Median")) +
+  
+  geom_point(aes(x=quantile(`LANL-GrowthRate`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="LANL-GrowthRate",shape="0.95 Quantile"))+
+  geom_point(aes(x=quantile(`UCLA-SuEIR`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="UCLA-SuEIR",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`YYG-ParamSearch`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="YYG-ParamSearch",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`CU-select`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="CU-select",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`UA-EpiCovDA`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="UA-EpiCovDA",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`USACE-ERDC_SEIR`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="USACE-ERDC_SEIR",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`OliverWyman-Navigator`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="OliverWyman-Navigator",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`GT-DeepCOVID`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="GT-DeepCOVID",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`JHU_IDD-CovidSP`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="JHU_IDD-CovidSP",shape="0.95 Quantile")) + 
+  geom_point(aes(x=quantile(`MOBS-GLEAM_COVID`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="MOBS-GLEAM_COVID",shape="0.95 Quantile"))+ coord_cartesian(ylim=c(0,200),xlim=c(0,200)) + xlab("Alternate Model AE") + ylab("MechBayes AE") geom_abline(slope=1) + theme_bw()
   
   
 
@@ -117,5 +164,7 @@ library(cowplot)
 cowplot::plot_grid(total_panel_a,total_panel_b,nrow=2,align = "v")
 
 
-
-ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=location,y=target_end_date)) + geom_point() +facet_wrap(~model)
+total_forecasts_w_truth_point_complete_wide_w_names <- total_forecasts_w_truth_point_complete_wide %>% left_join(fips,by="location")
+total_forecasts_w_truth_point_complete_wide_w_names$target <- paste0(total_forecasts_w_truth_point_complete_wide_w_names$horizon," week ahead")
+eval_points <- ggplot(total_forecasts_w_truth_point_complete_wide_w_names,aes(y=abbreviation,x=target_end_date)) + geom_point() + facet_wrap(~target,nrow=1) + theme_bw() + ylab("Region") + xlab("Date")#+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+ggsave("/Users/gcgibson/mech_bayes_paper/eval_points.png",eval_points,device = "png",width=8,height=10)

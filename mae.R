@@ -37,11 +37,11 @@ mb_common_dates_point_only_states_only <- mb_common_dates_point_only[which(nchar
 bl_common_dates_point_only_states_only <- bl_common_dates_point_only[which(nchar(bl_common_dates_point_only$location) == 2)]
 
 # remove US and territories 
-territories <- c("60","66","78","69","US")
-`%notin%` <- Negate(`%in%`)
+#territories <- c("60","66","78","69","US")
+#`%notin%` <- Negate(`%in%`)
 
-mb_common_dates_point_only_states_only <- mb_common_dates_point_only_states_only[mb_common_dates_point_only_states_only$location %notin% territories,]
-bl_common_dates_point_only_states_only <- bl_common_dates_point_only_states_only[bl_common_dates_point_only_states_only$location %notin% territories,]
+#mb_common_dates_point_only_states_only <- mb_common_dates_point_only_states_only[mb_common_dates_point_only_states_only$location %notin% territories,]
+#bl_common_dates_point_only_states_only <- bl_common_dates_point_only_states_only[bl_common_dates_point_only_states_only$location %notin% territories,]
 
 
 # subset to inc death target
@@ -102,7 +102,7 @@ quantile_df_theoretical$bl_q <- quantile(joined_mb_and_bl_truth_complete$bl_ae,p
 
 #### FIGURE 5 a TODO: label quantile values
 library(ggplot2)
-colours = c("80%" = "blue1", "90%" = "blue2", "95%" = "blue3", "97.5%" = "blue4","99%"="blue5","Median" = "deepskyblue1","Mean"="deepskyblue4")
+colours = c("80%" = "deepskyblue", "90%" = "deepskyblue1", "95%" = "deepskyblue2", "97.5%" = "deepskyblue3","99%"="deepskyblue4","Median" = "maroon","Mean"="maroon4")
 
 figure_5 <- ggplot(quantile_df,aes(x=bl_q,y=mb_q)) + geom_point(size=.5) + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
   theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1,alpha=.4) +
