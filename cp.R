@@ -101,7 +101,7 @@ cp_plot_df_long$model <- as.factor(cp_plot_df_long$cp_model)
 cp_plot_df_long$model <- cp_plot_df_long$model %>% recode("bl"="Baseline","mb"="MechBayes")
 fig_9 <- ggplot(cp_plot_df_long[cp_plot_df_long$cp_level > .20,],aes(x=cp_level,y=cp,col=model,group=cp_model)) + geom_point() + geom_line()+
   geom_abline(slope=1,intercept=0,alpha=.5)+
-  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")   +coord_cartesian(xlim=c(.5,1),ylim=c(.5,1))  + theme(legend.title=element_blank())
+  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")+ theme(legend.position = "none") +coord_cartesian(xlim=c(.5,1),ylim=c(.5,1))  + theme(legend.title=element_blank())
 
-ggsave(filename = "fig_9.png",fig_9,width=6,height=4)
+ggsave(filename = "fig_9.png",fig_9,width=6,height=6)
 

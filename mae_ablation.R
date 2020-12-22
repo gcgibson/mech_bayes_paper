@@ -105,11 +105,11 @@ quantile_df_theoretical$bl_q <- quantile(joined_mb_and_bl_truth_complete$bl_ae,p
 library(ggplot2)
 figure_5_ablation1 <- ggplot(quantile_df,aes(x=bl_q,y=mb_q,shape="MechBayes Fixed-Detection Death Only")) + geom_point(alpha=.2,size=1) + theme_bw()  + ylab("MechBayes Quantile of AE") +
   theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1,alpha=.4) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[5],y=mb_q[5],col="99%"),size=2) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[4],y=mb_q[4],col="97.5%"),size=2) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="95%"),size=2) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="90%"),size=2) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="80%"),size=2)  + xlab("MechBayes Fixed-Detection Death Only AE")  + coord_cartesian(xlim=c(0,1500),ylim=c(0,1500))
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[5],y=mb_q[5],col="0.99"),size=2) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[4],y=mb_q[4],col="0.975"),size=2) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="0.95"),size=2) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="0.90"),size=2) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="0.80"),size=2)  + xlab("MechBayes Fixed-Detection Death Only AE")  + coord_cartesian(xlim=c(0,1500),ylim=c(0,1500))
 
 ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","figure_5_ablation1.png"),figure_5_ablation1,device="png",width = 6,height=6)
 
@@ -208,14 +208,17 @@ quantile_df_theoretical$bl_q <- quantile(joined_mb_and_bl_truth_complete$bl_ae,p
 #### FIGURE 5 a TODO: label quantile values
 library(ggplot2)
 figure_5_ablation2 <- figure_5_ablation1 + geom_point(data=quantile_df,aes(x=bl_q,y=mb_q,shape="MechBayes Fixed-Detection"),alpha=.2,size=1)  + theme_bw() + xlab("Baseline Quantile of AE") + ylab("MechBayes Quantile of AE") +
-  theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1,alpha=.4) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[5],y=mb_q[5],col="99%"),size=2,shape=16) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[4],y=mb_q[4],col="97.5%"),size=2,shape=16) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="95%"),size=2,shape=16) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="90%"),size=2,shape=16) +
-  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="80%"),size=2,shape=16)  + xlab("Reduced Model Quantile of AE") + coord_cartesian(xlim=c(0,2000),ylim=c(0,2000))
+  theme(aspect.ratio=1)  + geom_abline(intercept = 0,slope=1) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[5],y=mb_q[5],col="0.99"),size=2,shape=16) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[4],y=mb_q[4],col="0.975"),size=2,shape=16) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[3],y=mb_q[3],col="0.95"),size=2,shape=16) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[2],y=mb_q[2],col="0.90"),size=2,shape=16) +
+  geom_point(data=quantile_df_theoretical,aes(x=bl_q[1],y=mb_q[1],col="0.80"),size=2,shape=16)  + xlab("Reduced Model Quantile of AE") + coord_cartesian(xlim=c(0,2000),ylim=c(0,2000))
 
-figure_5_ablation2 <- figure_5_ablation2+ theme(legend.title=element_blank())
+figure_5_ablation2 <- figure_5_ablation2+ theme(legend.title=element_blank()) + theme(axis.text.x = element_text(size=8),axis.text.y= element_text(size=8))
 ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","figure_5_ablation2.png"),figure_5_ablation2,device="png",width = 6,height=6)
 
 
+ablation_total <- cowplot::plot_grid(figure_5_ablation2,fig_9_ablation,nrow=2,labels=c("A","B"))
+
+ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","ablation_total.png"),ablation_total,device="png",width = 6,height=6)

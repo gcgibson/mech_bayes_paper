@@ -71,7 +71,7 @@ yyg_forecasts <- covidHubUtils::load_forecasts(models = c("YYG-ParamSearch"),
                                                 forecast_date = dates, 
                                                 types = "point",locations=state_fips)
 
-total_forecasts <- rbind(mb_forecasts,baseline_forecasts,ua_forecasts,usac_forecasts,ow_forecasts,gt_forecasts,jhu_forecasts,lanl_forecasts,ucla_forecasts,cu_forecasts,nd_forecasts,mobs_forecasts,yyg_forecasts)
+total_forecasts <- rbind(mb_forecasts,baseline_forecasts,ua_forecasts,usac_forecasts,ow_forecasts,jhu_forecasts,lanl_forecasts,ucla_forecasts,cu_forecasts,nd_forecasts,mobs_forecasts,yyg_forecasts)
 
 
 forecast_dates_df <- total_forecasts %>% group_by(model) %>% summarize(target_end_date = unique(target_end_date))#,region=unique(location),horizon=unique(horizon))
@@ -107,20 +107,18 @@ tmp_fk <- total_forecasts_w_truth_point_complete_wide_1 %>% pivot_wider(names_fr
 total_forecasts_w_truth_point_complete_wide <- tmp_fk[complete.cases(tmp_fk),]
 
 
-
-total_panel_a <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=sort(`COVIDhub-baseline`),y=sort(`UMass-MechBayes`),col="COVIDhub-baseline")) + geom_point(size=.5) + theme_bw() + geom_abline(slope=1) +
-  geom_point(aes(x=sort(`LANL-GrowthRate`),y=sort(`UMass-MechBayes`),col="LANL-GrowthRate"),size=.5)+
-  geom_point(aes(x=sort(`UCLA-SuEIR`),y=sort(`UMass-MechBayes`),col="UCLA-SuEIR"),size=.5) + 
-  geom_point(aes(x=sort(`YYG-ParamSearch`),y=sort(`UMass-MechBayes`),col="YYG-ParamSearch"),size=.5) + 
-  geom_point(aes(x=sort(`CU-select`),y=sort(`UMass-MechBayes`),col="CU-select"),size=.5) + 
-  geom_point(aes(x=sort(`UA-EpiCovDA`),y=sort(`UMass-MechBayes`),col="UA-EpiCovDA"),size=.5) + 
-  geom_point(aes(x=sort(`USACE-ERDC_SEIR`),y=sort(`UMass-MechBayes`),col="USACE-ERDC_SEIR"),size=.5) + 
-  geom_point(aes(x=sort(`OliverWyman-Navigator`),y=sort(`UMass-MechBayes`),col="OliverWyman-Navigator"),size=.5) + 
-  geom_point(aes(x=sort(`GT-DeepCOVID`),y=sort(`UMass-MechBayes`),col="GT-DeepCOVID"),size=.5) + 
-  geom_point(aes(x=sort(`JHU_IDD-CovidSP`),y=sort(`UMass-MechBayes`),col="JHU_IDD-CovidSP"),size=.5) + 
-  geom_point(aes(x=sort(`MOBS-GLEAM_COVID`),y=sort(`UMass-MechBayes`),col="MOBS-GLEAM_COVID"),size=.5) + 
+# drop USACE
+total_panel_a <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=sort(`COVIDhub-baseline`),y=sort(`UMass-MechBayes`),col="COVIDhub-baseline")) + geom_point(size=.5,alpha=.5) + theme_bw() + geom_abline(slope=1) +
+  geom_point(aes(x=sort(`LANL-GrowthRate`),y=sort(`UMass-MechBayes`),col="LANL-GrowthRate"),size=.5,alpha=.5)+
+  geom_point(aes(x=sort(`UCLA-SuEIR`),y=sort(`UMass-MechBayes`),col="UCLA-SuEIR"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`YYG-ParamSearch`),y=sort(`UMass-MechBayes`),col="YYG-ParamSearch"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`CU-select`),y=sort(`UMass-MechBayes`),col="CU-select"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`UA-EpiCovDA`),y=sort(`UMass-MechBayes`),col="UA-EpiCovDA"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`OliverWyman-Navigator`),y=sort(`UMass-MechBayes`),col="OliverWyman-Navigator"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`JHU_IDD-CovidSP`),y=sort(`UMass-MechBayes`),col="JHU_IDD-CovidSP"),size=.5,alpha=.5) + 
+  geom_point(aes(x=sort(`MOBS-GLEAM_COVID`),y=sort(`UMass-MechBayes`),col="MOBS-GLEAM_COVID"),size=.5,alpha=.5) + 
   
-  coord_cartesian(ylim = c(0,3000),xlim=c(0,3000)) + ylab("MechBayes AE") + xlab("") + theme(legend.title=element_blank()) 
+  coord_cartesian(ylim = c(0,3000),xlim=c(0,3000)) + ylab("MechBayes Quantile of AE") + xlab("Alternate Model Quantile of AE")  + theme(legend.title=element_blank()) 
 
 total_panel_b <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=mean(`COVIDhub-baseline`),y=mean(`UMass-MechBayes`),col="COVIDhub-baseline",shape="Mean")) + geom_point() +
   geom_point(aes(x=mean(`LANL-GrowthRate`),y=mean(`UMass-MechBayes`),col="LANL-GrowthRate",shape="Mean"))+
@@ -128,9 +126,7 @@ total_panel_b <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=mean(`
   geom_point(aes(x=mean(`YYG-ParamSearch`),y=mean(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Mean")) + 
   geom_point(aes(x=mean(`CU-select`),y=mean(`UMass-MechBayes`),col="CU-select",shape="Mean")) + 
   geom_point(aes(x=mean(`UA-EpiCovDA`),y=mean(`UMass-MechBayes`),col="UA-EpiCovDA",shape="Mean")) + 
-  geom_point(aes(x=mean(`USACE-ERDC_SEIR`),y=mean(`UMass-MechBayes`),col="USACE-ERDC_SEIR",shape="Mean")) + 
   geom_point(aes(x=mean(`OliverWyman-Navigator`),y=mean(`UMass-MechBayes`),col="OliverWyman-Navigator",shape="Mean")) + 
-  geom_point(aes(x=mean(`GT-DeepCOVID`),y=mean(`UMass-MechBayes`),col="GT-DeepCOVID",shape="Mean")) + 
   geom_point(aes(x=mean(`JHU_IDD-CovidSP`),y=mean(`UMass-MechBayes`),col="JHU_IDD-CovidSP",shape="Mean")) + 
   geom_point(aes(x=mean(`MOBS-GLEAM_COVID`),y=mean(`UMass-MechBayes`),col="MOBS-GLEAM_COVID",shape="Mean")) +
   
@@ -139,9 +135,7 @@ total_panel_b <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=mean(`
   geom_point(aes(x=median(`YYG-ParamSearch`),y=median(`UMass-MechBayes`),col="YYG-ParamSearch",shape="Median")) + 
   geom_point(aes(x=median(`CU-select`),y=median(`UMass-MechBayes`),col="CU-select",shape="Median")) + 
   geom_point(aes(x=median(`UA-EpiCovDA`),y=median(`UMass-MechBayes`),col="UA-EpiCovDA",shape="Median")) + 
-  geom_point(aes(x=median(`USACE-ERDC_SEIR`),y=median(`UMass-MechBayes`),col="USACE-ERDC_SEIR",shape="Median")) + 
   geom_point(aes(x=median(`OliverWyman-Navigator`),y=median(`UMass-MechBayes`),col="OliverWyman-Navigator",shape="Median")) + 
-  geom_point(aes(x=median(`GT-DeepCOVID`),y=median(`UMass-MechBayes`),col="GT-DeepCOVID",shape="Median")) + 
   geom_point(aes(x=median(`JHU_IDD-CovidSP`),y=median(`UMass-MechBayes`),col="JHU_IDD-CovidSP",shape="Median")) + 
   geom_point(aes(x=median(`MOBS-GLEAM_COVID`),y=median(`UMass-MechBayes`),col="MOBS-GLEAM_COVID",shape="Median")) +
   
@@ -150,18 +144,23 @@ total_panel_b <- ggplot(total_forecasts_w_truth_point_complete_wide,aes(x=mean(`
   geom_point(aes(x=quantile(`YYG-ParamSearch`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="YYG-ParamSearch",shape="0.95 Quantile")) + 
   geom_point(aes(x=quantile(`CU-select`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="CU-select",shape="0.95 Quantile")) + 
   geom_point(aes(x=quantile(`UA-EpiCovDA`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="UA-EpiCovDA",shape="0.95 Quantile")) + 
-  geom_point(aes(x=quantile(`USACE-ERDC_SEIR`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="USACE-ERDC_SEIR",shape="0.95 Quantile")) + 
   geom_point(aes(x=quantile(`OliverWyman-Navigator`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="OliverWyman-Navigator",shape="0.95 Quantile")) + 
-  geom_point(aes(x=quantile(`GT-DeepCOVID`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="GT-DeepCOVID",shape="0.95 Quantile")) + 
   geom_point(aes(x=quantile(`JHU_IDD-CovidSP`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="JHU_IDD-CovidSP",shape="0.95 Quantile")) + 
-  geom_point(aes(x=quantile(`MOBS-GLEAM_COVID`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="MOBS-GLEAM_COVID",shape="0.95 Quantile"))+ coord_cartesian(ylim=c(0,200),xlim=c(0,200)) + xlab("Alternate Model AE") + ylab("MechBayes AE") geom_abline(slope=1) + theme_bw()
+  geom_point(aes(x=quantile(`MOBS-GLEAM_COVID`,probs=.95),y=quantile(`UMass-MechBayes`,probs=.95),col="MOBS-GLEAM_COVID",shape="0.95 Quantile"))+
+  coord_cartesian(ylim=c(0,200),xlim=c(0,200)) + 
+  xlab("Alternate Model Quantile of AE") + geom_abline(slope=1) + theme_bw()   + theme(legend.title=element_blank()) 
   
   
 
+fig_5_total_alt <- cowplot::plot_grid(figure_5 + theme(legend.position="none") + ylab("") +xlab(""),
+                                      figure_5_b + theme(legend.position="none")+   ylab("") +xlab(""),
+                                      total_panel_a + theme(legend.position="none")+ ylab("") +xlab(""),
+                                      total_panel_b + theme(legend.position="none")+ ylab("") +xlab(""),
+                                      nrow=2,align="v",rel_heights = c(1,1.2),labels=c("A","B","C","D"))
+
+ggsave(paste0("/Users/gcgibson/mech_bayes_paper/","fig_5_total_alt.tiff"),fig_5_total_alt,device="tiff",width = 6,height=6)
 
 library(cowplot)
-
-cowplot::plot_grid(total_panel_a,total_panel_b,nrow=2,align = "v")
 
 
 total_forecasts_w_truth_point_complete_wide_w_names <- total_forecasts_w_truth_point_complete_wide %>% left_join(fips,by="location")

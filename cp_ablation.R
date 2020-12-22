@@ -118,7 +118,8 @@ joined_mb_and_bl_truth_complete_mb_wide_cp <- joined_mb_and_bl_truth_complete_mb
                                                                                                  bl2_cp_50 = ifelse(value <= bl2_0.75 & value >= bl2_0.25 ,1,0),
                                                                                                  bl2_cp_70 = ifelse(value <= bl2_0.85 & value >= bl2_0.15 ,1,0),
                                                                                                  bl2_cp_60 = ifelse(value <= bl2_0.8 & value >= bl2_0.2 ,1,0),
-                                                                                                 bl2_cp_80= ifelse(value <= bl2_0.9 & value >= bl2_0.1 ,1,0),)
+                                                                                                 bl2_cp_80= ifelse(value <= bl2_0.9 & value >= bl2_0.1 ,1,0),
+                                                                                                 bl2_cp_90= ifelse(value <= bl2_0.95 & value >= bl2_0.05 ,1,0))
 
 
 
@@ -137,7 +138,7 @@ cp_plot_df_long$model <- as.factor(cp_plot_df_long$cp_model)
 cp_plot_df_long$model <- cp_plot_df_long$model %>% recode("bl2"="MechBayes Fixed-Detection Death Only","bl"="MechBayes Fixed-Detection","mb"="MechBayes Full")
 fig_9_ablation <- ggplot(cp_plot_df_long[cp_plot_df_long$cp_level > .20,],aes(x=cp_level,y=cp,col=model,group=cp_model)) + geom_point() + geom_line()+
   geom_abline(slope=1,intercept=0,alpha=.5)+
-  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")  + coord_cartesian(xlim=c(.5,1),ylim=c(.2,1)) +  theme(legend.title=element_blank())
+  theme_bw()  + ylab("Empirical Coverage") +xlab("Theoretical Coverage")  + coord_cartesian(xlim=c(0,1),ylim=c(0,1)) +  theme(legend.title=element_blank())
 
 fig_9_ablation
 ggsave(filename = "fig_9_ablation.png",fig_9_ablation,width=6,height=4)
